@@ -1,0 +1,794 @@
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+
+html, body {
+    font-family: 'Montserrat', sans-serif;
+    background-image: url(../images/FootballNFL2.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+h1:focus {
+    outline: none;
+}
+
+a, .btn-link {
+    color: #0071c1;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+.content {
+    margin-top: 175px;
+    position: relative;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid red;
+}
+
+.validation-message {
+    color: red;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+    .blazor-error-boundary::after {
+        content: "An error has occurred."
+    }
+
+/**********************************************************************
+                                START 
+***********************************************************************/
+
+
+
+/********************************
+        Create Bet Page
+********************************/
+
+.game-wager-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.game-info-container {
+    border: 2px solid green;
+    width: 70%;
+    border-radius: 15px;
+    color: white;
+    background-color: rgb(0,0,0); /*Fallback color */
+    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    backdrop-filter: blur(10px);
+    margin: 0 auto;
+}
+
+.stat-records {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+.records {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 0 auto;
+}
+
+.stat-container {
+    display: flex;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.helmet {
+    margin: 0 auto;
+}
+
+.team-selection-container {
+    margin: 0 auto;
+}
+
+.wager-box {
+    width: 25%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+}
+
+.rec-sec {
+    margin-bottom: 1em;
+}
+
+.stat-title {
+    border-bottom: 1px solid white;
+    margin-left: 2em;
+    margin-right: 2em;
+    margin-bottom: 1em;
+}
+
+.stat {
+    margin: 1em auto;
+}
+
+/**********************************
+        Create Parley Bet Page
+***********************************/
+
+.parley-bet-game-list-section {
+    display: flex;
+    justify-content: center;
+}
+
+.parley-game-item-unchosen {
+    border: 2px solid green;
+    padding: 1em .5em;
+    margin: .5em auto;
+    border-radius: 15px;
+    background-color: rgb(0,0,0); /*Fallback color */
+    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    width: 70%;
+}
+
+.parley-game-item-chosen {
+    border: 2px solid red;
+    padding: 1em .5em;
+    margin: .5em auto;
+    border-radius: 15px;
+    background-color: rgb(0,0,0); /*Fallback color */
+    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    width: 70%;
+}
+
+.parley-game-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.parley-helmet-icon-away {
+    float: left;
+    margin: 0 auto;
+    margin-top: 1em;
+}
+
+.parley-helmet-icon-home {
+    float: right;
+    margin: 0 auto;
+    margin-top: 1em;
+}
+
+.game-description {
+    margin-top: 1em;
+}
+
+.wager-box {
+    width: 25%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+}
+
+/********************************
+        Home Page
+********************************/
+
+.games {
+    margin-bottom: 2em;
+}
+
+.game-item-list {
+    border: 2px solid green;
+    padding: 1em .5em;
+    margin: .5em auto;
+    border-radius: 15px;
+    background-color: rgb(0,0,0); /*Fallback color */
+    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    width: 70%;
+}
+
+.helmet-icon-away {
+    float: left;
+    margin: 0 auto;
+    margin-top: 1em;
+}
+
+.helmet-icon-home {
+    float: right;
+    margin: 0 auto;
+    margin-top: 1em;
+}
+
+.game-title {
+    display: flex;
+    justify-content: space-between;
+}
+
+.bet-selection-sigle {
+    display: flex;
+    justify-content: center;
+    margin-top: 4em;
+    margin-bottom: .25em;
+}
+
+/********************************
+        Profile Pages
+********************************/
+
+.user-profile-reg {
+    width: 70%;
+    border: 2px solid green;
+    border-radius: 15px;
+    background-color: rgb(0,0,0); /*Fallback color */
+    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    backdrop-filter: blur(10px);
+    color: white;
+    margin: 0 auto;
+}
+
+.user-profile-parley {
+    width: 70%;
+    border: 2px solid green;
+    border-radius: 15px;
+    background-color: rgb(0,0,0); /*Fallback color */
+    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    backdrop-filter: blur(10px);
+    color: white;
+    margin: 0 auto;
+}
+
+.label-container {
+    text-align: center;
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 1em;
+}
+
+.item {
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    margin: 1em 1em;
+}
+
+.bets {
+    margin-bottom: 2em;
+}
+
+.bet {
+    border-radius: 15px;
+    margin: 0 auto;
+    border: 1px solid white;
+    width: 75%;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    backdrop-filter: blur(1px);
+}
+
+.parley-bet {
+    border: 1px solid white;
+    border-radius: 15px;
+    margin: 1em 4em;
+}
+
+.parley-bet-label {
+    text-align: center;
+}
+
+.font {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+/*********************************
+        About Page
+*********************************/
+
+.about-about {
+    background-color: rgb(0,0,0); /*Fallback color */
+    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    backdrop-filter: blur(10px);
+    color: white;
+    border: 2px solid green;
+    border-radius: 15px;
+    width: 70%;
+    margin: 0 auto;
+    padding: 2em 2em;
+}
+
+.about-odds {
+    border: 2px solid green;
+    width: 70%;
+    margin: 0 auto;
+}
+
+/**********************************
+        Shared
+**********************************/
+
+label {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+a:hover {
+    cursor: pointer;
+}
+
+p {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+ul {
+    list-style-type: none;
+}
+
+.title {
+    font-family: 'Montserrat', sans-serif;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: flex-end;
+    font-family: 'Montserrat', sans-serif;
+}
+
+
+/********************************
+        Header And Footer
+********************************/
+
+.link-support {
+    margin: 0 auto;
+}
+
+.balance-value {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: .35em;
+}
+
+.balance-item {
+    color: white;
+    width: 15%;
+    text-align: center;
+}
+
+.login {
+}
+
+.footer-game-item {
+    font-size: 17px;
+}
+
+.at {
+    color: white;
+    margin: 0 .5em;
+    margin-top: 1.5em;
+}
+
+.at-symbol {
+    font-size: 35px;
+}
+
+.footer {
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.5);
+    backdrop-filter: blur(10px);
+    width: 100%;
+    border-top: 2px solid green;
+    margin-top: 200px;
+    color: white;
+}
+
+.social-media-icon-container {
+    display: flex;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.icon-wrap {
+    margin: 0 auto;
+}
+
+.icon {
+    height: 35px;
+}
+
+.icon-container {
+    display: flex;
+    text-decoration: none;
+    justify-content: center;
+}
+
+.contact-item {
+    width: 35%;
+    padding: 1em 1em;
+    text-align: center;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.trust-logo {
+    margin-top: 4em;
+}
+
+.name {
+    font-size: 25px;
+    color: white;
+    font-weight: 700;
+    margin-top: .2em;
+}
+
+.fb-icon {
+    height: 40px;
+}
+
+.footer-nav-container {
+    display: flex;
+    justify-content: space-evenly;
+    width: 90%;
+    margin-bottom: 2em;
+    margin: 0 auto;
+}
+
+.nav-title-game-container {
+    margin-left: 2em;
+}
+
+.nav-title {
+    font-size: 25px;
+    text-decoration: underline;
+    display: flex;
+}
+
+.footer-link {
+    margin-top: 1em;
+}
+
+.footer-game-item {
+    list-style-type: none;
+    margin-top: .25em;
+    margin-bottom: .25em;
+}
+
+.game-item-nav {
+    text-decoration: none;
+    color: white;
+}
+
+    .game-item-nav:hover {
+        color: green;
+    }
+
+
+.headernew {
+    display: flex;
+    justify-content: space-between;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 99;
+    transition: top 0.3s;
+    position: fixed;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.5);
+    backdrop-filter: blur(10px);
+    border-bottom: 2px solid green;
+}
+
+
+/*****************************
+        Admin Page
+*****************************/
+
+.game-input {
+    border: 2px solid green;
+    width: 50%;
+    border-radius: 15px;
+    background-color: rgb(0,0,0); /*  Fallback color */
+    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    backdrop-filter: blur(10px);
+    color: white;
+    margin-bottom: 2em;
+}
+
+.input {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.input-box {
+    padding: .5em 0;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+}
+
+
+/*************************************
+        Buttons
+ **************************************/
+
+.undo-btn {
+    background: yellow;
+    color: red;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 15px;
+    font-weight: 700;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-width: 2px;
+    border-color: red;
+}
+
+    .undo-btn:hover {
+        background: red;
+        color: yellow;
+        border-color: yellow;
+    }
+
+.site-btn {
+    font-family: 'Montserrat', sans-serif;
+    border-width: 2px;
+    border-radius: 15px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-weight: 700;
+    border-color: green;
+    color: white;
+    background-color: rgb(152,251,152, 0.35);
+}
+
+.site-btn-light:hover {
+    color: green;
+    background-color: white;
+    border-color: green;
+}
+
+.undo-btn-det {
+    background: yellow;
+    color: red;
+    font-family: 'Montserrat', sans-serif;
+    border-radius: 15px;
+    font-weight: 700;
+    border-width: 2px;
+    border-color: red;
+    margin: 0 auto;
+    width: 180px;
+    font-size: 10px;
+}
+
+    .undo-btn-det:hover {
+        background: red;
+        color: yellow;
+        border-color: yellow;
+    }
+
+.site-btn-det {
+    font-family: 'Montserrat', sans-serif;
+    border-width: 2px;
+    border-radius: 15px;
+    font-weight: 700;
+    border-color: green;
+    color: white;
+    background-color: rgb(152,251,152, 0.35);
+    margin: 0 auto;
+    width: 180px;
+    font-size: 10px;
+}
+
+.site-btn-det-light:hover {
+    color: green;
+    background-color: white;
+    border-color: green;
+}
+
+@media (max-width: 1100px) {
+
+    .game-info-container {
+        width: 95%;
+    }
+
+    .bet-details {
+        width: 95%;
+    }
+}
+
+@media (max-width: 950px) {
+
+    .parley-game-item-unchosen {
+        width: 95%;
+    }
+
+    .parley-game-item-chosen {
+        width: 95%;
+    }
+
+    .game-item-list {
+        width: 95%;
+    }
+
+    .bet-details {
+        width: 95%;
+    }
+}
+
+@media (max-width: 800px) {
+
+    .title {
+        font-size: 10px;
+    }
+
+    .footer-game-item {
+        font-size: 10px;
+    }
+
+    .link-support {
+        font-size: 13px;
+    }
+
+    .nav-title {
+        font-size: 13px;
+    }
+
+    .name {
+        font-size: 15px;
+    }
+
+    .fb-icon {
+        height: 25px;
+    }
+
+    .icon-container {
+        padding-top: .5em;
+    }
+
+    .balance-item {
+        padding-top: .5em;
+    }
+
+    .balance-value {
+        font-size: 13px;
+    }
+
+    .login {
+        padding-top: .5em;
+    }
+
+    .user-profile-reg {
+        width: 95%;
+    }
+
+    .user-profile-parley {
+        width: 95%;
+    }
+}
+
+
+
+@media(min-width: 700px) {
+
+    .at {
+        display: none;
+    }
+}
+
+@media(max-width: 700px) {
+
+    .game-description {
+        display: none;
+    }
+
+    .parley-bet {
+        margin: 1em .5em;
+    }
+
+    .nav-title {
+        font-size: 10px;
+    }
+
+    .footer-game-item {
+        font-size: 7px;
+    }
+
+    .link-support {
+        font-size: 8px;
+        margin: 0 auto;
+    }
+
+    .link-support-about {
+        font-size: 16px;
+    }
+
+    .about-about {
+        width: 95%;
+    }
+
+    .about-odds {
+        width: 95%;
+    }
+
+    .stat {
+        display: none;
+    }
+}
+
+@media(max-width: 580px) {
+
+    .parley-buttons {
+        display: flex;
+        flex-direction: column;
+        margin: 0 .75em;
+    }
+}
+
+@media(max-width: 650px) {
+
+    .balance-item {
+        display: none;
+    }
+}
+
+@media(max-width: 550px) {
+
+    .font {
+        font-size: 15px;
+    }
+}
+
+@media(max-width: 500px) {
+
+    .footer-game-item {
+        font-size: 5px;
+    }
+}

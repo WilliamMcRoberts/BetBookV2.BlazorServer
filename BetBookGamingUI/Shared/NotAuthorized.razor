@@ -1,0 +1,25 @@
+﻿@inject NavigationManager navManager
+
+
+<div>
+    <div>
+        <div>
+            <div>
+                <div style="font-size: 30px;font-weight:700;text-align: center;">Authorization Required</div>
+                <p style="font-size: 30px;font-weight:700;text-align: center;">
+                    You are not authorized to access this section. You need to log in to do any activities on this site.
+                </p>
+            </div>
+            <div style="font-size: 30px;font-weight:700;text-align: center;">
+                <button style="font-size: 30px;font-weight:700;"@onclick="ClosePage">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void ClosePage()
+    {
+        navManager.NavigateTo("/");
+    }
+}

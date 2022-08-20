@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>91af10a2-d354-4d1c-bb57-49f91b1e67c9</UserSecretsId>
+  </PropertyGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <ProjectReference Include="..\BetBookGamingData\BetBookGamingData.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,250 @@
+﻿@page "/"
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authProvider
+@inject IUserData userData
+@inject ITeamData teamData
+@inject IGameData gameData
+@inject IGameService gameService
+@using Syncfusion.Blazor.Grids
+
+<PageTitle>Home</PageTitle>
+
+@if(games is not null)
+{
+    <div style="width:75%;margin: 0 auto;">
+        <SfGrid DataSource="@games.OrderBy(g => g.DateTime)">
+            <GridColumns>
+                <GridColumn Width="80"
+                        HeaderText="Date"
+                        TextAlign="TextAlign.Center">
+                </GridColumn>
+                <GridColumn Width="200"
+                            HeaderText="Teams"
+                            TextAlign="TextAlign.Center">
+                </GridColumn>
+                <GridColumn HeaderText="Point Spread"
+                            TextAlign="TextAlign.Center">
+                </GridColumn>
+                <GridColumn HeaderText="Moneyline" 
+                            TextAlign="TextAlign.Center">
+                </GridColumn>
+                <GridColumn HeaderText="Over/Under"
+                            TextAlign="TextAlign.Center">
+                </GridColumn>
+                <GridColumn Width="80"
+                            HeaderText="Other"
+                            TextAlign="TextAlign.Center">
+                </GridColumn>
+            </GridColumns>
+            <GridTemplates>
+                <RowTemplate>
+                    @{
+                        var game = (context as Game);
+                        @if (game?.HasStarted == false)
+                        {
+                            <td style="text-align:center;border-bottom:1px solid black;">
+                                <div>
+                                <div style="padding: .5em .5em;">
+                                        <strong>@game?.Date.ToString("M-d")</strong>
+                                    </div>
+                                    <div style="padding:.5em .5em;">
+                                        <strong>@game?.Date.ToString("h:mm")</strong>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td style="text-align:center;border-bottom:1px solid black;">
+                                <div class="teams">
+                                    <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                        <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                    </div>
+                                    <div style="padding:.5em .5em;">
+                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td style="border-bottom:1px solid black;">
+                                <div>
+                                    <div class="clickable-cell-top">
+                                        <div style="display:flex;justify-content:space-evenly;">
+                                            <strong style="margin-right:.5em;">@GetPointSpreadForAwayTeam(game?.PointSpread)</strong>
+                                            <strong>@GetMoneyLine(game?.PointSpreadAwayTeamMoneyLine)</strong>
+                                        </div>
+                                    </div>
+                                    <div class="clickable-cell-bottom">
+                                        <div style="display:flex;justify-content:space-evenly;">
+                                            <strong style="margin-right:.5em;">@GetPointSpreadForHomeTeam(game?.PointSpread)</strong>
+                                            <strong>@GetMoneyLine(game?.PointSpreadHomeTeamMoneyLine)</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="text-align:center;border-bottom:1px solid black;">
+                                <div>
+                                    <div class="clickable-cell-top">
+                                        <strong>@GetMoneyLine(game?.AwayTeamMoneyLine)</strong>
+                                    </div>
+                                    <div class="clickable-cell-bottom">
+                                        <strong>@GetMoneyLine(game?.HomeTeamMoneyLine)</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="border-bottom:1px solid black;">
+                                <div>
+                                    <div class="clickable-cell-top">
+                                        <div style="display:flex;justify-content:space-evenly;">
+                                            <strong>Over @game?.OverUnder</strong>
+                                            <strong>@GetMoneyLine(@game?.OverPayout)</strong>
+                                        </div>
+
+                                    </div>
+                                    <div class="clickable-cell-bottom">
+                                        <div style="display:flex;justify-content:space-evenly;">
+                                            <strong>Under @game?.OverUnder</strong>
+                                            <strong>@GetMoneyLine(game?.UnderPayout)</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="border-bottom:1px solid black;">
+                                <div>
+                                    <div class="other-button">
+                                        <strong>Other Wagers</strong>
+                                    </div>
+                                </div>
+                            </td>
+                        }
+                    }
+                </RowTemplate>
+            </GridTemplates>
+        </SfGrid>
+    </div>
+        
+    
+}
+<style>
+
+    .clickable-cell-top {
+        padding: .5em .5em;
+        border-bottom: 1px solid lightgrey;
+        background-color: palegreen;
+    }
+
+        .clickable-cell-top:hover {
+            cursor:pointer;
+            background-color: rgb(152, 251, 152, .5);
+        }
+
+    .clickable-cell-bottom {
+        padding: .5em .5em;
+        background-color: palegreen;
+    }
+
+        .clickable-cell-bottom:hover {
+            background-color: rgb(152, 251, 152, .5);
+            cursor: pointer;
+        }
+
+    .other-button {
+        background-color: palegreen;
+        padding-top: 1em;
+        padding-bottom: 1em;
+        text-align: center;
+    }
+
+        .other-button:hover {
+            background-color: rgb(152, 251, 152, .5);
+            cursor: pointer;
+        }
+
+    .teams {
+        
+    }
+
+        .teams:hover {
+            background-color: rgb(211,211,211, .9);
+            cursor: pointer;
+        }
+    
+    .team-name {
+        font-size:18px;
+    }
+
+    .team-icon-top-row {
+        height: 25px;
+        margin-right: .5em;
+        margin-left: 1.25em;
+    }
+
+    .team-icon-bottom-row {
+        height: 25px;
+        margin-right: .5em;
+    }
+
+    .at-sign {
+        margin-right: .5em;
+        font-size: 18px;
+    }
+
+    .e-headercell {
+        font-family: "Bell MT";
+        color: darkgreen;
+    }
+
+</style>
+
+@code {
+
+    Game[]? games;
+    int week;
+    SeasonType season;
+    private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(15));
+
+    protected override async Task OnInitializedAsync()
+    {
+        games = await gameService.GetGamesByWeek(SeasonType.PRE, 2);
+        season = DateTime.Now.CalculateSeason();
+        week = season.CalculateWeek(DateTime.Now);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender) await StartGameUpdateLoop();
+    }
+
+    private async Task StartGameUpdateLoop()
+    {
+        int index = 1;
+
+        while (await _timer.WaitForNextTickAsync())
+        {
+            season = DateTime.Now.CalculateSeason();
+            week = season.CalculateWeek(DateTime.Now);
+            games = await gameService.GetGamesByWeek(season, week);
+            Console.WriteLine($"Timer trigger count: {index}");
+            index++;
+        }
+    }
+
+    private string GetPointSpreadForAwayTeam(float? pointSpread)
+    {
+        if (pointSpread > 0) return $"- {pointSpread}";
+        if (pointSpread == 0) return "0";
+        return $"+ {pointSpread * -1}";
+    }
+
+    private string GetPointSpreadForHomeTeam(float? pointSpread)
+    {
+        if (pointSpread > 0) return $"+ {pointSpread}";
+        if (pointSpread == 0) return "0";
+        return $"- {pointSpread?.ToString().Trim('-')}";
+    }
+
+    private string GetMoneyLine(int? moneyline)
+    {
+        if (moneyline >= 0) return $"+ {moneyline}";
+        return $"- {moneyline?.ToString().Trim('-')}";
+    }
+
+}
