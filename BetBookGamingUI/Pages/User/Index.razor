@@ -19,7 +19,7 @@
                         TextAlign="TextAlign.Center">
                 </GridColumn>
                 <GridColumn Width="200"
-                            HeaderText="Teams"
+                            HeaderText="Away/Home"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
                 <GridColumn HeaderText="Point Spread"
@@ -40,80 +40,80 @@
                 <RowTemplate>
                     @{
                         var game = (context as Game);
-                        @if (game?.HasStarted == false)
+                                @if (game?.HasStarted == false)
                         {
-                            <td style="text-align:center;border-bottom:1px solid black;">
-                                <div>
-                                <div style="padding: .5em .5em;">
-                                        <strong>@game?.Date.ToString("M-d")</strong>
-                                    </div>
-                                    <div style="padding:.5em .5em;">
-                                        <strong>@game?.Date.ToString("h:mm")</strong>
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td style="text-align:center;border-bottom:1px solid black;">
-                                <div class="teams">
-                                    <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                        <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
-                                    </div>
-                                    <div style="padding:.5em .5em;">
-                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
-                                    </div>
-                                </div>
-
-                            </td>
-                            <td style="border-bottom:1px solid black;">
-                                <div>
-                                    <div class="clickable-cell-top">
-                                        <div style="display:flex;justify-content:space-evenly;">
-                                            <strong style="margin-right:.5em;">@GetPointSpreadForAwayTeam(game?.PointSpread)</strong>
-                                            <strong>@GetMoneyLine(game?.PointSpreadAwayTeamMoneyLine)</strong>
-                                        </div>
-                                    </div>
-                                    <div class="clickable-cell-bottom">
-                                        <div style="display:flex;justify-content:space-evenly;">
-                                            <strong style="margin-right:.5em;">@GetPointSpreadForHomeTeam(game?.PointSpread)</strong>
-                                            <strong>@GetMoneyLine(game?.PointSpreadHomeTeamMoneyLine)</strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="text-align:center;border-bottom:1px solid black;">
-                                <div>
-                                    <div class="clickable-cell-top">
-                                        <strong>@GetMoneyLine(game?.AwayTeamMoneyLine)</strong>
-                                    </div>
-                                    <div class="clickable-cell-bottom">
-                                        <strong>@GetMoneyLine(game?.HomeTeamMoneyLine)</strong>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="border-bottom:1px solid black;">
-                                <div>
-                                    <div class="clickable-cell-top">
-                                        <div style="display:flex;justify-content:space-evenly;">
-                                            <strong>Over @game?.OverUnder</strong>
-                                            <strong>@GetMoneyLine(@game?.OverPayout)</strong>
+                                    <td style="text-align:center;border-bottom:1px solid black;">
+                                        <div>
+                                            <div style="padding: .5em .5em;">
+                                                <strong>@game?.Date.ToString("M-d")</strong>
+                                            </div>
+                                            <div style="padding:.5em .5em;">
+                                                <strong>@game?.Date.ToString("h:mm")</strong>
+                                            </div>
                                         </div>
 
-                                    </div>
-                                    <div class="clickable-cell-bottom">
-                                        <div style="display:flex;justify-content:space-evenly;">
-                                            <strong>Under @game?.OverUnder</strong>
-                                            <strong>@GetMoneyLine(game?.UnderPayout)</strong>
+                                    </td>
+                                    <td style="text-align:center;border-bottom:1px solid black;">
+                                        <div class="teams">
+                                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                                <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                            </div>
+                                            <div style="padding:.5em .5em;">
+                                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="border-bottom:1px solid black;">
-                                <div>
-                                    <div class="other-button">
-                                        <strong>Other Wagers</strong>
-                                    </div>
-                                </div>
-                            </td>
+
+                                    </td>
+                                    <td style="border-bottom:1px solid black;">
+                                        <div>
+                                            <div class="clickable-cell-top">
+                                                <div style="display:flex;justify-content:space-evenly;">
+                                                    <strong style="margin-right:.5em;">@GetPointSpreadForAwayTeam(game?.PointSpread)</strong>
+                                                    <strong>@GetMoneyLine(game?.PointSpreadAwayTeamMoneyLine)</strong>
+                                                </div>
+                                            </div>
+                                            <div class="clickable-cell-bottom">
+                                                <div style="display:flex;justify-content:space-evenly;">
+                                                    <strong style="margin-right:.5em;">@GetPointSpreadForHomeTeam(game?.PointSpread)</strong>
+                                                    <strong>@GetMoneyLine(game?.PointSpreadHomeTeamMoneyLine)</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="text-align:center;border-bottom:1px solid black;">
+                                        <div>
+                                            <div  class="clickable-cell-top">
+                                                <strong>@GetMoneyLine(game?.AwayTeamMoneyLine)</strong>
+                                            </div>
+                                            <div class="clickable-cell-bottom">
+                                                <strong>@GetMoneyLine(game?.HomeTeamMoneyLine)</strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="border-bottom:1px solid black;">
+                                        <div>
+                                            <div  class="clickable-cell-top">
+                                                <div style="display:flex;justify-content:space-evenly;">
+                                                    <strong>Over @game?.OverUnder</strong>
+                                                    <strong>@GetMoneyLine(@game?.OverPayout)</strong>
+                                                </div>
+
+                                            </div>
+                                            <div  class="clickable-cell-bottom" >
+                                                <div style="display:flex;justify-content:space-evenly;">
+                                                    <strong>Under @game?.OverUnder</strong>
+                                                    <strong>@GetMoneyLine(game?.UnderPayout)</strong>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="border-bottom:1px solid black;">
+                                        <div>
+                                            <div class="other-button">
+                                                <strong>Other Wagers</strong>
+                                            </div>
+                                        </div>
+                                    </td>
                         }
                     }
                 </RowTemplate>
@@ -200,6 +200,9 @@
     int week;
     SeasonType season;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromSeconds(15));
+    string bgcolor { get; set; } = "00f"; // (starting value)
+
+    
 
     protected override async Task OnInitializedAsync()
     {
