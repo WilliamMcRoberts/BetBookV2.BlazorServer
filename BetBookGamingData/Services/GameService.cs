@@ -49,7 +49,7 @@ public class GameService : IGameService
             var client = _httpClientFactory.CreateClient("sportsdata");
 
             game = await client.GetFromJsonAsync<GameByTeamDto>(
-                    $"odds/json/TeamTrends/{team.Symbol}?key={_config.GetSection("SportsDataIO").GetSection("Key").Value}");
+                    $"odds/json/TeamTrends/{team.Symbol}?key={_config.GetSection("SportsDataIO").GetSection("Key2").Value}");
 
         }
         catch (Exception ex)
@@ -70,7 +70,7 @@ public class GameService : IGameService
             var client = _httpClientFactory.CreateClient("sportsdata");
 
             game = await client.GetFromJsonAsync<GameByScoreIdDto>(
-                    $"stats/json/BoxScoreByScoreIDV3/{scoreId}?key={_config.GetSection("SportsDataIO").GetSection("Key").Value}");
+                    $"stats/json/BoxScoreByScoreIDV3/{scoreId}?key={_config.GetSection("SportsDataIO").GetSection("Key2").Value}");
         }
 
         catch (Exception ex)
@@ -92,7 +92,7 @@ public class GameService : IGameService
             var client = _httpClientFactory.CreateClient("sportsdata");
 
             games = await client.GetFromJsonAsync<Game[]>(
-                    $"scores/json/ScoresByWeek/2022{currentSeason}/{week}?key={_config.GetSection("SportsDataIO").GetSection("Key").Value}");
+                    $"scores/json/ScoresByWeek/2022{currentSeason}/{week}?key={_config.GetSection("SportsDataIO").GetSection("Key2").Value}");
         }
 
         catch (Exception ex)

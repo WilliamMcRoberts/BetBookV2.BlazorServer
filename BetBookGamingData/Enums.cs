@@ -49,3 +49,10 @@ public enum OverUnder
     OVER,
     UNDER
 }
+
+public enum BetTypeNew
+{
+    POINTSPREAD,
+    MONEYLINE,
+    OVERUNDER
+}

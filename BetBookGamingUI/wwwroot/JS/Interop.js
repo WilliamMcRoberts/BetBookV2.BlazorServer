@@ -12,3 +12,12 @@ window.onscroll = function () {
     prevScrollPos = currentScrollPos;
 }
 
+function changeDivColor(id) {
+    const myDiv = document.getElementById(id);
+    if (myDiv.style.backgroundColor === "orangered") {
+        myDiv.style.backgroundColor = "palegreen";
+        return;
+    }
+    myDiv.style.backgroundColor = "orangered";
+}
+
