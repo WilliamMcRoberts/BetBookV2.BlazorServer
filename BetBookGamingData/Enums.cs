@@ -1,12 +1,17 @@
 ﻿
+using NetEscapades.EnumGenerators;
+
 namespace BetBookGamingData;
 
+[EnumExtensions]
 public enum SeasonType
 {
     PRE = 0,
     REG = 1,
     POST = 2
 }
+
+[EnumExtensions]
 
 public enum GameStatus
 {
@@ -15,6 +20,7 @@ public enum GameStatus
     FINISHED = 2
 }
 
+[EnumExtensions]
 public enum BetStatus
 {
     IN_PROGRESS = 0, 
@@ -23,6 +29,7 @@ public enum BetStatus
     PUSH = 3
 }
 
+[EnumExtensions]
 public enum PayoutStatus
 {
     UNPAID = 0,
@@ -30,6 +37,7 @@ public enum PayoutStatus
     PARLEY = 2
 }
 
+[EnumExtensions]
 public enum ParleyBetStatus
 {
     IN_PROGRESS = 0,
@@ -38,18 +46,21 @@ public enum ParleyBetStatus
     PUSH = 3
 }
 
+[EnumExtensions]
 public enum ParleyPayoutStatus
 {
     UNPAID,
     PAID
 }
 
+[EnumExtensions]
 public enum OverUnder
 {
     OVER,
     UNDER
 }
 
+[EnumExtensions]
 public enum BetTypeNew
 {
     POINTSPREAD,

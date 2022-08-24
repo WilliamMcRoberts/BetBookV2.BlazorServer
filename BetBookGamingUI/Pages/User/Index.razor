@@ -137,9 +137,9 @@
                                         </td>
                                         <td class="cell">
 
-                                            @if (gamesAndWinnersForOverUnderDictionary.ContainsKey(string.Concat(OverUnder.OVER.ToString(), game?.ScoreID.ToString())))
+                                            @if (gamesAndWinnersForOverUnderDictionary.ContainsKey(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString())))
                                 {
-                                                <div @onclick="(() => RemoveWinnerAndGameForOverUnder(OverUnder.OVER.ToString() + game?.ScoreID.ToString()))" class="clickable-cell-active">
+                                <div @onclick="(() => RemoveWinnerAndGameForOverUnder(OverUnder.OVER.ToStringFast() + game?.ScoreID.ToString()))" class="clickable-cell-active">
                                                     <div style="display:flex;justify-content:space-evenly;">
                                                         <strong>Over @game?.OverUnder</strong>
                                                         <strong>@GetMoneyLine(@game?.OverPayout)</strong>
@@ -149,7 +149,7 @@
 
                                 else
                                 {
-                                                <div @onclick="(() => SelectWinnerAndGameForOverUnder(string.Concat(OverUnder.OVER.ToString(), game?.ScoreID.ToString()), game!))" class="clickable-cell">
+                                <div @onclick="(() => SelectWinnerAndGameForOverUnder(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!))" class="clickable-cell">
                                                     <div style="display:flex;justify-content:space-evenly;">
                                                         <strong>Over @game?.OverUnder</strong>
                                                         <strong>@GetMoneyLine(@game?.OverPayout)</strong>
@@ -157,7 +157,7 @@
                                                 </div>
                                 }
 
-                                            @if (gamesAndWinnersForOverUnderDictionary.ContainsKey(string.Concat(OverUnder.UNDER.ToString(), game?.ScoreID.ToString())))
+                            @if (gamesAndWinnersForOverUnderDictionary.ContainsKey(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString())))
                                 {
                                                 <div @onclick="(() => RemoveWinnerAndGameForOverUnder(string.Concat(OverUnder.UNDER.ToString(), game?.ScoreID.ToString())))" class="clickable-cell-active">
                                                     <div style="display:flex;justify-content:space-evenly;">
@@ -169,7 +169,7 @@
 
                                 else
                                 {
-                                                <div @onclick="(() => SelectWinnerAndGameForOverUnder(string.Concat(OverUnder.UNDER.ToString(), game?.ScoreID.ToString()), game!))" class="clickable-cell">
+                                <div @onclick="(() => SelectWinnerAndGameForOverUnder(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!))" class="clickable-cell">
                                                     <div style="display:flex;justify-content:space-evenly;">
                                                         <strong>Under @game?.OverUnder</strong>
                                                         <strong>@GetMoneyLine(game?.UnderPayout)</strong>
