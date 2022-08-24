@@ -360,22 +360,21 @@
 
     private string GetPointSpreadForAwayTeam(float? pointSpread)
     {
-        if (pointSpread > 0) return $"- {pointSpread}";
-        if (pointSpread == 0) return "0";
-        return $"+ {pointSpread * -1}";
+        return pointSpread > 0 ? $"- {pointSpread}" 
+               : pointSpread == 0 ? "0" 
+               : $"+ {pointSpread?.ToString().Trim('-')}";
     }
 
     private string GetPointSpreadForHomeTeam(float? pointSpread)
     {
-        if (pointSpread > 0) return $"+ {pointSpread}";
-        if (pointSpread == 0) return "0";
-        return $"- {pointSpread?.ToString().Trim('-')}";
+        return pointSpread > 0 ? $"+ {pointSpread}"
+               : pointSpread == 0 ? "0"
+               : $"- {pointSpread?.ToString().Trim('-')}";
     }
 
     private string GetMoneyLine(int? moneyline)
     {
-        if (moneyline >= 0) return $"+ {moneyline}";
-        return $"- {moneyline?.ToString().Trim('-')}";
+        return moneyline > 0 ? $"+ {moneyline}" 
+               : $"- {moneyline?.ToString().Trim('-')}";
     }
-
 }
