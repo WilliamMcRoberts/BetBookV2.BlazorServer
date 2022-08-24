@@ -6,13 +6,12 @@
 @inject IGameData gameData
 @inject IGameService gameService
 @using Syncfusion.Blazor.Grids
+@using Syncfusion.Blazor.Notifications
 
 <PageTitle>Home</PageTitle>
 
-@if(games is not null)
-{
     <div style="width:75%;margin: 0 auto;">
-        <SfGrid DataSource="@games.OrderBy(g => g.DateTime)">
+        <SfGrid DataSource="@games?.OrderBy(g => g.DateTime)">
             <GridColumns>
                 <GridColumn Width="80"
                         HeaderText="Date"
@@ -40,110 +39,162 @@
                 <RowTemplate>
                     @{
                         var game = (context as Game);
-                        @if (game?.HasStarted == false)
+                                    @if (game?.HasStarted == false)
                         {
-                            <td class="cell" style="text-align:center;">
-                                <div style="padding: .5em .5em;">
-                                    <strong>@game?.Date.ToString("M-d")</strong>
-                                </div>
-                                <div style="padding:.5em .5em;">
-                                    <strong>@game?.Date.ToString("h:mm")</strong>
-                                </div>
-                            </td>
-                            <td class="cell" style="text-align:center;">
-                                <div class="teams">
-                                    <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                        <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
-                                    </div>
-                                    <div style="padding:.5em .5em;">
-                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
-                                    </div>
-                                </div>
+                                        <td class="cell" style="text-align:center;">
+                                            <div style="padding: .5em .5em;">
+                                                <strong>@game?.Date.ToString("M-d")</strong>
+                                            </div>
+                                            <div style="padding:.5em .5em;">
+                                                <strong>@game?.Date.ToString("h:mm")</strong>
+                                            </div>
+                                        </td>
+                                        <td class="cell" style="text-align:center;">
+                                            <div class="teams">
+                                                <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                                    <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                                </div>
+                                                <div style="padding:.5em .5em;">
+                                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                                </div>
+                                            </div>
 
-                            </td>
-                            <td class="cell">
+                                        </td>
+                                        <td class="cell">
 
-                                @if(gamesAndWinnersForPointSpread.ContainsKey(game!.AwayTeam))
+                                            @if (gamesAndWinnersForPointSpreadDictionary.ContainsKey(game!.AwayTeam))
                                 {
-                                    <div @onclick="(() => RemoveWinnerAndGameForPointSpread(game!.AwayTeam, game))" class="clickable-cell-active">
-                                        <div style="display:flex;justify-content:space-evenly;">
-                                            <strong style="margin-right:.5em;">@GetPointSpreadForAwayTeam(game?.PointSpread)</strong>
-                                            <strong>@GetMoneyLine(game?.PointSpreadAwayTeamMoneyLine)</strong>
-                                        </div>
-                                    </div>
+                                                <div @onclick="(() => RemoveWinnerAndGameForPointSpread(game!.AwayTeam))" class="clickable-cell-active">
+                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                        <strong style="margin-right:.5em;">@GetPointSpreadForAwayTeam(game?.PointSpread)</strong>
+                                                        <strong>@GetMoneyLine(game?.PointSpreadAwayTeamMoneyLine)</strong>
+                                                    </div>
+                                                </div>
                                             
                                 }
+
                                 else
                                 {
-                                    <div @onclick="(() => SelectWinnerAndGameForPointSpread(game!.AwayTeam, game))" class="clickable-cell">
-                                        <div style="display:flex;justify-content:space-evenly;">
-                                            <strong style="margin-right:.5em;">@GetPointSpreadForAwayTeam(game?.PointSpread)</strong>
-                                            <strong>@GetMoneyLine(game?.PointSpreadAwayTeamMoneyLine)</strong>
-                                        </div>
-                                    </div>
+                                                <div @onclick="(() => SelectWinnerAndGameForPointSpread(game!.AwayTeam, game))" class="clickable-cell">
+                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                        <strong style="margin-right:.5em;">@GetPointSpreadForAwayTeam(game?.PointSpread)</strong>
+                                                        <strong>@GetMoneyLine(game?.PointSpreadAwayTeamMoneyLine)</strong>
+                                                    </div>
+                                                </div>
                                 }
-                                                
-                                @if(gamesAndWinnersForPointSpread.ContainsKey(game!.HomeTeam))
+                                                                                                    
+                                            @if(gamesAndWinnersForPointSpreadDictionary.ContainsKey(game!.HomeTeam))
                                 {
-                                    <div @onclick="(() => RemoveWinnerAndGameForPointSpread(game!.HomeTeam, game))" class="clickable-cell-active">
-                                        <div style="display:flex;justify-content:space-evenly;">
-                                            <strong style="margin-right:.5em;">@GetPointSpreadForHomeTeam(game?.PointSpread)</strong>
-                                            <strong>@GetMoneyLine(game?.PointSpreadHomeTeamMoneyLine)</strong>
-                                        </div>
-                                    </div>
+                                                <div @onclick="(() => RemoveWinnerAndGameForPointSpread(game!.HomeTeam))" class="clickable-cell-active">
+                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                        <strong style="margin-right:.5em;">@GetPointSpreadForHomeTeam(game?.PointSpread)</strong>
+                                                        <strong>@GetMoneyLine(game?.PointSpreadHomeTeamMoneyLine)</strong>
+                                                    </div>
+                                                </div>
                                 }
+
                                 else
                                 {
-                                    <div @onclick="(() => SelectWinnerAndGameForPointSpread(game!.HomeTeam, game))" class="clickable-cell">
-                                        <div style="display:flex;justify-content:space-evenly;">
-                                            <strong style="margin-right:.5em;">@GetPointSpreadForHomeTeam(game?.PointSpread)</strong>
-                                            <strong>@GetMoneyLine(game?.PointSpreadHomeTeamMoneyLine)</strong>
-                                        </div>
-                                    </div>
+                                                <div @onclick="(() => SelectWinnerAndGameForPointSpread(game!.HomeTeam, game))" class="clickable-cell">
+                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                        <strong style="margin-right:.5em;">@GetPointSpreadForHomeTeam(game?.PointSpread)</strong>
+                                                        <strong>@GetMoneyLine(game?.PointSpreadHomeTeamMoneyLine)</strong>
+                                                    </div>
+                                                </div>
                                 }
-                                            
-                            </td>
-                            <td class="cell" style="text-align:center;">
-                              
-                                <div class="clickable-cell">
-                                    <strong>@GetMoneyLine(game?.AwayTeamMoneyLine)</strong>
-                                </div>
-                                <div class="clickable-cell">
-                                    <strong>@GetMoneyLine(game?.HomeTeamMoneyLine)</strong>
-                                </div>
-                            </td>
-                            <td class="cell">
-                                <div class="clickable-cell">
-                                    <div style="display:flex;justify-content:space-evenly;">
-                                        <strong>Over @game?.OverUnder</strong>
-                                        <strong>@GetMoneyLine(@game?.OverPayout)</strong>
-                                    </div>
-                                </div>
-                                <div class="clickable-cell">
-                                    <div style="display:flex;justify-content:space-evenly;">
-                                        <strong>Under @game?.OverUnder</strong>
-                                        <strong>@GetMoneyLine(game?.UnderPayout)</strong>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="cell">
-                                <div class="other-button">
-                                    <strong>Other Wagers</strong>
-                                </div>
-                            </td>
+                                                                                                
+                                        </td>
+                                        <td class="cell" style="text-align:center;">
+
+                                            @if (gamesAndWinnersForMoneylineDictionary.ContainsKey(game!.AwayTeam))
+                                {
+                                                <div @onclick="(() => RemoveWinnerAndGameForMoneyline(game!.AwayTeam))" class="clickable-cell-active">
+                                                    <strong>@GetMoneyLine(game?.AwayTeamMoneyLine)</strong>
+                                                </div>
+                                }
+
+                                else
+                                {
+                                                <div @onclick="(() => SelectWinnerAndGameForMoneyline(game!.AwayTeam, game))" class="clickable-cell">
+                                                    <strong>@GetMoneyLine(game?.AwayTeamMoneyLine)</strong>
+                                                </div>
+                                }
+
+                                            @if (gamesAndWinnersForMoneylineDictionary.ContainsKey(game!.HomeTeam))
+                                {
+                                                <div @onclick="(() => RemoveWinnerAndGameForMoneyline(game!.HomeTeam))" class="clickable-cell-active">
+                                                    <strong>@GetMoneyLine(game?.HomeTeamMoneyLine)</strong>
+                                                </div>
+                                }
+
+                                else
+                                {
+                                                <div @onclick="(() => SelectWinnerAndGameForMoneyline(game!.HomeTeam, game))" class="clickable-cell">
+                                                    <strong>@GetMoneyLine(game?.HomeTeamMoneyLine)</strong>
+                                                </div>
+                                }
+
+                                        </td>
+                                        <td class="cell">
+
+                                            @if (gamesAndWinnersForOverUnderDictionary.ContainsKey(string.Concat(OverUnder.OVER.ToString(), game?.ScoreID.ToString())))
+                                {
+                                                <div @onclick="(() => RemoveWinnerAndGameForOverUnder(OverUnder.OVER.ToString() + game?.ScoreID.ToString()))" class="clickable-cell-active">
+                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                        <strong>Over @game?.OverUnder</strong>
+                                                        <strong>@GetMoneyLine(@game?.OverPayout)</strong>
+                                                    </div>
+                                                </div>
+                                }
+
+                                else
+                                {
+                                                <div @onclick="(() => SelectWinnerAndGameForOverUnder(string.Concat(OverUnder.OVER.ToString(), game?.ScoreID.ToString()), game!))" class="clickable-cell">
+                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                        <strong>Over @game?.OverUnder</strong>
+                                                        <strong>@GetMoneyLine(@game?.OverPayout)</strong>
+                                                    </div>
+                                                </div>
+                                }
+
+                                            @if (gamesAndWinnersForOverUnderDictionary.ContainsKey(string.Concat(OverUnder.UNDER.ToString(), game?.ScoreID.ToString())))
+                                {
+                                                <div @onclick="(() => RemoveWinnerAndGameForOverUnder(string.Concat(OverUnder.UNDER.ToString(), game?.ScoreID.ToString())))" class="clickable-cell-active">
+                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                        <strong>Under @game?.OverUnder</strong>
+                                                        <strong>@GetMoneyLine(game?.UnderPayout)</strong>
+                                                    </div>
+                                                </div>
+                                }
+
+                                else
+                                {
+                                                <div @onclick="(() => SelectWinnerAndGameForOverUnder(string.Concat(OverUnder.UNDER.ToString(), game?.ScoreID.ToString()), game!))" class="clickable-cell">
+                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                        <strong>Under @game?.OverUnder</strong>
+                                                        <strong>@GetMoneyLine(game?.UnderPayout)</strong>
+                                                    </div>
+                                                </div>
+                                }
+
+                                        </td>
+                                        <td class="cell">
+                                            <div class="other-button">
+                                                <strong>Other Wagers</strong>
+                                            </div>
+                                        </td>
                         }
                     }
                 </RowTemplate>
             </GridTemplates>
         </SfGrid>
     </div>
-        
-    
-}
+
+
 <style>
 
     .clickable-cell {
-        padding: .5em .5em;
+        padding: .65em .65em;
         border: 1px solid lightgrey;
         background-color: palegreen;
     }
@@ -154,7 +205,7 @@
         }
 
     .clickable-cell-active {
-        padding: .5em .5em;
+        padding: .65em .65em;
         border: 1px solid lightgrey;
         background-color: rgb(255,99,71);
     }
@@ -167,12 +218,15 @@
 
     .cell {
         border-bottom: 1px solid black;
+        font-size:11px;
     }
 
     .other-button {
+
+        padding: 1.25em 1.25em;
+        border: 1px solid lightgrey;
+        border-right:4px solid white;
         background-color: palegreen;
-        padding-top: 1em;
-        padding-bottom: 1em;
         text-align: center;
     }
 
@@ -191,7 +245,7 @@
         }
     
     .team-name {
-        font-size:18px;
+        font-size:11px;
     }
 
     .team-icon-top-row {
@@ -207,7 +261,7 @@
 
     .at-sign {
         margin-right: .5em;
-        font-size: 18px;
+        font-size: 13px;
     }
 
     .e-headercell {
@@ -218,55 +272,71 @@
 </style>
 
 @code {
-
+    SfToast? ToastObj;
     Game[]? games;
     int week;
     SeasonType season;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(5));
-    List<BetModelNew> bets = new();
-    Dictionary<string, Game> gamesAndWinnersForPointSpread = new();
-    Dictionary<string, Game> gamesAndWinnersForMoneyline = new();
-    Dictionary<string, Game> gamesAndWinnersForOverUnder = new();
+    Dictionary<string, Game> gamesAndWinnersForPointSpreadDictionary = new();
+    Dictionary<string, Game> gamesAndWinnersForMoneylineDictionary = new();
+    Dictionary<string, Game> gamesAndWinnersForOverUnderDictionary = new();
+
 
     protected override async Task OnInitializedAsync()
     {
-        games = await gameService.GetGamesByWeek(SeasonType.PRE, 2);
+        games = await gameService.GetGamesByWeek(SeasonType.PRE, 3);
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
     }
 
     private void SelectWinnerAndGameForPointSpread(string winner, Game game)
     {
-        if (gamesAndWinnersForPointSpread.ContainsKey(winner))
+        if (gamesAndWinnersForPointSpreadDictionary.ContainsKey(winner))
             return;
 
-        gamesAndWinnersForPointSpread.Add(winner, game);
+        gamesAndWinnersForPointSpreadDictionary.Add(winner, game);
+        this.ToastObj?.ShowAsync();
     }
 
-    private void RemoveWinnerAndGameForPointSpread(string winner, Game game)
+    private void RemoveWinnerAndGameForPointSpread(string winner)
     {
-        if (!gamesAndWinnersForPointSpread.ContainsKey(winner))
+        if (!gamesAndWinnersForPointSpreadDictionary.ContainsKey(winner))
             return;
 
-        gamesAndWinnersForPointSpread.Remove(winner);
+        gamesAndWinnersForPointSpreadDictionary.Remove(winner);
     }
 
     private void SelectWinnerAndGameForMoneyline(string winner, Game game)
     {
-        if (gamesAndWinnersForPointSpread.ContainsKey(winner))
+        if (gamesAndWinnersForMoneylineDictionary.ContainsKey(winner))
             return;
 
-        gamesAndWinnersForMoneyline.Add(winner, game);
+        gamesAndWinnersForMoneylineDictionary.Add(winner, game);
     }
 
     private void RemoveWinnerAndGameForMoneyline(string winner)
     {
-        if (!gamesAndWinnersForMoneyline.ContainsKey(winner))
+        if (!gamesAndWinnersForMoneylineDictionary.ContainsKey(winner))
             return;
 
-        gamesAndWinnersForMoneyline.Remove(winner);
+        gamesAndWinnersForMoneylineDictionary.Remove(winner);
     }
 
+    private void SelectWinnerAndGameForOverUnder(string overUnderAndScoreId, Game game)
+    {
+        if (gamesAndWinnersForOverUnderDictionary.ContainsKey(overUnderAndScoreId))
+            return;
+
+        gamesAndWinnersForOverUnderDictionary.Add(overUnderAndScoreId, game);
+    }
+
+    private void RemoveWinnerAndGameForOverUnder(string overUnderAndScoreId)
+    {
+        if (!gamesAndWinnersForOverUnderDictionary.ContainsKey(overUnderAndScoreId))
+            return;
+
+        gamesAndWinnersForOverUnderDictionary.Remove(overUnderAndScoreId);
+    }
 
 
     //protected override async Task OnAfterRenderAsync(bool firstRender)

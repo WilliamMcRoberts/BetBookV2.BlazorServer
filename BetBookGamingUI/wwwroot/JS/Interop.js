@@ -2,6 +2,7 @@
 
 /* When the user scrolls down, hide the navbar. When the user scrolls up, show the navbar */
 var prevScrollPos = window.pageYOffset;
+
 window.onscroll = function () {
     var currentScrollPos = window.pageYOffset;
     if (prevScrollPos <= currentScrollPos) {
@@ -13,12 +14,4 @@ window.onscroll = function () {
     prevScrollPos = currentScrollPos;
 }
 
-function changeDivColor(id) {
-    const myDiv = document.getElementById(id);
-    if (myDiv.style.backgroundColor === "orangered") {
-        myDiv.style.backgroundColor = "palegreen";
-        return;
-    }
-    myDiv.style.backgroundColor = "orangered";
-}
 

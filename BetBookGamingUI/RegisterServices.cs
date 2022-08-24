@@ -3,6 +3,7 @@ using BetBookGamingData.DbAccess;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
+using Serilog;
 using Syncfusion.Blazor;
 
 namespace BetBookGamingUI;
@@ -18,6 +19,8 @@ public static class RegisterServices
     /// <param name="builder"></param>
     public static void ConfigureServices(this WebApplicationBuilder builder)
     {
+        builder.Host.UseSerilog();
+
         // Microsoft authentication
         builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAdB2C"));

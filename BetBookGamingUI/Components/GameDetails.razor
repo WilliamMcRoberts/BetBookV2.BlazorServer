@@ -20,7 +20,7 @@
             <div class="records">
                 <div class="stat-records">
                     <div class="helmet">
-                        <img style="height:100px;margin-bottom:1em;" src="/images/@CurrentGame.AwayTeam?.ImagePath" alt="team logo">
+                        <img style="height:100px;margin-bottom:1em;" src="@string.Concat($"/images/{CurrentGame.AwayTeam?.Symbol.ToLower()}", ".svg")" alt="team logo">
                     </div>
                     <div class="stat-container">
 
@@ -67,8 +67,7 @@
                 </div>
                 <div class="stat-records">
                     <div class="helmet">
-                        <img style="height:100px;margin-bottom:1em;" src="/images/@CurrentGame.HomeTeam?.ImagePath" alt="team logo">
-
+                        <img style="height:100px;margin-bottom:1em;" src="@string.Concat($"/images/{CurrentGame.HomeTeam?.Symbol.ToLower()}", ".svg")" alt="team logo">
                     </div>
                     <div class="stat-container">
 

@@ -35,7 +35,7 @@
                         <div class="parley-game-item-unchosen">
                             <div class="parley-game-title">
                                 <div class="parley-helmet-icon-away">
-                                    <img style="height:80px;" src="@string.Concat($"/images/{game?.AwayTeam?.Symbol.ToLower()}", ".svg")"  alt="team logo">
+                                    <img style="height:80px;" src="@string.Concat($"/images/{game.AwayTeam?.Symbol.ToLower()}", ".svg")"  alt="team logo">
                                 </div>
                                 <div class="game-description">
                                     <h6 style="font-size:18px;font-weight:700">@game.AwayTeam?.TeamName At @game.HomeTeam?.TeamName @game.PointSpreadDescription</h6>
@@ -45,7 +45,7 @@
                                     <h6 class="at-symbol">@@</h6>
                                 </div>
                                 <div class="parley-helmet-icon-home">
-                                    <img style="height:80px;" src="@string.Concat($"/images/{game?.HomeTeam?.Symbol.ToLower()}", ".svg")" alt="team logo">
+                                    <img style="height:80px;" src="@string.Concat($"/images/{game.HomeTeam?.Symbol.ToLower()}", ".svg")" alt="team logo">
                                 </div>
                             </div>
                             @if (chosenGamesAndWinners.ContainsValue(game.HomeTeam!.TeamName))
