@@ -7,6 +7,7 @@ using BetBookGamingData.Helpers;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
 using System.Net.Http.Json;
+using Microsoft.Extensions.Logging;
 
 namespace BetBookGamingData.Services;
 
@@ -15,6 +16,7 @@ namespace BetBookGamingData.Services;
 public class GameService : IGameService
 {
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILogger<GameService> _logger;
     private readonly IGameData _gameData;
     private readonly ITeamData _teamData;
     private readonly IBetData _betData;
@@ -30,7 +32,8 @@ public class GameService : IGameService
                        IBetData betData,
                        IParleyBetData parleyData,
                        IConfiguration config,
-                       IHttpClientFactory httpClientFactory)
+                       IHttpClientFactory httpClientFactory,
+                       ILogger<GameService> logger)
     {
         _gameData = gameData;
         _teamData = teamData;
@@ -38,6 +41,7 @@ public class GameService : IGameService
         _parleyData = parleyData;
         _config = config;
         _httpClientFactory = httpClientFactory;
+        _logger = logger;
     }
 
     public async Task<GameByTeamDto> GetGameByTeam(TeamModel team)
@@ -89,6 +93,7 @@ public class GameService : IGameService
 
         try
         {
+            _logger.LogInformation("Calling Get Games By Week...");
             var client = _httpClientFactory.CreateClient("sportsdata");
 
             games = await client.GetFromJsonAsync<Game[]>(
@@ -97,7 +102,7 @@ public class GameService : IGameService
 
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            _logger.LogInformation(ex, "Exception On Get Games By Week");
         }
 
         return games!;

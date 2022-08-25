@@ -12,7 +12,6 @@ public enum SeasonType
 }
 
 [EnumExtensions]
-
 public enum GameStatus
 {
     NOT_STARTED = 0,
@@ -61,7 +60,7 @@ public enum OverUnder
 }
 
 [EnumExtensions]
-public enum BetTypeNew
+public enum BetType
 {
     POINTSPREAD,
     MONEYLINE,
