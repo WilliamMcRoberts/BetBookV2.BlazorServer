@@ -7,10 +7,90 @@
 @inject IGameService gameService
 @using Syncfusion.Blazor.Grids
 @using Syncfusion.Blazor.Notifications
+@using Syncfusion.Blazor.Navigations
+@using Syncfusion.Blazor.Inputs
+@using Syncfusion.Blazor.Buttons
+@using Syncfusion.Blazor.Calendars
+@using Syncfusion.Blazor.Popups
 
 <PageTitle>Home</PageTitle>
 
-<div style="width:75%;margin: 0 auto;">
+@if(preBets.Count > 0)
+{
+    <div style="width:35%;position:relative;">
+        <SfAccordion ID="AccordionElement" @ref="@Accordion">
+            <AccordionEvents Created="OnCreate"></AccordionEvents>
+            <AccordionItems>
+                <AccordionItem Disabled=@GetDisableSinglesBetSlip() @bind-Expanded="ExpandSinglesBetSlip">
+                    <HeaderTemplate>Singles Bet Slip</HeaderTemplate>
+                    <ContentTemplate>
+                        <div id="" style="padding:10px">
+                            @foreach(CreateBetDto createBetDto in preBets)
+                            {
+                                <div style="margin:.25em auto;display:flex;justify-content:space-between">
+                                    <button style="font-size:8px;margin-right:.25em;margin-top:.25em;" @onclick="(() => RemoveBetFromPreBetsHashSet(createBetDto))" class="btn btn-close btn-sm"></button>
+                                    <div style="display:flex;justify-content:space-between;">
+                                        <div style="display:flex;flex-direction:column;font-size:10px;">
+                                            <strong>@createBetDto.Game.AwayTeam @@ @createBetDto.Game.HomeTeam</strong>
+                                            <strong>@createBetDto.BetType</strong>
+                                        </div>
+                                        <strong style="margin:0 4em;margin-top:.25em;font-size:10px;">@GetWinnerSummary(createBetDto)</strong>
+                                        <input style="width:35%;" type="number" @bind-value="@createBetDto.BetAmount" @bind-value:event="oninput" />
+                                    </div>
+                                    
+                                </div>
+                            }
+                            <div style="text-align:center;margin:1em 1em;">
+                                <strong>Total Singles Payout</strong>
+                                <strong>@Math.Round(GetPayoutForTotalBetsSingles()!, 2) </strong>
+                            </div>
+                            <div style="text-align: center">
+                                <SfButton @onclick="@OnSubmitBetsFromSinglesBetSlip">Submit Singles Bet</SfButton>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </AccordionItem>
+                <AccordionItem Disabled=@GetDisableParleyBetSlip() @bind-Expanded="ExpandParleyBetSlip">
+                    <HeaderTemplate>Parley Bet Slip</HeaderTemplate>
+                    <ContentTemplate>
+                        <div id="" style="padding:10px">
+                            @foreach(CreateBetDto createBetDto in preBets)
+                            {
+                                <div style="display:flex;justify-content:space-between;margin:.25em auto;">
+                                    <button style="font-size:8px;margin-right:.25em;margin-top:.25em;" @onclick="(() => RemoveBetFromPreBetsHashSet(createBetDto))" class="btn btn-close btn-sm"></button>
+                                    <div style="display:flex;flex-direction:column;font-size:10px;">
+                                        <strong>@createBetDto.Game.AwayTeam @@ @createBetDto.Game.HomeTeam</strong>
+                                        <strong>@createBetDto.BetType</strong>
+                                    </div>
+
+                                    <div style="display:flex;justify-content:space-between;">
+                                        <strong style="margin-right:1em;margin-left:5em;margin-top:.25em;font-size:10px;">@GetWinnerSummary(createBetDto)</strong>
+                                        <input disabled style="width:45%;" type="number" @bind-value="@createBetDto.BetAmount" @bind-value:event="oninput" />
+                                    </div>
+                                </div>
+                            }
+                            <div style="display:flex;justify-content:space-between;">
+                                <div style="text-align:center;margin:1em 1em;">
+                                    <strong>Total Parley Payout</strong>
+                                    <strong>@Math.Round(GetPayoutForTotalBetsParley()!, 2) </strong>
+                                </div>
+                                <div style="display:flex;flex-direction:column;width:25%;">
+                                    <strong>Wager Amount</strong>
+                                    <input type="number" @bind-value="@totalWagerForParley" @bind-value:event="oninput" />
+                                </div>
+                            </div>
+                            <div style="text-align: center">
+                                <SfButton @onclick="@OnSubmitBetsFromParleyBetSlip">Submit Parley Bet</SfButton>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </AccordionItem>
+            </AccordionItems>
+        </SfAccordion>
+    </div>
+}
+
+<div style="width:70%;margin: 0 auto;">
     <SfGrid DataSource="@games?.OrderBy(g => g.DateTime)">
         <GridColumns>
             <GridColumn Width="80"
@@ -39,83 +119,83 @@
             <RowTemplate>
                 @{
                     var game = (context as Game);
-                                                                                            @if (game?.HasStarted == false)
+                                                                                                                                                                                                                    @if (game?.HasStarted == false)
                     {
-                                                                                                <td class="cell" style="text-align:center;">
-                                                                                                    <div style="padding: .5em .5em;">
-                                                                                                        <strong>@game?.Date.ToString("M-d")</strong>
-                                                                                                    </div>
-                                                                                                    <div style="padding:.5em .5em;">
-                                                                                                        <strong>@game?.Date.ToString("h:mm")</strong>
-                                                                                                    </div>
-                                                                                                </td>
-                                                                                                <td class="cell" style="text-align:center;">
-                                                                                                    <div class="teams">
-                                                                                                        <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                                                                                            <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
-                                                                                                        </div>
-                                                                                                        <div style="padding:.5em .5em;">
-                                                                                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
-                                                                                                        </div>
-                                                                                                    </div>
+                                                                                                                                                                                                                        <td class="cell" style="text-align:center;">
+                                                                                                                                                                                                                            <div style="padding: .5em .5em;">
+                                                                                                                                                                                                                                <strong>@game?.Date.ToString("M-d")</strong>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                            <div style="padding:.5em .5em;">
+                                                                                                                                                                                                                                <strong>@game?.Date.ToString("h:mm")</strong>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                        <td class="cell" style="text-align:center;">
+                                                                                                                                                                                                                            <div class="teams">
+                                                                                                                                                                                                                                <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                                                                                                                                                                                                                    <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                <div style="padding:.5em .5em;">
+                                                                                                                                                                                                                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                            </div>
 
-                                                                                                </td>
-                                                                                                <td class="cell">
+                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                        <td class="cell">
 
-                                                                                                    <div @onclick="(() => SelectOrRemoveWinnerAndGameForPointSpreadBet(game!.AwayTeam, game))" 
+                                                                                                                                                                                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForPointSpreadBet(game!.AwayTeam, game))" 
                                 class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)">
-                                                                                                        <div style="display:flex;justify-content:space-evenly;">
-                                                                                                            <strong style="margin-right:.5em;">@GetPointSpreadForAwayTeam(game?.PointSpread)</strong>
-                                                                                                            <strong>@GetMoneyLine(game?.PointSpreadAwayTeamMoneyLine)</strong>
-                                                                                                        </div>
-                                                                                                    </div>
+                                                                                                                                                                                                                                <div style="display:flex;justify-content:space-evenly;">
+                                                                                                                                                                                                                                    <strong style="margin-right:.5em;">@GetPointSpreadForAwayTeam(game?.PointSpread)</strong>
+                                                                                                                                                                                                                                    <strong>@GetMoneyLine(game?.PointSpreadAwayTeamMoneyLine)</strong>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                            </div>
 
-                                                                                                    <div @onclick="(() => SelectOrRemoveWinnerAndGameForPointSpreadBet(game!.HomeTeam, game))" 
+                                                                                                                                                                                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForPointSpreadBet(game!.HomeTeam, game))" 
                                 class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)">
-                                                                                                        <div style="display:flex;justify-content:space-evenly;">
-                                                                                                            <strong style="margin-right:.5em;">@GetPointSpreadForHomeTeam(game?.PointSpread)</strong>
-                                                                                                            <strong>@GetMoneyLine(game?.PointSpreadHomeTeamMoneyLine)</strong>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                                                                                        
-                                                                                                </td>
-                                                                                                <td class="cell" style="text-align:center;">
+                                                                                                                                                                                                                                <div style="display:flex;justify-content:space-evenly;">
+                                                                                                                                                                                                                                    <strong style="margin-right:.5em;">@GetPointSpreadForHomeTeam(game?.PointSpread)</strong>
+                                                                                                                                                                                                                                    <strong>@GetMoneyLine(game?.PointSpreadHomeTeamMoneyLine)</strong>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                                                                                                
+                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                        <td class="cell" style="text-align:center;">
 
-                                                                                                    <div @onclick="(() => SelectOrRemoveWinnerAndGameForMoneylineBet(game!.AwayTeam, game))" 
+                                                                                                                                                                                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForMoneylineBet(game!.AwayTeam, game))" 
                                 class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)">
-                                                                                                        <strong>@GetMoneyLine(game?.AwayTeamMoneyLine)</strong>
-                                                                                                    </div>
+                                                                                                                                                                                                                                <strong>@GetMoneyLine(game?.AwayTeamMoneyLine)</strong>
+                                                                                                                                                                                                                            </div>
 
-                                                                                                    <div @onclick="(() => SelectOrRemoveWinnerAndGameForMoneylineBet(game!.HomeTeam, game))" 
+                                                                                                                                                                                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForMoneylineBet(game!.HomeTeam, game))" 
                                 class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE)">
-                                                                                                        <strong>@GetMoneyLine(game?.HomeTeamMoneyLine)</strong>
-                                                                                                    </div>
+                                                                                                                                                                                                                                <strong>@GetMoneyLine(game?.HomeTeamMoneyLine)</strong>
+                                                                                                                                                                                                                            </div>
 
-                                                                                                </td>
-                                                                                                <td class="cell">
+                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                        <td class="cell">
 
-                                                                                                    <div @onclick="(() => SelectOrRemoveWinnerAndGameForOverUnder(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!))" 
+                                                                                                                                                                                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForOverUnder(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!))" 
                                 class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
-                                                                                                        <div style="display:flex;justify-content:space-evenly;">
-                                                                                                            <strong>Over @game?.OverUnder</strong>
-                                                                                                            <strong>@GetMoneyLine(@game?.OverPayout)</strong>
-                                                                                                        </div>
-                                                                                                    </div>
+                                                                                                                                                                                                                                <div style="display:flex;justify-content:space-evenly;">
+                                                                                                                                                                                                                                    <strong>Over @game?.OverUnder</strong>
+                                                                                                                                                                                                                                    <strong>@GetMoneyLine(@game?.OverPayout)</strong>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                            </div>
 
-                                                                                                    <div @onclick="(() => SelectOrRemoveWinnerAndGameForOverUnder(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!))" 
+                                                                                                                                                                                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForOverUnder(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!))" 
                                 class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
-                                                                                                        <div style="display:flex;justify-content:space-evenly;">
-                                                                                                            <strong>Under @game?.OverUnder</strong>
-                                                                                                            <strong>@GetMoneyLine(game?.UnderPayout)</strong>
-                                                                                                        </div>
-                                                                                                    </div>
+                                                                                                                                                                                                                                <div style="display:flex;justify-content:space-evenly;">
+                                                                                                                                                                                                                                    <strong>Under @game?.OverUnder</strong>
+                                                                                                                                                                                                                                    <strong>@GetMoneyLine(game?.UnderPayout)</strong>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                            </div>
 
-                                                                                                </td>
-                                                                                                <td class="cell">
-                                                                                                    <div class="other-button">
-                                                                                                        <strong>Other Wagers</strong>
-                                                                                                    </div>
-                                                                                                </td>
+                                                                                                                                                                                                                        </td>
+                                                                                                                                                                                                                        <td class="cell">
+                                                                                                                                                                                                                            <div class="other-button">
+                                                                                                                                                                                                                                <strong>Other Wagers</strong>
+                                                                                                                                                                                                                            </div>
+                                                                                                                                                                                                                        </td>
                     }
                 }
             </RowTemplate>
@@ -124,7 +204,8 @@
 </div>
 
 
-<div class="game-info-container mt-4">
+
+@*<div class="game-info-container mt-4">
     <div style="text-align:center;margin:1em 1em;">
         <strong>Total Payout Singles:</strong>
         <strong>@Math.Round(GetPayoutForTotalBetsSingles()!, 2) </strong>
@@ -136,11 +217,10 @@
                 <strong>@createBetDto.BetType</strong>
             </div>
             <div style="display:flex;flex-direction:column;width:25%;">
-                <strong>@GetMoneyLine(createBetDto.MoneylinePayout)</strong>
+                <strong>@GetWinnerSummary(createBetDto)</strong>
                 <input type="number" @bind-value="@createBetDto.BetAmount" @bind-value:event="oninput" />
             </div>
         </div>
-        
     }
 
     
@@ -179,10 +259,13 @@
     </div>
 
 </div>
-
-
+*@
 
 <style>
+
+    .Error {
+        color: red;
+    }
 
     .clickable-cell {
         padding: .65em .65em;
@@ -270,10 +353,59 @@
     Dictionary<string, Game> winnersAndGamesForPointSpreadDictionary = new();
     Dictionary<string, Game> winnersAndGamesForMoneylineDictionary = new();
     Dictionary<string, Game> winnersAndGamesForOverUnderDictionary = new();
-    List<CreateBetDto> preBets = new();
+    HashSet<CreateBetDto> preBets = new();
     decimal totalWagerForParley;
     decimal totalPayoutForParley;
+    SfAccordion? Accordion;
+    public bool DisableSinglesBetSlip { get; set; }
+    public bool DisableParleyBetSlip { get; set; }
+    public bool ExpandSinglesBetSlip { get; set; }
+    public bool ExpandParleyBetSlip { get; set; }
 
+    public void RemoveBetFromPreBetsHashSet(CreateBetDto createBetDto)
+    {
+        preBets.Remove(createBetDto);
+    }
+
+    public void OnCreate()
+    {
+        DisableSinglesBetSlip = false;
+        DisableParleyBetSlip = false;
+    }
+
+    public bool GetDisableParleyBetSlip()
+    {
+        return preBets.Count < 2 || ExpandSinglesBetSlip ? true : false;
+    }
+
+    public bool GetDisableSinglesBetSlip()
+    {
+        return ExpandParleyBetSlip ? true : false;
+    }
+
+    private string GetWinnerSummary(CreateBetDto createBetDto)
+    {
+        return  createBetDto.BetType == BetType.POINTSPREAD ? 
+                    (createBetDto.Winner == createBetDto.Game.HomeTeam ? 
+                    $"{createBetDto.Winner} {GetPointSpreadForHomeTeam(createBetDto.Game.PointSpread)} {createBetDto.Game.PointSpreadHomeTeamMoneyLine}" :
+                    $"{createBetDto.Winner} {GetPointSpreadForAwayTeam(createBetDto.Game.PointSpread)} {createBetDto.Game.PointSpreadAwayTeamMoneyLine}") : 
+                createBetDto.BetType == BetType.MONEYLINE ? (createBetDto.Winner == createBetDto.Game.HomeTeam ?
+                    $"{createBetDto.Winner} {GetMoneyLine(createBetDto.Game.HomeTeamMoneyLine)}" :
+                    $"{createBetDto.Winner} {GetMoneyLine(createBetDto.Game.AwayTeamMoneyLine)}") :
+                    (createBetDto.Winner[0] == 'O' ? 
+                    $"Over {createBetDto.Game.OverUnder} {createBetDto.Game.OverPayout}" : 
+                    $"Under {createBetDto.Game.OverUnder} {createBetDto.Game.UnderPayout}");
+    }
+
+    public async Task OnSubmitBetsFromSinglesBetSlip(Object args)
+    {
+        preBets.Clear();
+    }
+
+    public async Task OnSubmitBetsFromParleyBetSlip(Object args)
+    {
+        preBets.Clear();
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -358,7 +490,8 @@
             BetAmount = 0,
             MoneylinePayout = moneylinePayout,
             Game = game,
-            Winner = winner
+            Winner = winner,
+            PointSpread = game.PointSpread
         });
 
     }
@@ -391,7 +524,6 @@
 
     }
 
-
     private void SelectOrRemoveWinnerAndGameForOverUnder(string overUnderAndScoreId, Game game)
     {
         CreateBetDto? createBetDto = preBets
@@ -419,8 +551,6 @@
         });
 
     }
-
-    
 
     private async Task StartGameUpdateLoop()
     {

@@ -12,4 +12,5 @@ public class CreateBetDto
     public int MoneylinePayout { get; set; }
     public Game Game { get; set; }
     public string Winner { get; set; }
+    public float? PointSpread { get; set; }
 }

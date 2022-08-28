@@ -20,10 +20,7 @@
 @code {
     UserModel? loggedInUser;
 
-    /// <summary>
-    /// Async initialization method
-    /// </summary>
-    /// <returns></returns>
+
     protected async override Task OnInitializedAsync()
     {
         loggedInUser = await authProvider.GetUserFromAuth(userData);

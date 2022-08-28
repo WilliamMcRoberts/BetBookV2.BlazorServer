@@ -130,7 +130,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        loggedInUser = await authProvider.GetUserFromAuth(userData);
+        //loggedInUser = await authProvider.GetUserFromAuth(userData);
 
         games = await gameData.GetGames();
 
