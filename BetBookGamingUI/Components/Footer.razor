@@ -126,8 +126,6 @@
 
     UserModel? loggedInUser;
 
-
-
     protected override async Task OnInitializedAsync()
     {
         //loggedInUser = await authProvider.GetUserFromAuth(userData);
@@ -142,22 +140,15 @@
         availableGames = availableGames.PopulateGameModelsWithTeams(teams);
     }
 
-    /// <summary>
-    /// Selects a game to place a wager on and navigates to
-    /// the create bet page
-    /// </summary>
-    /// <param name="gameId">
-    /// int represents the id of game being selected
-    /// </param>
     private void CreateBet(int gameId)
     {
-        if(loggedInUser is not null)
+        if(loggedInUser is null)
         {
-            navManager.NavigateTo("..");
-            navManager.NavigateTo($"/CreateBet/{gameId}");
+            navManager.NavigateTo("/MicrosoftIdentity/Account/SignIn", true);
+            return;
         }
             
-        else
-            navManager.NavigateTo("/MicrosoftIdentity/Account/SignIn", true);
+        navManager.NavigateTo("..");
+        navManager.NavigateTo($"/CreateBet/{gameId}");
     }
 }
