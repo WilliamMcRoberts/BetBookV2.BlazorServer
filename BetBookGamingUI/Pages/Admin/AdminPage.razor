@@ -2,7 +2,6 @@
 @attribute [Authorize(Policy = "Admin")]
 @inject IGameData gameData
 @inject IGameService gameService
-
 <PageTitle>ADMIN</PageTitle>
 
 <div style="text-align:center;">
@@ -18,15 +17,11 @@
 
         <div style="display:flex;justify-content:space-evenly;margin-bottom: 2em;">
             <div style="margin-top:2em;text-align:center;">
-                <button @onclick="FetchAllScoresForFinishedGames" class="mt-1 site-btn btn site-btn-light btn-sm text-uppercase">
-                    Fetch Scores
-                </button>
+
             </div>
 
             <div style="margin-top:2em;text-align:center;">
-                <button @onclick="GetPointSpreadUpdateForAvailableGames" class="mt-1 site-btn btn site-btn-light btn-sm text-uppercase">
-                    Fetch Spreads
-                </button>
+
             </div>
         </div>
 
@@ -148,11 +143,7 @@
         ug = new();
     }
 
-    private async Task FetchAllScoresForFinishedGames() =>
-        await gameService.FetchAllScoresForFinishedGames();
 
-    private async Task GetPointSpreadUpdateForAvailableGames() => 
-        await gameService.GetPointSpreadUpdateForAvailableGames();
 
     /// <summary>
     /// Method for value change for date of game

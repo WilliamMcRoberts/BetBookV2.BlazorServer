@@ -56,10 +56,7 @@ public static class RegisterServices
         builder.Services.AddSingleton<ISqlConnection, SqlConnection>();
         builder.Services.AddTransient<IUserData, UserData>();
         builder.Services.AddTransient<ITeamData, TeamData>();
-        builder.Services.AddTransient<IBetData, BetData>();
         builder.Services.AddTransient<IGameData, GameData>();
-        builder.Services.AddTransient<IHouseAccountData, HouseAccountData>();
-        builder.Services.AddTransient<IParleyBetData, ParleyBetData>();
         builder.Services.AddTransient<ISingleBetData, SingleBetData>();
     }
 }

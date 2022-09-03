@@ -26,25 +26,6 @@ public static class CalculationHelpers
         return winner!;
     }
 
-
-    public static TeamModel CalculateWinnerForBet(this BetModel bet, 
-                                                  GameModel game, 
-                                                  double? homeTeamFinalScore, 
-                                                  double? awayTeamFinalScore,
-                                                  IEnumerable<TeamModel> teams)
-    {
-        double? homeTeamScoreAfterPointSpreaad = homeTeamFinalScore + bet.PointSpread;
-
-        TeamModel? homeTeam = teams.Where(t => t.Id == game.HomeTeamId).FirstOrDefault();
-        TeamModel? awayTeam = teams.Where(t => t.Id == game.AwayTeamId).FirstOrDefault();
-
-        TeamModel? winner = homeTeamScoreAfterPointSpreaad == awayTeamFinalScore ? null :
-            homeTeamScoreAfterPointSpreaad > awayTeamFinalScore ? homeTeam :
-                awayTeam;
-
-        return winner!;
-    }
-
     public static int CalculateWeek(this SeasonType season, DateTime dateTime)
     {
         int week = season == SeasonType.PRE ? (dateTime - new DateTime(2022, 8, 8)).Days / 7 
@@ -57,41 +38,12 @@ public static class CalculationHelpers
         return week + 1;
     }
 
-
     public static SeasonType CalculateSeason(this DateTime dateTime)
     {
         return dateTime > new DateTime(2022, 8, 8) && dateTime < new DateTime(2022, 9, 8) ? SeasonType.PRE 
             : dateTime > new DateTime(2022, 9, 8) && dateTime < new DateTime(2023, 1, 14) ? SeasonType.REG 
             : SeasonType.POST;
     }
-
-
-    public static decimal CalculateTotalPendingRefund(this List<BetModel> pushBets)
-    {
-        if (pushBets.Count == 0)
-            return 0;
-
-        decimal total = 0;
-
-        foreach (BetModel bet in pushBets)
-            total += bet.BetPayout;
-
-        return total;
-    }
-
-    public static decimal CalculateTotalPendingPayout(this List<BetModel> winningBets)
-    {
-        if (winningBets.Count == 0)
-            return 0;
-
-        decimal total = 0;
-
-        foreach (BetModel bet in winningBets)
-            total += (bet.BetPayout + bet.BetAmount);
-
-        return total;
-    }
-
 
     public static decimal CalculateParleyBetPayout(this int gamecount, decimal betAmount)
     { 
@@ -101,46 +53,6 @@ public static class CalculationHelpers
             : gamecount == 3 ? betAmount * (decimal)6 
             : gamecount == 4 ? betAmount * (decimal)11 
             : betAmount * (decimal)22;
-    }
-
-    /// <summary>
-    /// Method calculates and returns the total pending 
-    /// refund for all push bets made by current user
-    /// </summary>
-    /// <param name="pushBets"></param>
-    /// <returns>decimal</returns>
-    public static decimal CalculateTotalPendingParleyRefund(
-        this List<ParleyBetModel> parleyPushBets)
-    {
-        if (parleyPushBets.Count == 0)
-            return 0;
-
-        decimal total = 0;
-
-        foreach (ParleyBetModel bet in parleyPushBets)
-            total += bet.BetPayout;
-
-        return total;
-    }
-
-    /// <summary>
-    /// Method calculates and returns the total pending
-    /// payout for all winning bets made by current user
-    /// </summary>
-    /// <param name="winningBets"></param>
-    /// <returns>decimal</returns>
-    public static decimal CalculateTotalPendingParleyPayout(
-        this List<ParleyBetModel> parleyWinningBets)
-    {
-        if (parleyWinningBets.Count == 0)
-            return 0;
-
-        decimal total = 0;
-
-        foreach (ParleyBetModel parleyBet in parleyWinningBets)
-            total += (parleyBet.BetPayout + parleyBet.BetAmount);
-
-        return total;
     }
 }
 

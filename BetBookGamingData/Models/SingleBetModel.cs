@@ -13,7 +13,7 @@ public class SingleBetModel
     public BetType BetType { get; set; }
     public SingleBetStatus SingleBetStatus { get; set; }
     public SingleBetPayoutStatus SingleBetPayoutStatus { get; set; }
-    public Game? Game { get; set; }
+    public GameDto? Game { get; set; }
     public int ScoreIdOfGame { get; set; }
     public string WinnerChosen { get; set; } = string.Empty;
     public double? PointSpread { get; set; }
