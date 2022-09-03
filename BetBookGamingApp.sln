@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetBookGamingUI", "BetBookG
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetBookGamingData", "BetBookGamingData\BetBookGamingData.csproj", "{D37B4FA9-8A5F-45A8-9216-A638B9FBD951}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetBookGamingMinimalApi", "BetBookGamingMinimalApi\BetBookGamingMinimalApi.csproj", "{F909F117-284C-4073-831E-F68C86AAF155}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "BetBookGamingDatabase", "BetBookGamingDatabase\BetBookGamingDatabase.sqlproj", "{79F4DA36-AC05-45A3-BAB4-E6583379C2C1}"
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "BetBookGamingSqlDatabase", "BetBookGamingSqlDatabase\BetBookGamingSqlDatabase.sqlproj", "{C1692226-A299-4A42-A29E-17FAE6FD2647}"
@@ -27,10 +25,6 @@ Global
 		{D37B4FA9-8A5F-45A8-9216-A638B9FBD951}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D37B4FA9-8A5F-45A8-9216-A638B9FBD951}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D37B4FA9-8A5F-45A8-9216-A638B9FBD951}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F909F117-284C-4073-831E-F68C86AAF155}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F909F117-284C-4073-831E-F68C86AAF155}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F909F117-284C-4073-831E-F68C86AAF155}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F909F117-284C-4073-831E-F68C86AAF155}.Release|Any CPU.Build.0 = Release|Any CPU
 		{79F4DA36-AC05-45A3-BAB4-E6583379C2C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{79F4DA36-AC05-45A3-BAB4-E6583379C2C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79F4DA36-AC05-45A3-BAB4-E6583379C2C1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU

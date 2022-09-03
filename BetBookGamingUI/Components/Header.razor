@@ -23,8 +23,8 @@
 
     protected async override Task OnInitializedAsync()
     {
-        loggedInUser = await authProvider.GetUserFromAuth(userData);
+        //loggedInUser = await authProvider.GetUserFromAuth(userData);
 
-        await authProvider.LoadAndVerifyUser(loggedInUser, userData);
+        //await authProvider.LoadAndVerifyUser(loggedInUser, userData);
     }
 }
