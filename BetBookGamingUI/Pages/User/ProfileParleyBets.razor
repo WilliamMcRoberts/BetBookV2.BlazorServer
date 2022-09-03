@@ -2,11 +2,7 @@
 @attribute [Authorize]
 @inject IUserData userData
 @inject AuthenticationStateProvider authProvider
-@inject IBetData betData
-@inject IParleyBetData parleyData
-@inject IHouseAccountData houseData
 @inject ITeamData teamData
-@inject IGameData gameData
 @inject IConfiguration config
 
 <PageTitle>PARLEY BETS</PageTitle>
@@ -34,14 +30,7 @@
 
     </div>
 
-    <ParleyBetList BetType="Open"
-                    BetList="bettorInProgressParleyBets" />
 
-    <ParleyBetList BetType="Winning"
-                    BetList="bettorWinningParleyBetsUnpaid" />
-
-    <ParleyBetList BetType="Push"
-                    BetList="bettorPushParleyBetsUnpaid" />
 </div>
  
 
@@ -53,112 +42,28 @@
 
     private UserModel? loggedInUser;
 
-    private IEnumerable<BetModel>? bets;
 
-    private IEnumerable<ParleyBetModel>? parleyBets;
 
     private IEnumerable<TeamModel>? teams;
 
     private IEnumerable<GameModel>? games;
 
-    private List<ParleyBetModel> bettorWinningParleyBetsUnpaid = new();
 
-    private List<ParleyBetModel> bettorPushParleyBetsUnpaid = new();
-
-    private List<ParleyBetModel> bettorInProgressParleyBets = new();
 
     protected override async Task OnInitializedAsync()
     {
         loggedInUser = await authProvider.GetUserFromAuth(userData);
 
-        if (games is null)
-            games = await gameData.GetGames();
 
-        if (teams is null)
-            teams = await teamData.GetTeams();
-
-        if(bets is null)
-            bets = await betData.GetBets();
-
-        if(parleyBets is null)
-            parleyBets = await parleyData.GetParleyBets();
-
-        bettorInProgressParleyBets = parleyBets.Where(b =>
-                b.BettorId == loggedInUser.Id &&
-                b.ParleyBetStatus == ParleyBetStatus.IN_PROGRESS).ToList();
-
-        if(bettorInProgressParleyBets.Count != 0)
-            bettorInProgressParleyBets = 
-                bettorInProgressParleyBets.PopulateParleyBetsWithBetsWithGamesAndTeams(
-                    games, teams, bets);
-
-        bettorWinningParleyBetsUnpaid = parleyBets.Where(pb => 
-                pb.BettorId == loggedInUser.Id &&
-                pb.ParleyBetStatus == ParleyBetStatus.WINNER && 
-                pb.ParleyPayoutStatus == ParleyPayoutStatus.UNPAID).ToList();
-
-        if(bettorWinningParleyBetsUnpaid.Count != 0)
-            bettorWinningParleyBetsUnpaid = 
-                bettorWinningParleyBetsUnpaid.PopulateParleyBetsWithBetsWithGamesAndTeams(
-                    games, teams, bets);
-
-        bettorPushParleyBetsUnpaid = parleyBets.Where(b => 
-                b.BettorId == loggedInUser.Id &&
-                b.ParleyBetStatus == ParleyBetStatus.PUSH && 
-                b.ParleyPayoutStatus == ParleyPayoutStatus.UNPAID).ToList();
-
-        if(bettorPushParleyBetsUnpaid.Count != 0)
-            bettorPushParleyBetsUnpaid = 
-                bettorPushParleyBetsUnpaid.PopulateParleyBetsWithBetsWithGamesAndTeams(
-                    games, teams, bets);
-
-        // Total payout of all unpaid winning parley bets
-        totalPendingParleyPayout =
-            bettorWinningParleyBetsUnpaid.CalculateTotalPendingParleyPayout();
-
-
-        // Total retfund of all unpaid parley push bets
-        totalPendingParleyRefund = 
-            bettorPushParleyBetsUnpaid.CalculateTotalPendingParleyRefund();
     }
 
-    /// <summary>
-    /// Method pays out all unpaid winning parley bets
-    /// </summary>
-    /// <returns></returns>
     private async Task PayoutUnpaidWinningParleyBets()
     {
-        HouseAccountModel? houseAccount = await houseData.GetHouseAccount();
 
-        if (loggedInUser is null || houseAccount is null)
-            return;
-
-        await loggedInUser.PayoutParleyBetsTransaction(
-                bettorWinningParleyBetsUnpaid, houseAccount, totalPendingParleyPayout, config, 
-                    userData, houseData, parleyData);
-
-        bettorWinningParleyBetsUnpaid.Clear();
-
-        totalPendingParleyPayout = 0;
     }
 
-    /// <summary>
-    /// Method pays out all unpaid push parley bets
-    /// </summary>
-    /// <returns></returns>
     private async Task PayoutUnpaidPushParleyBets()
     {
-        HouseAccountModel? houseAccount = await houseData.GetHouseAccount();
 
-        if (loggedInUser is null || houseAccount is null)
-            return;
-
-        await loggedInUser.PayoutParleyBetsTransaction(
-                bettorPushParleyBetsUnpaid, houseAccount, totalPendingParleyRefund, config, 
-                    userData, houseData, parleyData);
-
-        bettorPushParleyBetsUnpaid.Clear();
-
-        totalPendingParleyRefund = 0;
     }
 }

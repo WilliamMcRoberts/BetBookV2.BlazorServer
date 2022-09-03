@@ -1,5 +1,4 @@
 ﻿global using BetBookGamingData;
-global using BetBookGamingData.Interfaces;
 global using BetBookGamingData.Models;
 global using BetBookGamingData.Data;
 global using BetBookGamingUI.Dto;

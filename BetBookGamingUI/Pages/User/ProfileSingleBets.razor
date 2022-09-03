@@ -4,9 +4,6 @@
 @inject AuthenticationStateProvider authProvider
 @inject ITeamData teamData
 @inject IGameData gameData
-@inject IBetData betData
-@inject IParleyBetData parleyData
-@inject IHouseAccountData houseData
 @inject IConfiguration config
 
 <PageTitle>SINGLE BETS</PageTitle>
@@ -55,15 +52,6 @@
 
     private IEnumerable<TeamModel>? teams;
 
-    private IEnumerable<GameModel>? games;
-
-    private IEnumerable<BetModel>? bets;
-
-    private List<BetModel> bettorInProgressBets = new();
-
-    private List<BetModel> bettorWinningBetsUnpaid = new();
-
-    private List<BetModel> bettorPushBetsUnpaid = new();
 
     private decimal totalPendingPayout;
 
@@ -73,47 +61,6 @@
     {
         loggedInUser = await authProvider.GetUserFromAuth(userData);
 
-        if (games is null)
-            games = await gameData.GetGames();
-
-        if (teams is null)
-            teams = await teamData.GetTeams();
-
-        if (bets is null)
-            bets = await betData.GetBets();
-
-
-        bettorInProgressBets = 
-            bets.Where(b => b.BettorId == loggedInUser.Id &&
-                       b.BetStatus == BetStatus.IN_PROGRESS).ToList();
-
-        if (bettorInProgressBets.Count != 0)
-            bettorInProgressBets = bettorInProgressBets.
-                PopulateBetModelsWithGamesAndTeams(games, teams);
-
-        bettorWinningBetsUnpaid = 
-            bets.Where(b => b.BettorId == loggedInUser.Id &&
-                       b.BetStatus == BetStatus.WINNER &&
-                       b.PayoutStatus == PayoutStatus.UNPAID).ToList();
-
-        if (bettorWinningBetsUnpaid.Count != 0)
-            bettorWinningBetsUnpaid = 
-                bettorWinningBetsUnpaid.PopulateBetModelsWithGamesAndTeams(games, teams);
-
-        bettorPushBetsUnpaid = 
-            bets.Where(b => b.BettorId == loggedInUser.Id &&
-                       b.BetStatus == BetStatus.PUSH &&
-                       b.PayoutStatus == PayoutStatus.UNPAID).ToList();
-
-        if (bettorPushBetsUnpaid.Count != 0)
-            bettorPushBetsUnpaid = bettorPushBetsUnpaid.
-                PopulateBetModelsWithGamesAndTeams(games, teams);
-
-        totalPendingPayout = 
-            bettorWinningBetsUnpaid.CalculateTotalPendingPayout();
-
-        totalPendingRefund = 
-            bettorPushBetsUnpaid.CalculateTotalPendingRefund();
     }
 
     /// <summary>
@@ -123,18 +70,7 @@
     /// <returns></returns>
     private async Task PayoutUnpaidWinningBets()
     {
-        HouseAccountModel? houseAccount = await houseData.GetHouseAccount();
 
-        if (houseAccount is null || loggedInUser is null)
-            return;
-
-        await loggedInUser.PayoutBetsTransaction(
-            bettorWinningBetsUnpaid, houseAccount, totalPendingPayout, config, userData, 
-                houseData, betData);
-
-        bettorWinningBetsUnpaid.Clear();
-
-        totalPendingRefund = 0;
     }
 
     /// <summary>
@@ -143,17 +79,6 @@
     /// <returns></returns>
     private async Task RefundUnpaidPushBets()
     {
-        HouseAccountModel? houseAccount = await houseData.GetHouseAccount();
 
-        if (houseAccount is null || loggedInUser is null)
-            return;
-
-        await loggedInUser.PayoutBetsTransaction(
-            bettorPushBetsUnpaid, houseAccount, totalPendingRefund, config, userData, 
-                houseData, betData);
-
-        bettorPushBetsUnpaid.Clear();
-
-        totalPendingRefund = 0;
     }
 }

@@ -2,10 +2,10 @@
 #nullable enable
 public class GamesByWeekDto
 {
-    public Game[]? GamesInWeek { get; set; }
+    public GameDto[]? GamesInWeek { get; set; }
 }
 
-public class Game
+public class GameDto
 {
     public string GameKey { get; set; } = string.Empty;
     public int SeasonType { get; set; }

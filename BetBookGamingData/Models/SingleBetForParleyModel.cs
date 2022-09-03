@@ -13,7 +13,7 @@ public class SingleBetForParleyModel
     public BetType BetType { get; set; }
     public SingleBetForParleyStatus SingleBetForParleyStatus { get; set; }
     public int ScoreIdOfGame { get; set; }
-    public Game Game { get; set; }
+    public GameDto Game { get; set; }
     public string Winner { get; set; }
     public float? PointSpread { get; set; }
     public float? OverUnder { get; set; }

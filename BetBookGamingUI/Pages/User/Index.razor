@@ -121,9 +121,9 @@
         <GridTemplates>
             <RowTemplate>
                 @{
-                    var game = (context as Game);
-                    //@if (game?.HasStarted == false)
-                    //{
+                    var game = (context as GameDto);
+                    @if (game?.HasStarted == false)
+                    {
                     <td class="cell" style="text-align:center;">
                         <div style="padding: .5em .5em;">
                             <strong>@game?.Date.ToString("M-d")</strong>
@@ -198,7 +198,7 @@
                             <strong>Other Wagers</strong>
                         </div>
                     </td>
-                    //}
+                    }
                 }
             </RowTemplate>
         </GridTemplates>
@@ -332,13 +332,13 @@
 </style>
 
 @code {
-    Game[]? games;
+    GameDto[]? games;
     int week;
     SeasonType season;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(5));
-    Dictionary<string, Game> winnersAndGamesForPointSpreadDictionary = new();
-    Dictionary<string, Game> winnersAndGamesForMoneylineDictionary = new();
-    Dictionary<string, Game> winnersAndGamesForOverUnderDictionary = new();
+    Dictionary<string, GameDto> winnersAndGamesForPointSpreadDictionary = new();
+    Dictionary<string, GameDto> winnersAndGamesForMoneylineDictionary = new();
+    Dictionary<string, GameDto> winnersAndGamesForOverUnderDictionary = new();
     HashSet<CreateBetModel> preBets = new();
     decimal totalWagerForParley;
     decimal totalPayoutForParley;
@@ -349,6 +349,31 @@
     public bool ExpandParleyBetSlip { get; set; }
     SingleBetModel? sbId;
 
+    
+
+    protected override async Task OnInitializedAsync()
+    {
+        games = await gameService.GetGamesByWeek(SeasonType.REG, 1);
+
+        SingleBetModel sb = new ()
+        {
+            BetAmount = 85,
+            BetPayout = 50,
+            MoneylinePayout = 120,
+            BetType = BetType.POINTSPREAD,
+            SingleBetStatus = SingleBetStatus.IN_PROGRESS,
+            SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
+            Game = games.Where(g => g.ScoreID == 18021).FirstOrDefault()!,
+            WinnerChosen = "Hawks",
+            PointSpread = Math.Round(2.0, 2),
+            OverUnder = null
+        };
+        int id = await sbData.InsertSingleBet(sb);
+        sbId = await sbData.GetSingleBetById(id);
+        sbId.WinnerChosen = "Get There";
+        await sbData.UpdateSingleBet(sbId);
+    }
+
     public async Task OnSubmitBetsFromSinglesBetSlip(Object args)
     {
         preBets.Clear();
@@ -357,30 +382,6 @@
     public async Task OnSubmitBetsFromParleyBetSlip(Object args)
     {
         preBets.Clear();
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        games = await gameService.GetGamesByWeek(SeasonType.REG, 1);
-        //season = DateTime.Now.CalculateSeason();
-        //week = season.CalculateWeek(DateTime.Now);
-        //SingleBetModel sb = new ()
-        //{
-        //    BetAmount = 85,
-        //    BetPayout = 50,
-        //    MoneylinePayout = 120,
-        //    BetType = BetType.POINTSPREAD,
-        //    SingleBetStatus = SingleBetStatus.IN_PROGRESS,
-        //    SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
-        //    Game = games.Where(g => g.ScoreID == 18021).FirstOrDefault()!,
-        //    WinnerChosen = "Hawks",
-        //    PointSpread = Math.Round(2.0, 2),
-        //    OverUnder = null
-        //};
-        ////int id = await sbData.InsertSingleBet(sb);
-        //sbId = await sbData.GetSingleBetById(8);
-        //sbId.WinnerChosen = "NextTry";
-        //await sbData.UpdateSingleBet(sbId);
     }
 
     //protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -456,14 +457,14 @@
         return total;
     }
 
-    private string GetCellClass(string winner, Game game, BetType betType)
+    private string GetCellClass(string winner, GameDto game, BetType betType)
     {
         return preBets.Contains(
                preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
                        .FirstOrDefault()!)? "clickable-cell-active" : "clickable-cell";
     }
 
-    private void SelectOrRemoveWinnerAndGameForBet(string winner, Game game, BetType betType)
+    private void SelectOrRemoveWinnerAndGameForBet(string winner, GameDto game, BetType betType)
     {
         if (preBets.Contains(
             preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
@@ -488,7 +489,7 @@
             });
     }
 
-    private int GetMoneylinePayoutForBet(string winner, Game game, BetType betType)
+    private int GetMoneylinePayoutForBet(string winner, GameDto game, BetType betType)
     {
         return betType == BetType.POINTSPREAD ? 
                     (winner == game.AwayTeam ? (int)game.PointSpreadAwayTeamMoneyLine! : (int)game.PointSpreadHomeTeamMoneyLine!) :
@@ -518,7 +519,7 @@
                     : ((decimal)moneylinePayout / 100) + 1;
     }
 
-    private string GetPointSpreadForDisplay(Game game, string team)
+    private string GetPointSpreadForDisplay(GameDto game, string team)
     {
         return team == game.AwayTeam ? 
                 (game.PointSpread > 0 ? $"- {game.PointSpread}" : 

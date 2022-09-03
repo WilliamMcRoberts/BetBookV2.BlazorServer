@@ -1,7 +1,6 @@
 ﻿
 
 using BetBookGamingData.DbAccess;
-using BetBookGamingData.Interfaces;
 using BetBookGamingData.Models;
 using Dapper;
 using Microsoft.Extensions.Configuration;
@@ -10,6 +9,16 @@ using System.Data;
 namespace BetBookGamingData.Data;
 
 #nullable enable
+
+public interface ISingleBetData
+    {
+        Task<SingleBetModel> GetSingleBetById(int singleBetId);
+        Task<IEnumerable<SingleBetModel>> GetSingleBets();
+        Task<int> InsertSingleBet(SingleBetModel singleBet);
+        Task UpdateSingleBet(SingleBetModel singleBet);
+    }
+
+
 
 public class SingleBetData : ISingleBetData
 {

@@ -1,10 +1,20 @@
 ﻿using BetBookGamingData.DbAccess;
-using BetBookGamingData.Interfaces;
 using BetBookGamingData.Models;
 
 namespace BetBookGamingData.Data;
 
 #nullable enable
+
+
+public interface IGameData
+{
+    Task DeleteGame(int id);
+    Task<GameModel?> GetGame(int id);
+    Task<IEnumerable<GameModel>> GetGames();
+    Task InsertGame(GameModel game);
+    Task UpdateGame(GameModel game);
+}
+
 
 public class GameData : IGameData
 {

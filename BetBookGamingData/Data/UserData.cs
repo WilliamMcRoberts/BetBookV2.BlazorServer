@@ -1,10 +1,22 @@
 ﻿using BetBookGamingData.DbAccess;
-using BetBookGamingData.Interfaces;
 using BetBookGamingData.Models;
 
 namespace BetBookGamingData.Data;
 
 #nullable enable
+
+public interface IUserData
+{
+    Task DeleteUser(int id);
+    Task<UserModel?> GetUser(int id);
+    Task<UserModel?> GetUserFromAuthentication(string objectIdentifier);
+    Task<IEnumerable<UserModel>> GetUsers();
+    Task InsertUser(UserModel user);
+    Task UpdateUser(UserModel user);
+    Task UpdateUserAccountBalance(UserModel user);
+}
+
+
 
 public class UserData : IUserData
 {
