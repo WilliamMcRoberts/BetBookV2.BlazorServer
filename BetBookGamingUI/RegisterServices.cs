@@ -60,5 +60,6 @@ public static class RegisterServices
         builder.Services.AddTransient<IGameData, GameData>();
         builder.Services.AddTransient<IHouseAccountData, HouseAccountData>();
         builder.Services.AddTransient<IParleyBetData, ParleyBetData>();
+        builder.Services.AddTransient<ISingleBetData, SingleBetData>();
     }
 }

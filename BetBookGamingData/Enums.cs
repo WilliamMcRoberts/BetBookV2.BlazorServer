@@ -66,3 +66,47 @@ public enum BetType
     MONEYLINE,
     OVERUNDER
 }
+
+[EnumExtensions]
+public enum ParleyBetSlipPayoutStatus
+{
+    UNPAID,
+    PAID
+}
+
+
+[EnumExtensions]
+public enum ParleyBetSlipStatus
+{
+    IN_PROGRESS,
+    WINNER,
+    LOSER,
+    PUSH
+}
+
+[EnumExtensions]
+public enum SingleBetStatus
+{
+    IN_PROGRESS,
+    WINNER,
+    LOSER,
+    PUSH
+}
+
+[EnumExtensions]
+public enum SingleBetPayoutStatus
+{
+    UNPAID,
+    PAID
+}
+
+[EnumExtensions]
+public enum SingleBetForParleyStatus
+{
+    IN_PROGRESS,
+    WINNER,
+    LOSER,
+    PUSH
+}
+
+
