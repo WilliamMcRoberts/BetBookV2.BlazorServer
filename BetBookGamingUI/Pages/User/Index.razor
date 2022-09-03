@@ -5,6 +5,7 @@
 @inject ITeamData teamData
 @inject IGameData gameData
 @inject IGameService gameService
+@inject ISingleBetData sbData
 
 <PageTitle>Home</PageTitle>
 
@@ -346,6 +347,7 @@
     public bool DisableParleyBetSlip { get; set; }
     public bool ExpandSinglesBetSlip { get; set; }
     public bool ExpandParleyBetSlip { get; set; }
+    SingleBetModel? sbId;
 
     public async Task OnSubmitBetsFromSinglesBetSlip(Object args)
     {
@@ -359,9 +361,26 @@
 
     protected override async Task OnInitializedAsync()
     {
-        games = await gameService.GetGamesByWeek(SeasonType.PRE, 3);
-        season = DateTime.Now.CalculateSeason();
-        week = season.CalculateWeek(DateTime.Now);
+        games = await gameService.GetGamesByWeek(SeasonType.REG, 1);
+        //season = DateTime.Now.CalculateSeason();
+        //week = season.CalculateWeek(DateTime.Now);
+        SingleBetModel sb = new ()
+        {
+            BetAmount = 85,
+            BetPayout = 50,
+            MoneylinePayout = 120,
+            BetType = BetType.POINTSPREAD,
+            SingleBetStatus = SingleBetStatus.IN_PROGRESS,
+            SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
+            Game = games.Where(g => g.ScoreID == 18021).FirstOrDefault()!,
+            WinnerChosen = "Hawks",
+            PointSpread = Math.Round(2.0, 2),
+            OverUnder = null
+        };
+        //int id = await sbData.InsertSingleBet(sb);
+        sbId = await sbData.GetSingleBetById(8);
+        sbId.WinnerChosen = "NextTry";
+        await sbData.UpdateSingleBet(sbId);
     }
 
     //protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -464,7 +483,8 @@
                 MoneylinePayout = GetMoneylinePayoutForBet(winner, game, betType),
                 Game = game,
                 Winner = winner,
-                PointSpread = game.PointSpread
+                PointSpread = game.PointSpread,
+                OverUnder = game.OverUnder
             });
     }
 

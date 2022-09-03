@@ -103,8 +103,14 @@
     <Build Include="dbo\Tables\HouseAccount.sql" />
     <Build Include="dbo\Tables\Games.sql" />
     <Build Include="dbo\Tables\Bets.sql" />
+    <Build Include="dbo\Tables\ParleyBetSlips.sql" />
+    <Build Include="dbo\Tables\SingleBets.sql" />
+    <Build Include="dbo\Tables\SingleBetsForParley.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment1.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="BetBookGamingSqlDatabase.refactorlog" />
   </ItemGroup>
 </Project>

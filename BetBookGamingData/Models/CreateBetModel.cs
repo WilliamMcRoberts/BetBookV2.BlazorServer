@@ -13,4 +13,5 @@ public class CreateBetModel
     public Game Game { get; set; }
     public string Winner { get; set; }
     public float? PointSpread { get; set; }
+    public float? OverUnder { get; set; }
 }

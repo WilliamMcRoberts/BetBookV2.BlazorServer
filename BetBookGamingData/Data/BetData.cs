@@ -15,21 +15,13 @@ public class BetData : IBetData
     private readonly ISqlConnection _db;
     private readonly IConfiguration _config;
 
-    /// <summary>
-    /// BetData Constructor
-    /// </summary>
-    /// <param name="db">ISqlConnection represents SqlConnection class interface</param>
     public BetData(ISqlConnection db, IConfiguration config)
     {
         _db = db;
         _config = config;
     }
 
-    /// <summary>
-    /// Async method calls the spBets_GetAll stored procedure to retrieve 
-    /// all bets in the database
-    /// </summary>
-    /// <returns>IEnumerable of BetModel represents all bets in the database</returns>
+
     public async Task<IEnumerable<BetModel>> GetBets() => 
         await _db.LoadData<BetModel, dynamic>( "dbo.spBets_GetAll", new { });
 
@@ -65,7 +57,7 @@ public class BetData : IBetData
                        : PayoutStatus.UNPAID.ToString();
 
         using IDbConnection connection = new System.Data.SqlClient.SqlConnection(
-            _config.GetConnectionString("BetBookDB"));
+            _config.GetSection("ConnectionStrings").GetSection("BetBookGamingSqlDatabase").Value);
 
         var p = new DynamicParameters();
 

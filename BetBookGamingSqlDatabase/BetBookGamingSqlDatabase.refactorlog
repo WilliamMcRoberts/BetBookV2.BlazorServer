@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="9efa4623-a76c-4399-ac9a-e177f688cdba" ChangeDateTime="08/29/2022 18:03:09">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet1]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet1Guid" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="11406db9-9b78-42a6-b3b4-8dc1c307b6b4" ChangeDateTime="08/29/2022 18:07:17">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet1Guid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet1" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="83ebaff1-731f-4f64-be6d-4c63ee99545b" ChangeDateTime="08/29/2022 18:07:31">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet2Guid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet2" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c5f0e836-0d32-4d56-912d-2802b07ad7ed" ChangeDateTime="08/29/2022 18:07:46">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet3Guid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet3Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="19d3d0b6-ce2a-44dc-a34c-c58c4ce3c482" ChangeDateTime="08/29/2022 18:07:51">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet1]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet1Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c36da573-a95a-4fed-aca9-c9d2178d85e8" ChangeDateTime="08/29/2022 18:07:57">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet2]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet2Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="2d0b6231-6f59-4aef-b353-fb92916bc0f5" ChangeDateTime="08/29/2022 18:08:07">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet4Guid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet4Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d5483845-dda1-4506-baaf-f23a7d4a2b4e" ChangeDateTime="08/29/2022 18:08:16">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet5Guid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet5Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d1280cc7-769a-4083-8213-5ca69cab377a" ChangeDateTime="08/29/2022 18:08:31">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet6Guid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet6Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1920734d-bb48-467a-b557-e5ee7209ae72" ChangeDateTime="08/29/2022 18:08:40">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet7Guid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet7Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6ca1bce4-2039-4f05-a8af-89d479cf7f29" ChangeDateTime="08/29/2022 18:08:48">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[SingleBet8Guid]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBet8Id" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8eb32241-e912-4749-8398-4250ddafe9e4" ChangeDateTime="08/29/2022 18:10:20">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ParleyBetSlipId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b5774330-9e00-40a6-bec6-e2664962b353" ChangeDateTime="08/29/2022 18:12:53">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[ParleyBetPayout]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ParleyBetSlipPayout" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="332924ff-89af-4818-8a92-456fd295e4fb" ChangeDateTime="08/29/2022 18:13:02">
+    <Property Name="ElementName" Value="[dbo].[ParleyBetSlips].[ParleyBetSlipPayout]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ParleyBetSlips]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ParleyBetPayout" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="34bae210-29a1-4815-8b20-e473d9b5553b" ChangeDateTime="08/29/2022 18:20:21">
+    <Property Name="ElementName" Value="[dbo].[SingleBets].[GameId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SingleBets]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ScoreIdOfGame" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3a15b8ba-1078-48f7-a235-c769acf118c2" ChangeDateTime="08/29/2022 19:07:44">
+    <Property Name="ElementName" Value="[dbo].[SingleBets].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SingleBets]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBetId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fde712ea-6127-43ea-9615-87ab3e72fec5" ChangeDateTime="08/29/2022 19:08:07">
+    <Property Name="ElementName" Value="[dbo].[SingleBetsForParley].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SingleBetsForParley]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBetForParleyId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="66fce5d4-ecca-4b1d-81be-8ff088144b84" ChangeDateTime="08/29/2022 21:44:15">
+    <Property Name="ElementName" Value="[dbo].[SingleBets].[SinlgeBetStatus]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[SingleBets]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="SingleBetStatus" />
+  </Operation>
+</Operations>
