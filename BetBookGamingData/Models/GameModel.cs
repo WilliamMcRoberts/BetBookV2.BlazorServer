@@ -26,7 +26,7 @@ public class GameModel
     public string DateOfGameOnly { get; set; }
     public string TimeOfGameOnly { get; set; }
 
-    public string? PointSpreadDescription
+    public string PointSpreadDescription
     {
         get =>
             PointSpread < 0 ?

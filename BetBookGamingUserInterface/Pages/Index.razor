@@ -345,8 +345,6 @@
     {
         await LoadAndVerifyUser();
         games = await gameService.GetGamesByWeek(SeasonType.REG, 1);
-        loggedInUser.AccountBalance = 10000;
-        await userData.UpdateUser(loggedInUser);
         //season = DateTime.Now.CalculateSeason();
         //week = season.CalculateWeek(DateTime.Now);
         //SingleBetModel sb = new ()
