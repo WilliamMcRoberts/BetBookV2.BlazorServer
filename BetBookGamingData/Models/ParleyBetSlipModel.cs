@@ -4,7 +4,9 @@ namespace BetBookGamingData.Models;
 
 public class ParleyBetSlipModel
 {
-    public int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string ParleyBetSlipId { get; set; }
     public Guid ParleyBetSlipGuid { get; set; }
     public HashSet<CreateBetModel> SingleBetsHashSet { get; set; }
     public decimal ParleyBetAmount { get; set; }

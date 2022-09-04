@@ -8,23 +8,23 @@ namespace BetBookGamingData.Helpers;
 public static class CalculationHelpers
 {
 
-    public static TeamModel CalculateWinningTeam(this GameModel game,
-                                                 double? homeTeamFinalScore, 
-                                                 double? awayTeamFinalScore,
-                                                 IEnumerable<TeamModel> teams)
-    {
+    //public static TeamModel CalculateWinningTeam(this GameModel game,
+    //                                             double? homeTeamFinalScore, 
+    //                                             double? awayTeamFinalScore,
+    //                                             IEnumerable<TeamModel> teams)
+    //{
 
-        TeamModel? homeTeam = 
-            teams.Where(t => t.Id == game.HomeTeamId).FirstOrDefault();
-        TeamModel? awayTeam = 
-            teams.Where(t => t.Id == game.AwayTeamId).FirstOrDefault();
+    //    TeamModel? homeTeam = 
+    //        teams.Where(t => t.Id == game.HomeTeamId).FirstOrDefault();
+    //    TeamModel? awayTeam = 
+    //        teams.Where(t => t.Id == game.AwayTeamId).FirstOrDefault();
 
-        TeamModel? winner = (homeTeamFinalScore == awayTeamFinalScore) ? null :
-            (homeTeamFinalScore > awayTeamFinalScore) ? homeTeam :
-                awayTeam;
+    //    TeamModel? winner = (homeTeamFinalScore == awayTeamFinalScore) ? null :
+    //        (homeTeamFinalScore > awayTeamFinalScore) ? homeTeam :
+    //            awayTeam;
 
-        return winner!;
-    }
+    //    return winner!;
+    //}
 
     public static int CalculateWeek(this SeasonType season, DateTime dateTime)
     {

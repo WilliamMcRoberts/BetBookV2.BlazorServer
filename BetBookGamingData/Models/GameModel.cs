@@ -2,28 +2,29 @@
 
 namespace BetBookGamingData.Models;
 
-#nullable enable
 
 public class GameModel
 {
-    public int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string GameId { get; set; }
     public int HomeTeamId { get; set; }
-    public TeamModel? HomeTeam { get; set; }
+    public TeamModel HomeTeam { get; set; }
     public int AwayTeamId { get; set; }
-    public TeamModel? AwayTeam { get; set; }
-    public string Stadium { get; set; } = string.Empty;
+    public TeamModel AwayTeam { get; set; }
+    public string Stadium { get; set; }
     public double? PointSpread { get; set; }
     public double? HomeTeamFinalScore { get; set; }
     public double? AwayTeamFinalScore { get; set; }
     public int? GameWinnerId { get; set; }
-    public TeamModel? GameWinner { get; set; }
+    public TeamModel GameWinner { get; set; }
     public int WeekNumber { get; set; }
     public SeasonType Season { get; set; }
     public DateTime DateOfGame { get; set; }
     public GameStatus GameStatus { get; set; }
     public int ScoreId { get; set; }
-    public string DateOfGameOnly { get; set; } = string.Empty;
-    public string TimeOfGameOnly { get; set; } = string.Empty;
+    public string DateOfGameOnly { get; set; }
+    public string TimeOfGameOnly { get; set; }
 
     public string? PointSpreadDescription
     {
@@ -35,4 +36,3 @@ public class GameModel
 }
 
 
-#nullable restore

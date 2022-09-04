@@ -1,30 +1,31 @@
 ﻿
 namespace BetBookGamingData.Models;
 
-#nullable enable
 
 
 public class TeamModel
 {
-    public int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string TeamId { get; set; }
 
-    public string TeamName { get; set; } = string.Empty;
+    public string TeamName { get; set; }
 
-    public string City { get; set; } = string.Empty;
+    public string City { get; set; }
 
-    public string Stadium { get; set; } = string.Empty;
+    public string Stadium { get; set; }
 
-    public string Wins { get; set; } = string.Empty;
+    public string Wins { get; set; }
 
-    public string Losses { get; set; } = string.Empty;
+    public string Losses { get; set; }
 
-    public string Draws { get; set; } = string.Empty;
+    public string Draws { get; set; }
 
-    public string Symbol { get; set; } = string.Empty;
+    public string Symbol { get; set; }
 
-    public string Division { get; set; } = string.Empty;
+    public string Division { get; set; }
 
-    public string Conference { get; set; } = string.Empty;
+    public string Conference { get; set; }
 
     public string ImagePath
     {
@@ -48,4 +49,3 @@ public class TeamModel
     }
 }
 
-#nullable restore

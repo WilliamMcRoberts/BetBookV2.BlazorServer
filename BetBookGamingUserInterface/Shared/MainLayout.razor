@@ -1,0 +1,30 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authProvider
+@inject IMongoUserData userData
+@inject IJSRuntime jsRuntime
+
+
+<PageTitle>BetBookUI</PageTitle>
+
+<div class="page">
+    <main>
+        
+        <Header LoggedInUser="loggedInUser"/>
+
+        <article class="content px-4">
+            @Body
+        </article>
+
+        <Footer/>
+
+    </main>
+</div>
+
+@code {
+    UserModel? loggedInUser;
+    protected override async Task OnInitializedAsync()
+    {
+        loggedInUser = await authProvider.GetUserFromAuth(userData);
+    }
+}

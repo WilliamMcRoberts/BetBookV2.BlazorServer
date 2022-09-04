@@ -6,7 +6,9 @@ namespace BetBookGamingData.Models;
 
 public class SingleBetForParleyModel
 {
-    public int Id { get; set; }
+    [BsonId]
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string SingleBetForParleyId { get; set; }
     public Guid CreateBetGuid { get; set; }
     public Guid ParleyBetSlipGuid { get; set; }
     public int MoneylinePayout { get; set; }

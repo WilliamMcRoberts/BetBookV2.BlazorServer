@@ -1,0 +1,591 @@
+﻿@page "/"
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authProvider
+@inject IMongoUserData userData
+@inject IGameService gameService
+
+<PageTitle>Home</PageTitle>
+
+@if (preBets.Count > 0)
+{
+    <div style="width:35%;position:relative;margin:0 auto;">
+        <SfAccordion ID="AccordionElement" @ref="@Accordion">
+            <AccordionEvents Created="OnCreate"></AccordionEvents>
+            <AccordionItems>
+                <AccordionItem Disabled=@GetDisableSinglesBetSlip() @bind-Expanded="ExpandSinglesBetSlip">
+                    <HeaderTemplate>Singles Bet Slip</HeaderTemplate>
+                    <ContentTemplate>
+                        <div id="" style="padding:10px">
+                            @foreach (CreateBetModel createBetModel in preBets)
+                            {
+                                <div class="create-bet-model-container">
+                                    <button @onclick="(() => RemoveBetFromPreBetsHashSet(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                    <div class="bet-info-container">
+                                        <div class="game-bet-type">
+                                            <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
+                                            <strong>@createBetModel.BetType</strong>
+                                        </div>
+                                        <div class="winner-moneyline-container">
+                                            <strong class="winner-moneyline">@GetWinnerSummary(createBetModel)</strong>
+                                            <strong class="winner-moneyline">@GetMoneyLineForDisplay(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType))</strong>
+                                        </div>
+                                        <div class="bet-amount-input-container">
+                                            <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div style="text-align:center;margin:1em 1em;">
+                                <strong>Total Singles Payout</strong>
+                                <strong>@Math.Round(GetPayoutForTotalBetsSingles()!, 2) </strong>
+                            </div>
+                            <div style="text-align: center">
+                                <SfButton @onclick="@OnSubmitBetsFromSinglesBetSlip">Submit Singles Bet</SfButton>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </AccordionItem>
+                <AccordionItem Disabled=@GetDisableParleyBetSlip() @bind-Expanded="ExpandParleyBetSlip">
+                    <HeaderTemplate>Parley Bet Slip</HeaderTemplate>
+                    <ContentTemplate>
+                        <div style="padding:10px">
+                            @foreach (CreateBetModel createBetModel in preBets)
+                            {
+                                <div class="create-bet-model-container">
+                                    <button @onclick="(() => RemoveBetFromPreBetsHashSet(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                    <div class="bet-info-container">
+                                        <div class="game-bet-type">
+                                            <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
+                                            <strong>@createBetModel.BetType</strong>
+                                        </div>
+                                        <div class="winner-moneyline-container">
+                                            <strong class="winner-moneyline">@GetWinnerSummary(createBetModel)</strong>
+                                            <strong class="winner-moneyline">@GetMoneyLineForDisplay(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType))</strong>
+                                        </div>
+                                        <div class="bet-amount-input-container">
+                                            <input class="bet-amount-input-disabled" disabled type="number" placeholder="0" />
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div style="display:flex;justify-content:space-between;">
+                                <div style="text-align:center;margin:1em 1em;">
+                                    <strong>Total Parley Payout</strong>
+                                    <strong>@Math.Round(GetPayoutForTotalBetsParley()!, 2) </strong>
+                                </div>
+                                <div style="display:flex;flex-direction:column;width:25%;">
+                                    <strong>Wager Amount</strong>
+                                    <input type="number" @bind-value="@totalWagerForParley" @bind-value:event="oninput" />
+                                </div>
+                            </div>
+                            <div style="text-align: center">
+                                <SfButton @onclick="@OnSubmitBetsFromParleyBetSlip">Submit Parley Bet</SfButton>
+                            </div>
+                        </div>
+                    </ContentTemplate>
+                </AccordionItem>
+            </AccordionItems>
+        </SfAccordion>
+    </div>
+}
+
+<div style="width:70%;margin: 0 auto;">
+    <SfGrid DataSource="@games?.OrderBy(g => g.DateTime)">
+        <GridColumns>
+            <GridColumn Width="80"
+                        HeaderText="Date"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn Width="200"
+                        HeaderText="Away/Home"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Point Spread"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Moneyline"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Over/Under"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn Width="80"
+                        HeaderText="Other"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+        </GridColumns>
+        <GridTemplates>
+            <RowTemplate>
+                @{
+                    var game = (context as GameDto);
+                    @if (game?.HasStarted == false)
+                    {
+                        <td class="cell" style="text-align:center;">
+                            <div style="padding: .5em .5em;">
+                                <strong>@game?.Date.ToString("M-d")</strong>
+                            </div>
+                            <div style="padding:.5em .5em;">
+                                <strong>@game?.Date.ToString("h:mm")</strong>
+                            </div>
+                        </td>
+                        <td class="cell" style="text-align:center;">
+                            <div class="teams">
+                                <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                    <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                </div>
+                                <div style="padding:.5em .5em;">
+                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="cell">
+
+                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
+                         class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)">
+                                <div style="display:flex;justify-content:space-evenly;">
+                                    <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game!, game!.AwayTeam)</strong>
+                                    <strong>@GetMoneyLineForDisplay(game?.PointSpreadAwayTeamMoneyLine)</strong>
+                                </div>
+                            </div>
+
+                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))"
+                         class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)">
+                                <div style="display:flex;justify-content:space-evenly;">
+                                    <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game!, game!.HomeTeam)</strong>
+                                    <strong>@GetMoneyLineForDisplay(game?.PointSpreadHomeTeamMoneyLine)</strong>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td class="cell" style="text-align:center;">
+
+                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))"
+                         class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)">
+                                <strong>@GetMoneyLineForDisplay(game?.AwayTeamMoneyLine)</strong>
+                            </div>
+
+                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))"
+                         class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE)">
+                                <strong>@GetMoneyLineForDisplay(game?.HomeTeamMoneyLine)</strong>
+                            </div>
+
+                        </td>
+                        <td class="cell">
+
+                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
+                         class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
+                                <div style="display:flex;justify-content:space-evenly;">
+                                    <strong>Over @game?.OverUnder</strong>
+                                    <strong>@GetMoneyLineForDisplay(game?.OverPayout)</strong>
+                                </div>
+                            </div>
+
+                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
+                         class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
+                                <div style="display:flex;justify-content:space-evenly;">
+                                    <strong>Under @game?.OverUnder</strong>
+                                    <strong>@GetMoneyLineForDisplay(game?.UnderPayout)</strong>
+                                </div>
+                            </div>
+
+                        </td>
+                        <td class="cell">
+                            <div class="other-button">
+                                <strong>Other Wagers</strong>
+                            </div>
+                        </td>
+                    }
+                }
+            </RowTemplate>
+        </GridTemplates>
+    </SfGrid>
+</div>
+
+<style>
+    .clickable-cell {
+        padding: .65em .65em;
+        border: 1px solid lightgrey;
+        background-color: palegreen;
+    }
+
+        .clickable-cell:hover {
+            cursor: pointer;
+            background-color: rgb(152, 251, 152, .5);
+        }
+
+    .clickable-cell-active {
+        padding: .65em .65em;
+        border: 1px solid lightgrey;
+        background-color: rgb(255,99,71);
+    }
+
+        .clickable-cell-active:hover {
+            cursor: pointer;
+            background-color: rgb(255,99,71, .5);
+        }
+
+    .cell {
+        border-bottom: 1px solid black;
+        font-size: 10px;
+    }
+
+    .other-button {
+        padding: 1.35em 1.35em;
+        border: 1px solid lightgrey;
+        border-right: 4px solid white;
+        background-color: palegreen;
+        text-align: center;
+    }
+
+        .other-button:hover {
+            background-color: rgb(152, 251, 152, .5);
+            cursor: pointer;
+        }
+
+    .teams {
+    }
+
+        .teams:hover {
+            background-color: rgb(211,211,211, .9);
+            cursor: pointer;
+        }
+
+    .team-name {
+        font-size: 10px;
+    }
+
+    .team-icon-top-row {
+        height: 20px;
+        margin-right: .5em;
+        margin-left: 1.25em;
+    }
+
+    .team-icon-bottom-row {
+        height: 20px;
+        margin-right: .5em;
+    }
+
+    .at-sign {
+        margin-right: .5em;
+        font-size: 11px;
+    }
+
+    .e-headercell {
+        font-family: "Bell MT";
+        color: darkgreen;
+    }
+
+    .close-button {
+        font-size: 8px;
+        margin-top: 1em;
+    }
+
+    .create-bet-model-container {
+        display: flex;
+    }
+
+    .bet-info-container {
+        display: flex;
+        justify-content: space-between;
+        margin: .25em auto;
+    }
+
+    .game-bet-type {
+        display: flex;
+        flex-direction: column;
+        font-size: 10px;
+        margin: 0 1em;
+    }
+
+    .winner-moneyline-container {
+        display: flex;
+        flex-direction: column;
+        margin: 0 1em;
+    }
+
+    .winner-moneyline {
+        font-size: 10px;
+        text-align: center;
+    }
+
+    .bet-amount-input-container {
+        width: 30%;
+    }
+
+    .bet-amount-input {
+        border: 2px solid black;
+    }
+
+    .bet-amount-input-disabled {
+        border: 2px solid lightgrey;
+    }
+</style>
+
+
+@code {
+    GameDto[]? games;
+    int week;
+    SeasonType season;
+    private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(5));
+    Dictionary<string, GameDto> winnersAndGamesForPointSpreadDictionary = new();
+    Dictionary<string, GameDto> winnersAndGamesForMoneylineDictionary = new();
+    Dictionary<string, GameDto> winnersAndGamesForOverUnderDictionary = new();
+    HashSet<CreateBetModel> preBets = new();
+    decimal totalWagerForParley;
+    decimal totalPayoutForParley;
+    SfAccordion? Accordion;
+    public bool DisableSinglesBetSlip { get; set; }
+    public bool DisableParleyBetSlip { get; set; }
+    public bool ExpandSinglesBetSlip { get; set; }
+    public bool ExpandParleyBetSlip { get; set; }
+    SingleBetModel? sbId;
+    UserModel loggedInUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAndVerifyUser();
+        games = await gameService.GetGamesByWeek(SeasonType.REG, 1);
+        loggedInUser.AccountBalance = 10000;
+        await userData.UpdateUser(loggedInUser);
+        //season = DateTime.Now.CalculateSeason();
+        //week = season.CalculateWeek(DateTime.Now);
+        //SingleBetModel sb = new ()
+        //{
+        //    BetAmount = 85,
+        //    BetPayout = 50,
+        //    MoneylinePayout = 120,
+        //    BetType = BetType.POINTSPREAD,
+        //    SingleBetStatus = SingleBetStatus.IN_PROGRESS,
+        //    SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
+        //    Game = games.Where(g => g.ScoreID == 18021).FirstOrDefault()!,
+        //    WinnerChosen = "Hawks",
+        //    PointSpread = Math.Round(2.0, 2),
+        //    OverUnder = null
+        //};
+        ////int id = await sbData.InsertSingleBet(sb);
+        //sbId = await sbData.GetSingleBetById(8);
+        //sbId.WinnerChosen = "NextTry";
+        //await sbData.UpdateSingleBet(sbId);
+    }
+
+    private async Task LoadAndVerifyUser()
+    {
+        var authState = await authProvider.GetAuthenticationStateAsync();
+        string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+        if (string.IsNullOrWhiteSpace(objectId) == false)
+        {
+            loggedInUser = await userData.GetCurrentUserFromAuthentication(objectId) ?? new();
+            string firstName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("givenname"))?.Value;
+            string lastName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("surname"))?.Value;
+            string displayName = authState.User.Claims.FirstOrDefault(c => c.Type.Equals("name"))?.Value;
+            string emailAddress = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("email"))?.Value;
+            bool isDirty = false;
+            if (objectId.Equals(loggedInUser.ObjectIdentifier) == false)
+            {
+                isDirty = true;
+                loggedInUser.ObjectIdentifier = objectId;
+            }
+
+            if (firstName.Equals(loggedInUser.FirstName) == false)
+            {
+                isDirty = true;
+                loggedInUser.FirstName = firstName;
+            }
+
+            if (lastName.Equals(loggedInUser.LastName) == false)
+            {
+                isDirty = true;
+                loggedInUser.LastName = lastName;
+            }
+
+            if (displayName.Equals(loggedInUser.DisplayName) == false)
+            {
+                isDirty = true;
+                loggedInUser.DisplayName = displayName;
+            }
+
+            if (emailAddress.Equals(loggedInUser.EmailAddress) == false)
+            {
+                isDirty = true;
+                loggedInUser.EmailAddress = emailAddress;
+            }
+            
+            if (isDirty)
+            {
+                if (string.IsNullOrWhiteSpace(loggedInUser.UserId))
+                {
+                    await userData.CreateUser(loggedInUser);
+                }
+                else
+                {
+                    await userData.UpdateUser(loggedInUser);
+                }
+            }
+        }
+    }
+
+    public async Task OnSubmitBetsFromSinglesBetSlip(Object args)
+    {
+        preBets.Clear();
+    }
+
+    public async Task OnSubmitBetsFromParleyBetSlip(Object args)
+    {
+        preBets.Clear();
+    }
+
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender) await StartGameUpdateLoop();
+    //}
+
+    public void RemoveBetFromPreBetsHashSet(CreateBetModel createBetModel)
+    {
+        preBets.Remove(createBetModel);
+    }
+
+    public void OnCreate()
+    {
+        DisableSinglesBetSlip = false;
+        DisableParleyBetSlip = true;
+    }
+
+    public bool GetDisableParleyBetSlip()
+    {
+        return preBets.Count < 2 || ExpandSinglesBetSlip ? true : false;
+    }
+
+    public bool GetDisableSinglesBetSlip()
+    {
+        return ExpandParleyBetSlip ? true : false;
+    }
+
+    private string GetWinnerSummary(CreateBetModel createBetModel)
+    {
+        return createBetModel.BetType == BetType.POINTSPREAD ?
+                        (createBetModel.Winner == createBetModel.Game.HomeTeam ?
+                        $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game, createBetModel.Winner)}" :
+                        $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game, createBetModel.Winner)}") :
+               createBetModel.BetType == BetType.MONEYLINE ? (createBetModel.Winner == createBetModel.Game.HomeTeam ?
+                        $"{createBetModel.Winner}" :
+                        $"{createBetModel.Winner}")
+                        : (createBetModel.Winner[0] == 'O' ?
+                            $"Over {createBetModel.Game.OverUnder}" :
+                            $"Under {createBetModel.Game.OverUnder}");
+    }
+
+    private decimal GetPayoutForTotalBetsParley()
+    {
+        if (preBets.Count < 2) return 0;
+
+        decimal totalDecimalOdds = 1;
+
+        foreach (CreateBetModel createBetModel in preBets)
+        {
+            decimal decimalMoneyline =
+                ConvertMoneylinePayoutToDecimalFormat(createBetModel.MoneylinePayout);
+
+            totalDecimalOdds *= decimalMoneyline;
+        }
+
+        return totalPayoutForParley = totalWagerForParley * totalDecimalOdds;
+    }
+
+    private decimal GetPayoutForTotalBetsSingles()
+    {
+        decimal total = 0;
+
+        foreach (CreateBetModel createBetModel in preBets)
+        {
+            decimal betPayout = createBetModel.MoneylinePayout < 0 ?
+                     createBetModel.BetAmount / ((decimal)createBetModel.MoneylinePayout * -1 / 100) + createBetModel.BetAmount
+                     : ((decimal)createBetModel.MoneylinePayout / 100) * createBetModel.BetAmount;
+
+            total += betPayout;
+        }
+
+        return total;
+    }
+
+    private string GetCellClass(string winner, GameDto game, BetType betType)
+    {
+        return preBets.Contains(
+               preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
+                       .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
+    }
+
+    private void SelectOrRemoveWinnerAndGameForBet(string winner, GameDto game, BetType betType)
+    {
+        if (preBets.Contains(
+            preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
+                   .FirstOrDefault()!))
+        {
+            preBets.Remove(
+            preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
+                   .FirstOrDefault()!);
+            return;
+        }
+
+        preBets.Add(new CreateBetModel
+            {
+                Id = Guid.NewGuid(),
+                BetType = betType,
+                BetAmount = 0,
+                MoneylinePayout = GetMoneylinePayoutForBet(winner, game, betType),
+                Game = game,
+                Winner = winner,
+                PointSpread = game.PointSpread,
+                OverUnder = game.OverUnder
+            });
+    }
+
+    private int GetMoneylinePayoutForBet(string winner, GameDto game, BetType betType)
+    {
+        return betType == BetType.POINTSPREAD ?
+                    (winner == game.AwayTeam ? (int)game.PointSpreadAwayTeamMoneyLine! : (int)game.PointSpreadHomeTeamMoneyLine!) :
+                betType == BetType.OVERUNDER ? (winner[0] == 'O' ? (int)game.OverPayout! : (int)game.UnderPayout!) :
+                    (winner == game.AwayTeam ? (int)game.AwayTeamMoneyLine!
+                    : (int)game.HomeTeamMoneyLine!);
+    }
+
+    private async Task StartGameUpdateLoop()
+    {
+        int index = 1;
+
+        while (await _timer.WaitForNextTickAsync())
+        {
+            season = DateTime.Now.CalculateSeason();
+            week = season.CalculateWeek(DateTime.Now);
+            games = await gameService.GetGamesByWeek(season, week);
+            Console.WriteLine($"Timer trigger count: {index}");
+            index++;
+        }
+    }
+
+    private decimal ConvertMoneylinePayoutToDecimalFormat(int moneylinePayout)
+    {
+        return moneylinePayout < 0 ?
+                    (100 / (decimal)moneylinePayout * -1) + (decimal)1
+                    : ((decimal)moneylinePayout / 100) + 1;
+    }
+
+    private string GetPointSpreadForDisplay(GameDto game, string team)
+    {
+        return team == game.AwayTeam ?
+                (game.PointSpread > 0 ? $"- {game.PointSpread}" :
+                    game.PointSpread < 0 ? $"+ {game.PointSpread?.ToString().Trim('-')}"
+                    : "+ 0")
+              : (game.PointSpread > 0 ? $"+ {game.PointSpread}" :
+                    game.PointSpread < 0 ? $"- {game.PointSpread?.ToString().Trim('-')}"
+                    : "- 0");
+    }
+
+    private string GetMoneyLineForDisplay(int? moneyline)
+    {
+        return moneyline > 0 ? $"+ {moneyline}"
+               : $"- {moneyline?.ToString().Trim('-')}";
+    }
+}
+
+
+

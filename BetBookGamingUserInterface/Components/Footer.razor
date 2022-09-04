@@ -1,0 +1,153 @@
+﻿
+@inject NavigationManager navManager
+@inject AuthenticationStateProvider authProvider
+@inject IMongoUserData userData
+
+
+<div class="footer">
+    <div class="social-media-icon-container pt-4">
+        <div class="icon-wrap">
+            <a href="https://twitter.com">
+                <image class="icon" src="../images/twitter.png"></image>
+            </a>
+        </div>
+        <div class="icon-wrap">
+            <a href="https://facebook.com">
+                <image class="icon" src="../images/facebook.png"></image>
+            </a>
+        </div>
+        <div class="icon-wrap">
+            <a href="https://linkedin.com">
+                <image class="icon" src="../images/linkedin.png"></image>
+            </a>
+        </div>
+        <div class="icon-wrap">
+            <a href="https://instagram.com">
+                <image class="icon" src="../images/instagram.png"></image>
+            </a>
+        </div>
+        <div class="icon-wrap">
+            <a href="https://youtube.com">
+                <image class="icon" src="../images/youtube.png"></image>
+            </a>
+        </div>
+    </div>
+    <div style="display:flex;justify-content:space-evenly;">
+        <div class="contact-item">
+            <a style="margin-bottom:1em;" href="/" class="icon-container">
+                <image class="fb-icon" src="/images/fbicon.png" />
+                <h3 class="name">Bet Book</h3>
+            </a>
+            <h6 class="title">@copyright</h6>
+            <h6 class="title">@lisence</h6>
+            <h6 class="title">@city</h6>
+            <div class="link-support">
+                <a style="text-align:center;" href="mailto:support@betbookgaming.com" subject="Support Ticket">support@betbookgaming.com</a>
+            </div>
+        </div>
+        <div class="trust-logo">
+            <img class="trust-image" src="/images/positivessl_trust_seal_lg_222x54.png" alt="team logo">
+        </div>
+    </div>
+    <div class="footer-nav-container">
+        <div style="margin-bottom:2em;" class="nav-title-game-container">
+            <div>
+                <h6 class="nav-title">Create Bet</h6>
+            </div>
+            <div class="footer-link">
+                    @foreach(GameModel game in availableGames)
+                {
+                    <a class="game-item-nav" @onclick="(() => CreateBet(game.GameId))">
+                        <h6 class="footer-game-item">@game.AwayTeam?.TeamName @@ @game.HomeTeam?.TeamName</h6>
+                    </a>
+                }
+            </div>
+        </div>
+            
+        <div class="nav-title-game-container">
+            <div>
+                <h6 class="nav-title">Create Parley Bet</h6>
+            </div>
+            <div class="footer-link">
+                @foreach(GameModel game in availableGames)
+                {
+                    <a class="game-item-nav" href="/CreateParleyBet">
+                        <h6 class="footer-game-item">@game.AwayTeam?.TeamName @@ @game.HomeTeam?.TeamName</h6>
+                    </a>
+                }
+            </div>
+        </div>
+        
+        <div style="margin-left:4em;"  class="nav-title-game-container">
+            <div>
+                <h6 class="nav-title">Profile</h6>
+            </div>
+            <div class="footer-link">
+                <a class="game-item-nav" href="/ProfileSingleBets">
+                    <h6 class="footer-game-item">Single Bets</h6>
+                </a>
+                <a class="game-item-nav" href="/ProfileParleyBets">
+                    <h6 class="footer-game-item">Parley Bets</h6>
+                </a>
+            </div>
+        </div>
+
+        <div class="nav-title-game-container">
+            <div>
+                <h6 class="nav-title">About</h6>
+            </div>
+            <div class="footer-link">
+                <a class="game-item-nav" href="/About">
+                    <h6 class="footer-game-item">Site Info</h6>
+                </a>
+                <a class="game-item-nav" href="/About">
+                    <h6 class="footer-game-item">Odds For Bets</h6>
+                </a>
+            </div>
+           
+        </div>
+    </div>
+</div>
+
+
+
+@code {
+
+    string copyright = "\u00a9 Copyright Bet Book Gaming Inc.";
+    string lisence = "All Rights Reserved. Digital Millennium Copyright Act.";
+    string city = "Cincinnati, OH 45248";
+
+    IEnumerable<GameModel>? games;
+
+    IEnumerable<TeamModel>? teams;
+
+    HashSet<GameModel> availableGames = new();
+
+    UserModel? loggedInUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        //loggedInUser = await authProvider.GetUserFromAuth(userData);
+
+        @* games = await gameData.GetGames();
+
+        teams = await teamData.GetTeams();
+
+        availableGames = games.Where(g =>
+            g.GameStatus == GameStatus.NOT_STARTED).ToHashSet<GameModel>();
+
+        availableGames = availableGames.PopulateGameModelsWithTeams(teams); *@
+    }
+
+    private void CreateBet(string gameId)
+    {
+        if(loggedInUser is null)
+        {
+            navManager.NavigateTo("/MicrosoftIdentity/Account/SignIn", true);
+            return;
+        }
+            
+        navManager.NavigateTo("..");
+        navManager.NavigateTo($"/CreateBet/{gameId}");
+    }
+}
