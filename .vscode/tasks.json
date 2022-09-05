@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/BetBookGamingUI/BetBookGamingUI.csproj",
+                "${workspaceFolder}/BetBookGamingUserInterface/BetBookGamingUserInterface.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/BetBookGamingUI/BetBookGamingUI.csproj",
+                "${workspaceFolder}/BetBookGamingUserInterface/BetBookGamingUserInterface.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/BetBookGamingUI/BetBookGamingUI.csproj"
+                "${workspaceFolder}/BetBookGamingUserInterface/BetBookGamingUserInterface.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
