@@ -52,5 +52,6 @@ public static class RegisterServices
 
         builder.Services.AddSingleton<IMongoDbConnection, MongoDbConnection>();
         builder.Services.AddTransient<IMongoUserData, MongoUserData>();
+        builder.Services.AddTransient<IMongoSingleBetData, MongoSingleBetData>();
     }
 }

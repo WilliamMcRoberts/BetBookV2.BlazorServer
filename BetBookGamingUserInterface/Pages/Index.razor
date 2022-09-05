@@ -2,6 +2,7 @@
 @inject NavigationManager navManager
 @inject AuthenticationStateProvider authProvider
 @inject IMongoUserData userData
+@inject IMongoSingleBetData singleBetData
 @inject IGameService gameService
 
 <PageTitle>Home</PageTitle>
@@ -12,7 +13,7 @@
         <SfAccordion ID="AccordionElement" @ref="@Accordion">
             <AccordionEvents Created="OnCreate"></AccordionEvents>
             <AccordionItems>
-                <AccordionItem Disabled=@GetDisableSinglesBetSlip() @bind-Expanded="ExpandSinglesBetSlip">
+                <AccordionItem Disabled=@GetDisableSinglesBetSlip() @bind-Expanded="@ExpandSinglesBetSlip">
                     <HeaderTemplate>Singles Bet Slip</HeaderTemplate>
                     <ContentTemplate>
                         <div id="" style="padding:10px">
@@ -45,7 +46,7 @@
                         </div>
                     </ContentTemplate>
                 </AccordionItem>
-                <AccordionItem Disabled=@GetDisableParleyBetSlip() @bind-Expanded="ExpandParleyBetSlip">
+                <AccordionItem Disabled=@GetDisableParleyBetSlip() @bind-Expanded="@ExpandParleyBetSlip">
                     <HeaderTemplate>Parley Bet Slip</HeaderTemplate>
                     <ContentTemplate>
                         <div style="padding:10px">
@@ -73,14 +74,33 @@
                                     <strong>Total Parley Payout</strong>
                                     <strong>@Math.Round(GetPayoutForTotalBetsParley()!, 2) </strong>
                                 </div>
-                                <div style="display:flex;flex-direction:column;width:25%;">
-                                    <strong>Wager Amount</strong>
-                                    <input type="number" @bind-value="@totalWagerForParley" @bind-value:event="oninput" />
+                                @if(preBets.Count >= 2)
+                                {
+                                    <div style="display:flex;flex-direction:column;width:25%;">
+                                        <strong>Wager Amount</strong>
+                                        <input type="number" @bind-value="@totalWagerForParley" @bind-value:event="oninput" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div style="display:flex;flex-direction:column;width:25%;">
+                                        <strong>Wager Amount</strong>
+                                        <input type="number" disabled @bind-value="@totalWagerForParley" @bind-value:event="oninput" />
+                                    </div>
+                                }
+                            </div>
+                            @if(preBets.Count >= 2)
+                            {
+                                <div style="text-align: center">
+                                    <SfButton @onclick="@OnSubmitBetsFromParleyBetSlip">Submit Parley Bet</SfButton>
                                 </div>
-                            </div>
-                            <div style="text-align: center">
-                                <SfButton @onclick="@OnSubmitBetsFromParleyBetSlip">Submit Parley Bet</SfButton>
-                            </div>
+                            }
+                            else
+                            {
+                                <div style="text-align: center">
+                                    <SfButton Disabled @onclick="@OnSubmitBetsFromParleyBetSlip">Submit Parley Bet</SfButton>
+                                </div>
+                            }
                         </div>
                     </ContentTemplate>
                 </AccordionItem>
@@ -339,92 +359,47 @@
     public bool ExpandSinglesBetSlip { get; set; }
     public bool ExpandParleyBetSlip { get; set; }
     SingleBetModel? sbId;
-    UserModel loggedInUser;
+    UserModel? loggedInUser;
 
     protected override async Task OnInitializedAsync()
     {
-        await LoadAndVerifyUser();
+        loggedInUser =  await authProvider.LoadAndVerifyUser(userData);
         games = await gameService.GetGamesByWeek(SeasonType.REG, 1);
-        //season = DateTime.Now.CalculateSeason();
-        //week = season.CalculateWeek(DateTime.Now);
-        //SingleBetModel sb = new ()
-        //{
-        //    BetAmount = 85,
-        //    BetPayout = 50,
-        //    MoneylinePayout = 120,
-        //    BetType = BetType.POINTSPREAD,
-        //    SingleBetStatus = SingleBetStatus.IN_PROGRESS,
-        //    SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
-        //    Game = games.Where(g => g.ScoreID == 18021).FirstOrDefault()!,
-        //    WinnerChosen = "Hawks",
-        //    PointSpread = Math.Round(2.0, 2),
-        //    OverUnder = null
-        //};
-        ////int id = await sbData.InsertSingleBet(sb);
-        //sbId = await sbData.GetSingleBetById(8);
-        //sbId.WinnerChosen = "NextTry";
-        //await sbData.UpdateSingleBet(sbId);
     }
 
-    private async Task LoadAndVerifyUser()
+    public async Task OnSubmitBetsFromSinglesBetSlip()
     {
-        var authState = await authProvider.GetAuthenticationStateAsync();
-        string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
-        if (string.IsNullOrWhiteSpace(objectId) == false)
+        if (loggedInUser is null) return;
+
+        foreach(CreateBetModel createBetModel in preBets)
         {
-            loggedInUser = await userData.GetCurrentUserFromAuthentication(objectId) ?? new();
-            string firstName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("givenname"))?.Value;
-            string lastName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("surname"))?.Value;
-            string displayName = authState.User.Claims.FirstOrDefault(c => c.Type.Equals("name"))?.Value;
-            string emailAddress = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("email"))?.Value;
-            bool isDirty = false;
-            if (objectId.Equals(loggedInUser.ObjectIdentifier) == false)
+            SingleBetModel newSingleBetModel = new()
             {
-                isDirty = true;
-                loggedInUser.ObjectIdentifier = objectId;
-            }
+                WinnerChosen =
+                    createBetModel.BetType == BetType.OVERUNDER ?
+                    (createBetModel.Winner[0] == 'O' ? "Over" : "Under")
+                    : createBetModel.Winner,
 
-            if (firstName.Equals(loggedInUser.FirstName) == false)
-            {
-                isDirty = true;
-                loggedInUser.FirstName = firstName;
-            }
+                BetPayout = Math.Round(
+                    CalculateSingleBetPayout(
+                        createBetModel.BetAmount, createBetModel.MoneylinePayout), 2),
 
-            if (lastName.Equals(loggedInUser.LastName) == false)
-            {
-                isDirty = true;
-                loggedInUser.LastName = lastName;
-            }
+                BettorId = loggedInUser.UserId,
+                BetType = createBetModel.BetType,
+                PointSpread = (double)Math.Round((decimal)createBetModel.PointSpread!, 1),
+                OverUnder = (double)Math.Round((decimal)createBetModel.OverUnder!, 1),
+                MoneylinePayout = createBetModel.MoneylinePayout,
+                BetAmount = createBetModel.BetAmount,
+                SingleBetStatus = SingleBetStatus.IN_PROGRESS,
+                SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
+                ScoreIdOfGame = createBetModel.Game.ScoreID
+            };
 
-            if (displayName.Equals(loggedInUser.DisplayName) == false)
-            {
-                isDirty = true;
-                loggedInUser.DisplayName = displayName;
-            }
-
-            if (emailAddress.Equals(loggedInUser.EmailAddress) == false)
-            {
-                isDirty = true;
-                loggedInUser.EmailAddress = emailAddress;
-            }
-            
-            if (isDirty)
-            {
-                if (string.IsNullOrWhiteSpace(loggedInUser.UserId))
-                {
-                    await userData.CreateUser(loggedInUser);
-                }
-                else
-                {
-                    await userData.UpdateUser(loggedInUser);
-                }
-            }
+            await singleBetData.CreateSingleBet(newSingleBetModel);
         }
-    }
 
-    public async Task OnSubmitBetsFromSinglesBetSlip(Object args)
-    {
         preBets.Clear();
+
     }
 
     public async Task OnSubmitBetsFromParleyBetSlip(Object args)
@@ -444,13 +419,13 @@
 
     public void OnCreate()
     {
-        DisableSinglesBetSlip = false;
-        DisableParleyBetSlip = true;
+        ExpandSinglesBetSlip = true;
+        ExpandParleyBetSlip = false;
     }
 
     public bool GetDisableParleyBetSlip()
     {
-        return preBets.Count < 2 || ExpandSinglesBetSlip ? true : false;
+        return ExpandSinglesBetSlip ? true : false;
     }
 
     public bool GetDisableSinglesBetSlip()
@@ -503,6 +478,13 @@
         }
 
         return total;
+    }
+
+    private decimal CalculateSingleBetPayout(decimal betAmount, int moneylinePayout)
+    {
+        return moneylinePayout < 0 ?
+            betAmount / ((decimal)moneylinePayout * -1 / 100) + betAmount 
+            : ((decimal)moneylinePayout / 100) * betAmount;
     }
 
     private string GetCellClass(string winner, GameDto game, BetType betType)
