@@ -3,6 +3,9 @@
 using BetBookGamingData.Dto;
 
 namespace BetBookGamingData.Models;
+
+#nullable enable
+
 public class SingleBetModel
 {
     [BsonId]
@@ -12,7 +15,6 @@ public class SingleBetModel
     public string BettorId { get; set; }
     public decimal BetAmount { get; set; }
     public decimal BetPayout { get; set; }
-    public int MoneylinePayout { get; set; }
 
     [BsonRepresentation(BsonType.String)]
     public BetType BetType { get; set; }
@@ -23,9 +25,8 @@ public class SingleBetModel
     [BsonRepresentation(BsonType.String)]
     public SingleBetPayoutStatus SingleBetPayoutStatus { get; set; }
 
-    public GameDto Game { get; set; }
-    public int ScoreIdOfGame { get; set; }
-    public string WinnerChosen { get; set; }
-    public double? PointSpread { get; set; }
-    public double? OverUnder { get; set; }
+    public GameDto? Game { get; set; }
+    public string WinnerChosen { get; set; } = string.Empty;
 }
+
+#nullable disable

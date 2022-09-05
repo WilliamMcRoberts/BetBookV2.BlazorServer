@@ -22,8 +22,6 @@ public class GameService : IGameService
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<GameService> _logger;
     private readonly IConfiguration _config;
-    IEnumerable<TeamModel>? teams;
-    IEnumerable<GameModel>? games;
 
 
     public GameService(

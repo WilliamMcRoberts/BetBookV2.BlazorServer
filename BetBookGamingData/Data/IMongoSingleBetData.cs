@@ -2,6 +2,6 @@
 {
     public interface IMongoSingleBetData
     {
-        Task CreateSingleBet(SingleBetModel singleBet);
+        Task CreateSingleBet(SingleBetModel singleBet, UserModel user);
     }
 }

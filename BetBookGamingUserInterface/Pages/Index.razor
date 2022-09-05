@@ -3,6 +3,8 @@
 @inject AuthenticationStateProvider authProvider
 @inject IMongoUserData userData
 @inject IMongoSingleBetData singleBetData
+@inject IMongoSingleBetForParleyData singleBetForParleyData
+@inject IMongoParleyBetSlipData parleyBetSlipData
 @inject IGameService gameService
 
 <PageTitle>Home</PageTitle>
@@ -360,19 +362,42 @@
     public bool ExpandParleyBetSlip { get; set; }
     SingleBetModel? sbId;
     UserModel? loggedInUser;
+    bool betAmountForSinglesBad;
+    bool betAmountForParleyBad;
+    bool gameHasStarted;
 
     protected override async Task OnInitializedAsync()
     {
+        season = DateTime.Now.CalculateSeason();
+        week = season.CalculateWeek(DateTime.Now);
         loggedInUser =  await authProvider.LoadAndVerifyUser(userData);
-        games = await gameService.GetGamesByWeek(SeasonType.REG, 1);
+        games = await gameService.GetGamesByWeek(season, week);
     }
 
     public async Task OnSubmitBetsFromSinglesBetSlip()
     {
         if (loggedInUser is null) return;
 
+        GameDto[] gameCheckArray = 
+            await gameService.GetGamesByWeek(season, week);
+
         foreach(CreateBetModel createBetModel in preBets)
         {
+            if (createBetModel.BetAmount <= 0)
+            {
+                betAmountForSinglesBad = true;
+                return;
+            }
+
+            GameDto game = gameCheckArray.Where(g => g.ScoreID == createBetModel.Game.ScoreID)
+                .FirstOrDefault()!;
+
+            if(game.HasStarted)
+            {
+                gameHasStarted = true;
+                return;
+            }
+
             SingleBetModel newSingleBetModel = new()
             {
                 WinnerChosen =
@@ -386,25 +411,69 @@
 
                 BettorId = loggedInUser.UserId,
                 BetType = createBetModel.BetType,
-                PointSpread = (double)Math.Round((decimal)createBetModel.PointSpread!, 1),
-                OverUnder = (double)Math.Round((decimal)createBetModel.OverUnder!, 1),
-                MoneylinePayout = createBetModel.MoneylinePayout,
                 BetAmount = createBetModel.BetAmount,
                 SingleBetStatus = SingleBetStatus.IN_PROGRESS,
                 SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
-                ScoreIdOfGame = createBetModel.Game.ScoreID
+                Game = game
             };
 
-            await singleBetData.CreateSingleBet(newSingleBetModel);
+            await singleBetData.CreateSingleBet(
+                newSingleBetModel, loggedInUser);
         }
 
         preBets.Clear();
 
     }
 
-    public async Task OnSubmitBetsFromParleyBetSlip(Object args)
+    public async Task OnSubmitBetsFromParleyBetSlip()
     {
+        if (loggedInUser is null) return;
+
+        GameDto[] gameCheckArray = 
+            await gameService.GetGamesByWeek(season, week);
+
+        ParleyBetSlipModel newParleyBetSlipModel = new();
+
+        foreach (CreateBetModel createBetModel in preBets)
+        {
+            GameDto game = gameCheckArray.Where(g => g.ScoreID == createBetModel.Game.ScoreID)
+                .FirstOrDefault()!;
+
+            if (game.HasStarted)
+            {
+                gameHasStarted = true;
+                return;
+            }
+
+            SingleBetForParleyModel newSingleBetForParleyModel = new()
+            {
+                WinnerChosen =
+                    createBetModel.BetType == BetType.OVERUNDER ?
+                    (createBetModel.Winner[0] == 'O' ? "Over" : "Under")
+                    : createBetModel.Winner,
+
+                BettorId = loggedInUser.UserId,
+                BetType = createBetModel.BetType,
+                SingleBetForParleyStatus = SingleBetForParleyStatus.IN_PROGRESS,
+                Game = game
+            };
+
+            await singleBetForParleyData.CreateSingleBetForParley(
+                newSingleBetForParleyModel);
+            newParleyBetSlipModel.SingleBetsForParleyList.Add(newSingleBetForParleyModel);
+        }
+
+        newParleyBetSlipModel.ParleyBetAmount = totalWagerForParley;
+        newParleyBetSlipModel.ParleyBetPayout = Math.Round(totalPayoutForParley, 2);
+        newParleyBetSlipModel.ParleyBetSlipStatus = ParleyBetSlipStatus.IN_PROGRESS;
+        newParleyBetSlipModel.ParleyBetSlipPayoutStatus = ParleyBetSlipPayoutStatus.UNPAID;
+
+        await parleyBetSlipData.CreateParleyBetSlip(
+            newParleyBetSlipModel, loggedInUser);
+
         preBets.Clear();
+        totalWagerForParley = 0;
+        totalPayoutForParley = 0;
     }
 
     //protected override async Task OnAfterRenderAsync(bool firstRender)
