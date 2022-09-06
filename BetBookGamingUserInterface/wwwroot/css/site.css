@@ -88,8 +88,8 @@ a, .btn-link {
     width: 70%;
     border-radius: 15px;
     color: white;
-    background-color: rgb(0,0,0); /*Fallback color */
-    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.5);
     backdrop-filter: blur(10px);
     margin: 0 auto;
 }
