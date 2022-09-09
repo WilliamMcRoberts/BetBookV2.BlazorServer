@@ -26,4 +26,11 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
         _userData.UpdateUser(user);
         return _parleyBetSlips.InsertOneAsync(parleyBetSlip);
     }
+
+    public async Task<List<ParleyBetSlipModel>> GetBettorParleyBetSlips(string userId)
+    {
+        var results = await _parleyBetSlips.FindAsync(b => b.BettorId == userId);
+
+        return results.ToList();
+    }
 }

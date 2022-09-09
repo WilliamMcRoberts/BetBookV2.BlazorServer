@@ -12,6 +12,6 @@ public class CreateBetModel
     public int MoneylinePayout { get; set; }
     public GameDto Game { get; set; }
     public string Winner { get; set; }
-    public float? PointSpread { get; set; }
-    public float? OverUnder { get; set; }
+    public decimal? PointSpread { get; set; }
+    public decimal? OverUnder { get; set; }
 }

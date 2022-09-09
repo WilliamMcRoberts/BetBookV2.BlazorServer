@@ -1,0 +1,227 @@
+﻿@page "/Profile"
+@inject IMongoUserData userData
+@inject AuthenticationStateProvider authProvider
+@inject IMongoParleyBetSlipData parleyBetSlipData
+@inject IMongoSingleBetData singleBetData
+@inject IGameService gameService
+
+<PageTitle>ProfilePage</PageTitle>
+
+<div class="data-grid-container">
+    <SfGrid DataSource="@bettorSingleBets">
+        <GridColumns>
+            <GridColumn Width="125"
+                        HeaderText="Date Of Game"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn Width="200"
+                        HeaderText="Away/Home"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="BetType"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Bet Payout"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Chosen Winner"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+        </GridColumns>
+        <GridTemplates>
+            <RowTemplate>
+                @{
+                    var bet = (context as SingleBetModel);
+                    
+                            <td class="cell" style="text-align:center;">
+                                <div style="padding: .5em .5em;">
+                                    <strong>@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.Date.ToString("M-d")</strong>
+                                </div>
+                                <div style="padding:.5em .5em;">
+                                    <strong>@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.Date.ToString("h:mm")</strong>
+                                </div>
+                            </td>
+                            <td class="cell" style="text-align:center;">
+                                <div class="teams">
+                                    <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                        <img class="team-icon-top-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam</strong>
+                                    </div>
+                                    <div style="padding:.5em .5em;">
+                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam</strong>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="cell" style="text-align:center;">
+
+                                <div>
+                                    <strong>@bet?.BetType</strong>
+                                </div>
+
+                            </td>
+                            <td class="cell" style="text-align:center;">
+
+                                <div>
+                                    <strong>@bet?.BetPayout.ToString("C")</strong>
+                                </div>
+
+                            </td>
+                        <td class="cell" style="text-align:center;">
+                            @if(bet?.BetType == BetType.POINTSPREAD)
+                            {
+                                <div>
+                                <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
+                                </div>
+                            }
+                            else if(bet?.BetType == BetType.OVERUNDER)
+                            {
+                            <div>
+                                <strong>@bet?.WinnerChosen @bet?.OverUnder</strong>
+                            </div>
+                            }
+                            else 
+                            {
+                            <div>
+                                <strong>@bet?.WinnerChosen</strong>
+                            </div>
+                            }
+                                
+
+                            </td>
+                }
+            </RowTemplate>
+        </GridTemplates>
+    </SfGrid>
+</div>
+
+<style>
+    .clickable-cell {
+        padding: .65em .65em;
+        border: 1px solid lightgrey;
+        background-color: palegreen;
+    }
+
+        .clickable-cell:hover {
+            cursor: pointer;
+            background-color: rgb(152, 251, 152, .5);
+        }
+
+    .clickable-cell-active {
+        padding: .65em .65em;
+        border: 1px solid lightgrey;
+        background-color: rgb(255,99,71);
+    }
+
+        .clickable-cell-active:hover {
+            cursor: pointer;
+            background-color: rgb(255,99,71, .5);
+        }
+
+    .cell {
+        border-bottom: 1px solid black;
+        font-size: 10px;
+    }
+
+    .other-button {
+        padding: 1.35em 1.35em;
+        border: 1px solid lightgrey;
+        border-right: 4px solid white;
+        background-color: palegreen;
+        text-align: center;
+    }
+
+        .other-button:hover {
+            background-color: rgb(152, 251, 152, .5);
+            cursor: pointer;
+        }
+
+    .teams {
+    }
+
+        .teams:hover {
+            background-color: rgb(211,211,211, .9);
+            cursor: pointer;
+        }
+
+    .team-name {
+        font-size: 10px;
+    }
+
+    .team-icon-top-row {
+        height: 20px;
+        margin-right: .5em;
+        margin-left: 1.25em;
+    }
+
+    .team-icon-bottom-row {
+        height: 20px;
+        margin-right: .5em;
+    }
+
+    .at-sign {
+        margin-right: .5em;
+        font-size: 11px;
+    }
+
+    .e-headercell {
+        font-family: "Bell MT";
+        color: darkgreen;
+    }
+
+    .close-button {
+        font-size: 8px;
+        margin-top: 1em;
+    }
+
+
+    .bet-info-container {
+        display: flex;
+        justify-content: space-between;
+        margin: .25em auto;
+    }
+
+    .game-bet-type {
+        display: flex;
+        flex-direction: column;
+        font-size: 10px;
+        margin: 0 1em;
+    }
+
+    .data-grid-container {
+        width: 70%;
+        margin: 0 auto;
+    }
+
+</style>
+@code {
+    List<SingleBetModel> bettorSingleBets = new();
+    List<ParleyBetSlipModel> bettorParleyBetSlips = new();
+    List<SingleBetModel> bettorSingleBetsInProgress = new();
+    List<ParleyBetSlipModel> bettorParleyBetsInProgress = new();
+    List<SingleBetModel> bettorSingleBetsWinners = new();
+    List<ParleyBetSlipModel> bettorParleyBetsWinners = new();
+    List<SingleBetModel> bettorSingleBetsPush = new();
+    List<ParleyBetSlipModel> bettorParleyBetsPush = new();
+    UserModel? loggedInUser;
+    GameDto[]? games;
+    int week;
+    SeasonType season;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        loggedInUser = await authProvider.LoadAndVerifyUser(userData);
+        season = DateTime.Now.CalculateSeason();
+        week = season.CalculateWeek(DateTime.Now);
+        games = await gameService.GetGamesByWeek(season, week);
+
+
+        bettorSingleBets = await singleBetData.GetBettorSingleBets(loggedInUser.UserId);
+        bettorParleyBetSlips = await parleyBetSlipData.GetBettorParleyBetSlips(loggedInUser.UserId);
+    }
+
+    private string GetPointsAfterSpreadForDisplay(decimal pointsAfterSpread)
+    {
+        return pointsAfterSpread < 0 ? $"- {pointsAfterSpread.ToString().Trim('-')}" : $"+ {pointsAfterSpread}";
+    }
+}

@@ -73,8 +73,8 @@ public class GameDto
     public int ScoreID { get; set; }
     public string Status { get; set; } = string.Empty;
     public object? GameEndDateTime { get; set; }
-    public object? HomeRotationNumber { get; set; }
-    public object? AwayRotationNumber { get; set; }
+    public dynamic? HomeRotationNumber { get; set; }
+    public dynamic? AwayRotationNumber { get; set; }
     public object? NeutralVenue { get; set; }
     public object? RefereeID { get; set; }
     public int? OverPayout { get; set; }

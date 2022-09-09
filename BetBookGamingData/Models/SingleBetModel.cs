@@ -15,6 +15,11 @@ public class SingleBetModel
     public string BettorId { get; set; }
     public decimal BetAmount { get; set; }
     public decimal BetPayout { get; set; }
+    public decimal? PointSpread { get; set; }
+    public decimal? OverUnder { get; set; }
+    public int MoneylinePayout { get; set; }
+    public int ScoreIdOfGame { get; set; }
+    public decimal PointsAfterSpread { get; set; }
 
     [BsonRepresentation(BsonType.String)]
     public BetType BetType { get; set; }
@@ -25,7 +30,6 @@ public class SingleBetModel
     [BsonRepresentation(BsonType.String)]
     public SingleBetPayoutStatus SingleBetPayoutStatus { get; set; }
 
-    public GameDto? Game { get; set; }
     public string WinnerChosen { get; set; } = string.Empty;
 }
 

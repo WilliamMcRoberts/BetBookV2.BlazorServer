@@ -11,6 +11,7 @@ public class ParleyBetSlipModel
     public List<SingleBetForParleyModel> SingleBetsForParleyList { get; set; } = new();
     public decimal ParleyBetAmount { get; set; }
     public decimal ParleyBetPayout { get; set; }
+    public string BettorId { get; set; }
 
     [BsonRepresentation(BsonType.String)]
     public ParleyBetSlipPayoutStatus ParleyBetSlipPayoutStatus { get; set; }

@@ -18,9 +18,14 @@ public class SingleBetForParleyModel
     [BsonRepresentation(BsonType.String)]
     public SingleBetForParleyStatus SingleBetForParleyStatus { get; set; }
 
+    public decimal? PointSpread { get; set; }
+    public decimal? OverUnder { get; set; }
+    public int MoneylinePayout { get; set; }
     public string BettorId { get; set; }
-    public GameDto? Game { get; set; }
     public string WinnerChosen { get; set; } = string.Empty;
+    public int ScoreIdOfGame { get; set; }
+    public decimal? PointsAfterSpread { get; set; }
+
 }
 
 #nullable disable
