@@ -444,14 +444,6 @@
         gamesStarted = games.Where(g => g.HasStarted == true).ToList();
     }
 
-    private async Task InsertGameIntoDatabase(GameDto gameDto)
-    {
-        GameModel newGame = new()
-        {
-
-        };
-    }
-
     public async Task OnSubmitBetsFromSinglesBetSlip()
     {
         if (loggedInUser is null) return;
