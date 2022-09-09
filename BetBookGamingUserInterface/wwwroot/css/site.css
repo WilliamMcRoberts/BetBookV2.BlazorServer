@@ -2,7 +2,7 @@
 
 html, body {
     font-family: 'Montserrat', sans-serif;
-    background-image: url(../images/FootballNFL2.jpg);
+    background-image: url(../images/NFL-BG2.jpg);
     background-size: cover;
     background-attachment: fixed;
 }
@@ -79,12 +79,12 @@ a, .btn-link {
 .clickable-cell {
     padding: .65em .65em;
     border: 1px solid lightgrey;
-    background-color: palegreen;
+    background-color: rgb(135,206,250);
 }
 
     .clickable-cell:hover {
         cursor: pointer;
-        background-color: rgb(152, 251, 152, .5);
+        background-color: rgb(135,206,250, .5);
     }
 
 .clickable-cell-active {
@@ -109,7 +109,7 @@ a, .btn-link {
 }
 
 .bet-bar {
-    border: 2px solid green;
+    border: 2px solid darkblue;
     width: 70%;
     color: white;
     background-color: rgb(0,0,0);
@@ -129,19 +129,19 @@ a, .btn-link {
     .bet-button:hover {
         background: transparent;
         border: none;
-        color: green;
+        color: darkblue;
     }
 
 .other-button {
     padding: 1.35em 1.35em;
     border: 1px solid lightgrey;
     border-right: 4px solid white;
-    background-color: palegreen;
+    background-color: rgb(135,206,250);
     text-align: center;
 }
 
     .other-button:hover {
-        background-color: rgb(152, 251, 152, .5);
+        background-color: rgb(135,206,250, .5);
         cursor: pointer;
     }
 
@@ -175,7 +175,7 @@ a, .btn-link {
 
 .e-headercell {
     font-family: "Bell MT";
-    color: darkgreen;
+    color: darkblue;
 }
 
 .close-button {
@@ -234,7 +234,7 @@ a, .btn-link {
 .data-grid-container {
     width: 70%;
     margin: 0 auto;
-    border: 2px solid green;
+    border: 2px solid darkblue;
 }
 
 /***********************************
@@ -289,18 +289,13 @@ a, .btn-link {
     background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
     backdrop-filter: blur(10px);
     color: white;
-    border: 2px solid green;
-    border-radius: 15px;
+    border: 2px solid darkblue;
     width: 70%;
     margin: 0 auto;
     padding: 2em 2em;
 }
 
-.about-odds {
-    border: 2px solid green;
-    width: 70%;
-    margin: 0 auto;
-}
+
 
 /**********************************
         Shared
@@ -380,7 +375,7 @@ ul {
     background-color: rgba(0,0,0, 0.5);
     backdrop-filter: blur(10px);
     width: 100%;
-    border-top: 2px solid green;
+    border-top: 2px solid darkblue;
     margin-top: 200px;
     color: white;
 }
@@ -462,7 +457,7 @@ ul {
 }
 
     .game-item-nav:hover {
-        color: green;
+        color: darkblue;
     }
 
 
@@ -478,7 +473,7 @@ ul {
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0, 0.5);
     backdrop-filter: blur(10px);
-    border-bottom: 2px solid green;
+    border-bottom: 2px solid darkblue;
 }
 
 
