@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject NavigationManager navManager
 @inject AuthenticationStateProvider authProvider
+@inject ILogger<Index> logger
 @inject IMongoUserData userData
 @inject IMongoSingleBetData singleBetData
 @inject IMongoSingleBetForParleyData singleBetForParleyData
@@ -516,7 +517,7 @@
             season = DateTime.Now.CalculateSeason();
             week = season.CalculateWeek(DateTime.Now);
             games = await gameService.GetGamesByWeek(season, week);
-            Console.WriteLine($"Timer trigger count: {index}");
+            logger.LogInformation($"Timer trigger count: {index}");
             index++;
         }
     }
