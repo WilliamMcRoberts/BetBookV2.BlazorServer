@@ -1,0 +1,210 @@
+﻿@page "/ParleyProfilePage"
+@inject IMongoUserData userData
+@inject AuthenticationStateProvider authProvider
+@inject IMongoParleyBetSlipData parleyBetSlipData
+@inject IGameService gameService
+
+<PageTitle>ParleyProfilePage</PageTitle>
+
+<div class="bet-bar">
+    <div style="">
+        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.IN_PROGRESS))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">In Progress</button>
+    </div>
+    <div style="">
+        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.WINNER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Winners</button>
+    </div>
+    <div style="">
+        <label style="margin:.35em auto">Parley Bets</label>
+    </div>
+    <div style="">
+        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.PUSH))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Push</button>
+    </div>
+    <div style="">
+        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.LOSER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Losers</button>
+    </div>
+</div>
+<div class="data-grid-container">
+    <SfGrid DataSource="@GetParleyBetList()">
+        <GridColumns>
+            <GridColumn HeaderText="# of Games"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Bet Payout"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Date of Game"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Bets"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Chosen Winner"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+        </GridColumns>
+        <GridTemplates>
+            <RowTemplate>
+                @{
+                    var bet = (context as ParleyBetSlipModel);
+
+                    <td class="cell" style="text-align:center;">
+                        <div style="padding: .5em .5em;">
+                            <strong style="font-size:15px">@bet?.SingleBetsForParleyList.Count</strong>
+                        </div>
+                    </td>
+                    <td class="cell" style="text-align:center;">
+                        <div class="teams">
+                            <strong style="font-size:15px">@bet?.ParleyBetPayout.ToString("C")</strong>
+                        </div>
+                    </td>
+                    <td class="cell" style="text-align:center;">
+                        @foreach (SingleBetForParleyModel singleBetForParley in bet!.SingleBetsForParleyList)
+                        {
+                            <div style="padding: .75em .5em;">
+                                <strong>@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.Date.ToString("M-d")</strong>
+                            </div>
+                            <div style="padding:.75em .5em;">
+                                <strong>@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.Date.ToString("h:mm")</strong>
+                            </div>
+                        }
+
+                    </td>
+                    <td class="cell" style="text-align:center;">
+
+                        @foreach (SingleBetForParleyModel singleBetForParley in bet!.SingleBetsForParleyList)
+                        {
+                            <div style="text-align:center">
+                                <div class="teams">
+                                    <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                        <img class="team-icon-top-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam</strong>
+                                    </div>
+                                    <div style="padding:.5em .5em;">
+                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam</strong>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </td>
+                    <td class="cell">
+                        @foreach (SingleBetForParleyModel singleBetForParley in bet!.SingleBetsForParleyList)
+                        {
+                            <div style="text-align:center">
+                                @if (singleBetForParley?.BetType == BetType.POINTSPREAD)
+                                {
+                                    <div class="cell-parley">
+                                        <strong>@singleBetForParley?.WinnerChosen @GetPointsAfterSpreadForDisplay(singleBetForParley!.PointsAfterSpread)</strong>
+                                    </div>
+                                }
+                                else if (singleBetForParley?.BetType == BetType.OVERUNDER)
+                                {
+                                    <div class="cell-parley">
+                                        <strong>@singleBetForParley?.WinnerChosen @singleBetForParley?.OverUnder</strong>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="cell-parley">
+                                        <strong>@singleBetForParley?.WinnerChosen</strong>
+                                    </div>
+                                }
+                            </div>
+                        }
+                    </td>
+
+                }
+            </RowTemplate>
+        </GridTemplates>
+    </SfGrid>
+</div>
+
+
+@code {
+
+    List<ParleyBetSlipModel> bettorParleyBetSlips = new();
+    List<ParleyBetSlipModel> bettorParleyBetsInProgress = new();
+    List<ParleyBetSlipModel> bettorParleyBetsWinners = new();
+    List<ParleyBetSlipModel> bettorParleyBetsPush = new();
+    List<ParleyBetSlipModel> bettorParleyBetsLosers = new();
+    UserModel? loggedInUser;
+    GameDto[]? games;
+    int week;
+    SeasonType season;
+    bool parleyWinnersGrid;
+    bool parleyInProgressGrid;
+    bool parleyPushGrid;
+    bool parleyLosersGrid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loggedInUser = await authProvider.LoadAndVerifyUser(userData);
+        season = DateTime.Now.CalculateSeason();
+        week = season.CalculateWeek(DateTime.Now);
+        games = await gameService.GetGamesByWeek(season, week);
+
+        bettorParleyBetSlips = await parleyBetSlipData.GetBettorParleyBetSlips(loggedInUser.UserId);
+
+        bettorParleyBetsInProgress =
+            bettorParleyBetSlips.Where(pb =>
+                pb.ParleyBetSlipStatus == ParleyBetSlipStatus.IN_PROGRESS).ToList();
+
+        bettorParleyBetsWinners =
+            bettorParleyBetSlips.Where(pb =>
+                pb.ParleyBetSlipStatus == ParleyBetSlipStatus.WINNER).ToList();
+
+        bettorParleyBetsPush =
+            bettorParleyBetSlips.Where(pb =>
+                pb.ParleyBetSlipStatus == ParleyBetSlipStatus.PUSH).ToList();
+
+        bettorParleyBetsLosers =
+            bettorParleyBetSlips.Where(pb =>
+                pb.ParleyBetSlipStatus == ParleyBetSlipStatus.LOSER).ToList();
+    }
+
+    private string GetPointsAfterSpreadForDisplay(decimal pointsAfterSpread)
+    {
+        return pointsAfterSpread < 0 ? $"- {pointsAfterSpread.ToString().Trim('-')}"
+        : $"+ {pointsAfterSpread}";
+    }
+
+    private void SetParleyDataGrid(ParleyBetSlipStatus parleyBetSlipStatus)
+    {
+        if (parleyBetSlipStatus == ParleyBetSlipStatus.IN_PROGRESS)
+        {
+            parleyInProgressGrid = true;
+            parleyWinnersGrid = false;
+            parleyPushGrid = false;
+            parleyLosersGrid = false;
+        }
+
+        else if (parleyBetSlipStatus == ParleyBetSlipStatus.WINNER)
+        {
+            parleyWinnersGrid = true;
+            parleyInProgressGrid = false;
+            parleyPushGrid = false;
+            parleyLosersGrid = false;
+        }
+
+        else if (parleyBetSlipStatus == ParleyBetSlipStatus.PUSH)
+        {
+            parleyPushGrid = true;
+            parleyInProgressGrid = false;
+            parleyWinnersGrid = false;
+            parleyLosersGrid = false;
+        }
+
+        else if (parleyBetSlipStatus == ParleyBetSlipStatus.LOSER)
+        {
+            parleyLosersGrid = true;
+            parleyInProgressGrid = false;
+            parleyWinnersGrid = false;
+            parleyPushGrid = false;
+        }
+    }
+
+    private List<ParleyBetSlipModel> GetParleyBetList()
+    {
+        return parleyLosersGrid ? bettorParleyBetsLosers : parleyWinnersGrid ? bettorParleyBetsWinners : parleyPushGrid ? bettorParleyBetsPush : bettorParleyBetsInProgress;
+    }
+
+}

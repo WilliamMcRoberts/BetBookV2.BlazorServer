@@ -24,7 +24,7 @@ public class SingleBetForParleyModel
     public string BettorId { get; set; }
     public string WinnerChosen { get; set; } = string.Empty;
     public int ScoreIdOfGame { get; set; }
-    public decimal? PointsAfterSpread { get; set; }
+    public decimal PointsAfterSpread { get; set; }
 
 }
 

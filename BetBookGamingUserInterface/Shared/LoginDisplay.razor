@@ -1,5 +1,6 @@
 ﻿@inject AuthenticationStateProvider authProvider
 @inject IMongoUserData userData
+@inject NavigationManager navManager
 
 <AuthorizeView Policy="Admin">
     <Authorized>
@@ -14,19 +15,19 @@
     <Authorized>
             <SfDropDownButton CssClass="e-caret-hide" Content="About">
                 <DropDownMenuItems>
-                    <DropDownMenuItem Url="About" Text="Odds"></DropDownMenuItem>
-                    <DropDownMenuItem Url="About" Text="Bet Book"></DropDownMenuItem>
+                    <DropDownMenuItem Url="About" Text="Bet Book V2"></DropDownMenuItem>
                 </DropDownMenuItems>
             </SfDropDownButton>
             <SfDropDownButton CssClass="e-caret-hide" Content="Place Wager">
                 <DropDownMenuItems>
-                    <DropDownMenuItem Url="/" Text="Single"></DropDownMenuItem>
-                    <DropDownMenuItem Url="CreateParleyBet" Text="Parley"></DropDownMenuItem>
+                    <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
                 </DropDownMenuItems>
             </SfDropDownButton>
             <SfDropDownButton  CssClass="e-caret-hide" Content="Profile">
                 <DropDownMenuItems>
-                    <DropDownMenuItem Url="Profile" Text="Single Bets"></DropDownMenuItem>
+                    <DropDownMenuItem Url="SinglesProfilePage" Text="Single Bets"></DropDownMenuItem>
+                    <DropDownMenuItem Url="ParleyProfilePage" Text="Parley Bets"></DropDownMenuItem>
+
                 </DropDownMenuItems>
             </SfDropDownButton>
             <SfDropDownButton CssClass="e-caret-hide" Content="Account">

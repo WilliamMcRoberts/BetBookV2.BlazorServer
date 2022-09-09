@@ -1,0 +1,202 @@
+﻿@page "/SinglesProfilePage"
+@inject IMongoUserData userData
+@inject AuthenticationStateProvider authProvider
+@inject IMongoSingleBetData singleBetData
+@inject IGameService gameService
+
+<PageTitle>SinglesProfilePage</PageTitle>
+
+<div class="bet-bar">
+    <div style="">
+        <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.IN_PROGRESS))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">In Progress</button>
+    </div>
+    <div style="">
+        <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.WINNER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Winners</button>
+    </div>
+    <div style="">
+        <label style="margin:.35em auto">Single Bets</label>
+    </div>
+    <div style="">
+        <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.PUSH))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Push</button>
+    </div>
+    <div style="">
+        <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.LOSER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Losers</button>
+    </div>
+</div>
+
+<div class="data-grid-container">
+    <SfGrid DataSource="@GetSingleBetList()">
+        <GridColumns>
+            <GridColumn 
+                        HeaderText="Date Of Game"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn 
+                        HeaderText="Away/Home"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="BetType"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Bet Payout"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+            <GridColumn HeaderText="Chosen Winner"
+                        TextAlign="TextAlign.Center">
+            </GridColumn>
+        </GridColumns>
+        <GridTemplates>
+            <RowTemplate>
+                @{
+                    var bet = (context as SingleBetModel);
+                    
+                    <td class="cell" style="text-align:center;">
+                        <div style="padding: .5em .5em;">
+                            <strong>@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.Date.ToString("M-d")</strong>
+                        </div>
+                        <div style="padding:.5em .5em;">
+                            <strong>@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.Date.ToString("h:mm")</strong>
+                        </div>
+                    </td>
+                    <td class="cell" style="text-align:center;">
+                        <div class="teams">
+                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                <img class="team-icon-top-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam</strong>
+                            </div>
+                            <div style="padding:.5em .5em;">
+                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam</strong>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="cell" style="text-align:center;">
+
+                        <div>
+                            <strong>@bet?.BetType</strong>
+                        </div>
+
+                    </td>
+                    <td class="cell" style="text-align:center;">
+
+                        <div>
+                            <strong>@bet?.BetPayout.ToString("C")</strong>
+                        </div>
+
+                    </td>
+                    <td class="cell" style="text-align:center;">
+                        @if(bet?.BetType == BetType.POINTSPREAD)
+                        {
+                            <div>
+                            <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
+                            </div>
+                        }
+                        else if(bet?.BetType == BetType.OVERUNDER)
+                        {
+                            <div>
+                                <strong>@bet?.WinnerChosen @bet?.OverUnder</strong>
+                            </div>
+                        }
+                        else 
+                        {
+                            <div>
+                                <strong>@bet?.WinnerChosen</strong>
+                            </div>
+                        }
+                    </td>
+                }
+            </RowTemplate>
+        </GridTemplates>
+    </SfGrid>
+</div>
+
+
+@code {
+
+    List<SingleBetModel> bettorSingleBets = new();
+    List<SingleBetModel> bettorSingleBetsInProgress = new();
+    List<SingleBetModel> bettorSingleBetsWinners = new();
+    List<SingleBetModel> bettorSingleBetsPush = new();
+    List<SingleBetModel> bettorSingleBetsLosers = new();
+    UserModel? loggedInUser;
+    GameDto[]? games;
+    int week;
+    SeasonType season;
+    bool singleWinnersGrid;
+    bool singleInProgressGrid;
+    bool singlePushGrid;
+    bool singleLosersGrid;
+
+    protected override async Task OnInitializedAsync()
+    {
+        loggedInUser = await authProvider.LoadAndVerifyUser(userData);
+        season = DateTime.Now.CalculateSeason();
+        week = season.CalculateWeek(DateTime.Now);
+        games = await gameService.GetGamesByWeek(season, week);
+
+        bettorSingleBets = await singleBetData.GetBettorSingleBets(loggedInUser.UserId);
+
+        bettorSingleBetsInProgress =
+            bettorSingleBets.Where(pb =>
+                pb.SingleBetStatus == SingleBetStatus.IN_PROGRESS).ToList();
+
+        bettorSingleBetsWinners =
+            bettorSingleBets.Where(pb =>
+                pb.SingleBetStatus == SingleBetStatus.WINNER).ToList();
+
+        bettorSingleBetsPush =
+            bettorSingleBets.Where(pb =>
+                pb.SingleBetStatus == SingleBetStatus.PUSH).ToList();
+
+        bettorSingleBetsLosers =
+            bettorSingleBets.Where(pb =>
+                pb.SingleBetStatus == SingleBetStatus.LOSER).ToList();
+    }
+
+    private string GetPointsAfterSpreadForDisplay(decimal pointsAfterSpread)
+    {
+        return pointsAfterSpread < 0 ? $"- {pointsAfterSpread.ToString().Trim('-')}" 
+        : $"+ {pointsAfterSpread}";
+    }
+
+    private void SetSingleDataGrid(SingleBetStatus singleBetStatus)
+    {
+        if (singleBetStatus == SingleBetStatus.IN_PROGRESS)
+        {
+            singleInProgressGrid = true;
+            singleWinnersGrid = false;
+            singlePushGrid = false;
+            singleLosersGrid = false;
+        }
+
+        else if (singleBetStatus == SingleBetStatus.WINNER)
+        {
+            singleWinnersGrid = true;
+            singleInProgressGrid = false;
+            singlePushGrid = false;
+            singleLosersGrid = false;
+        }
+
+        else if (singleBetStatus == SingleBetStatus.PUSH)
+        {
+            singlePushGrid = true;
+            singleInProgressGrid = false;
+            singleWinnersGrid = false;
+            singleLosersGrid = false;
+        }
+
+        else if (singleBetStatus == SingleBetStatus.LOSER)
+        {
+            singleLosersGrid = true;
+            singleInProgressGrid = false;
+            singleWinnersGrid = false;
+            singlePushGrid = false;
+        }
+    }
+
+    private List<SingleBetModel> GetSingleBetList()
+    {
+        return singleLosersGrid ? bettorSingleBetsLosers 
+                : singleWinnersGrid ? bettorSingleBetsWinners 
+                : singlePushGrid ? bettorSingleBetsPush 
+                : bettorSingleBetsInProgress;
+    }
+}
