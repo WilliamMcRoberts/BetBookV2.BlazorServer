@@ -90,7 +90,7 @@ a, .btn-link {
 .clickable-cell-active {
     padding: .65em .65em;
     border: 1px solid lightgrey;
-    background-color: rgb(255,99,71);
+    background-color: rgb(255,99,71, .8);
 }
 
     .clickable-cell-active:hover {
@@ -557,8 +557,6 @@ ul {
         width: 95%;
     }
 }
-
-
 
 @media(min-width: 700px) {
 
