@@ -76,6 +76,7 @@ a, .btn-link {
         Home And Profile Pages
 *********************************************/
 
+
 .clickable-cell {
     padding: .65em .65em;
     border: 1px solid lightgrey;
@@ -258,19 +259,6 @@ a, .btn-link {
 .e-accordion .e-acrdn-item .e-acrdn-header .e-toggle-icon .e-icons {
     color: rgb(255,99,71);
 }
-
-.e-accordion .e-acrdn-item .e-acrdn-header {
-}
-
-    /*Hover State Of The Accordion*/
-    .e-accordion .e-acrdn-item .e-acrdn-header:hover {
-    }
-
-/*Selected Accordion Item Header*/
-.e-accordion .e-acrdn-item.e-select.e-active > .e-acrdn-header,
-.e-accordion .e-acrdn-item.e-select.e-item-focus > .e-acrdn-header {
-}
-
     /*Selected Accordion Item Header Text*/
     .e-accordion .e-acrdn-item.e-select.e-active > .e-acrdn-header .e-acrdn-header-content,
     .e-accordion .e-acrdn-item.e-select.e-item-focus > .e-acrdn-header .e-acrdn-header-content {
