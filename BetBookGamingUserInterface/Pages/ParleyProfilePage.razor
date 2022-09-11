@@ -204,7 +204,10 @@
 
     private List<ParleyBetSlipModel> GetParleyBetList()
     {
-        return parleyLosersGrid ? bettorParleyBetsLosers : parleyWinnersGrid ? bettorParleyBetsWinners : parleyPushGrid ? bettorParleyBetsPush : bettorParleyBetsInProgress;
+        return parleyLosersGrid ? bettorParleyBetsLosers 
+                : parleyWinnersGrid ? bettorParleyBetsWinners 
+                : parleyPushGrid ? bettorParleyBetsPush 
+                : bettorParleyBetsInProgress;
     }
 
 }
