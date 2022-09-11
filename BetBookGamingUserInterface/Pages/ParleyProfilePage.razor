@@ -54,7 +54,7 @@
                     </td>
                     <td class="cell" style="text-align:center;">
                         <div class="teams">
-                            <strong style="font-size:15px">@bet?.ParleyBetPayout.ToString("C")</strong>
+                            <strong style="font-size:15px">@bet?.ParleyBetPayout.ToString("#,##0.00")</strong>
                         </div>
                     </td>
                     <td class="cell" style="text-align:center;">
@@ -76,10 +76,10 @@
                             <div style="text-align:center">
                                 <div class="teams">
                                     <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                        <img class="team-icon-top-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam</strong>
+                                        <img class="team-icon-top-row" src="@string.Concat($"images/{games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam</strong>
                                     </div>
                                     <div style="padding:.5em .5em;">
-                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam</strong>
+                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == singleBetForParley?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam</strong>
                                     </div>
                                 </div>
                             </div>
