@@ -39,7 +39,7 @@
                                             </div>
                                             <div class="winner-moneyline-container">
                                                 <strong class="winner-moneyline">@GetWinnerSummary(createBetModel)</strong>
-                                                <strong class="winner-moneyline">@GetMoneyLineForDisplay(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType))</strong>
+                                                <strong class="winner-moneyline">@GetMoneylineForDisplay(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType))</strong>
                                             </div>
                                             <div class="bet-amount-input-container">
                                                 <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
@@ -73,7 +73,7 @@
                                             </div>
                                             <div class="winner-moneyline-container">
                                                 <strong class="winner-moneyline">@GetWinnerSummary(createBetModel)</strong>
-                                                <strong class="winner-moneyline">@GetMoneyLineForDisplay(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType))</strong>
+                                                <strong class="winner-moneyline">@GetMoneylineForDisplay(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType))</strong>
                                             </div>
                                             <div class="bet-amount-input-container">
                                                 <input class="bet-amount-input-disabled" disabled type="number" placeholder="0" />
@@ -164,7 +164,7 @@
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)">
                                                                     <div style="display:flex;justify-content:space-evenly;">
                                                                         <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game!, game!.AwayTeam)</strong>
-                                                                        <strong>@GetMoneyLineForDisplay(game?.PointSpreadAwayTeamMoneyLine)</strong>
+                                                                        <strong>@GetMoneylineForDisplay(game?.PointSpreadAwayTeamMoneyLine)</strong>
                                                                     </div>
                                                                 </div>
 
@@ -172,7 +172,7 @@
                                                 class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)">
                                                                     <div style="display:flex;justify-content:space-evenly;">
                                                                         <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game!, game!.HomeTeam)</strong>
-                                                                        <strong>@GetMoneyLineForDisplay(game?.PointSpreadHomeTeamMoneyLine)</strong>
+                                                                        <strong>@GetMoneylineForDisplay(game?.PointSpreadHomeTeamMoneyLine)</strong>
                                                                     </div>
                                                                 </div>
 
@@ -181,12 +181,12 @@
 
                                                                 <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))"
                             class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)">
-                                                                    <strong>@GetMoneyLineForDisplay(game?.AwayTeamMoneyLine)</strong>
+                                                                    <strong>@GetMoneylineForDisplay(game?.AwayTeamMoneyLine)</strong>
                                                                 </div>
 
                                                                 <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))"
                                     class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE)">
-                                                                    <strong>@GetMoneyLineForDisplay(game?.HomeTeamMoneyLine)</strong>
+                                                                    <strong>@GetMoneylineForDisplay(game?.HomeTeamMoneyLine)</strong>
                                                                 </div>
 
                                                             </td>
@@ -196,7 +196,7 @@
                                 class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
                                                                     <div style="display:flex;justify-content:space-evenly;">
                                                                         <strong>Over @game?.OverUnder</strong>
-                                                                        <strong>@GetMoneyLineForDisplay(game?.OverPayout)</strong>
+                                                                        <strong>@GetMoneylineForDisplay(game?.OverPayout)</strong>
                                                                     </div>
                                                                 </div>
 
@@ -204,7 +204,7 @@
                                     class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
                                                                     <div style="display:flex;justify-content:space-evenly;">
                                                                         <strong>Under @game?.OverUnder</strong>
-                                                                        <strong>@GetMoneyLineForDisplay(game?.UnderPayout)</strong>
+                                                                        <strong>@GetMoneylineForDisplay(game?.UnderPayout)</strong>
                                                                     </div>
                                                                 </div>
 
@@ -571,7 +571,7 @@
                     : "- 0");
     }
 
-    private string GetMoneyLineForDisplay(int? moneyline)
+    private string GetMoneylineForDisplay(int? moneyline)
     {
         return moneyline > 0 ? $"+ {moneyline}"
                : $"- {moneyline?.ToString().Trim('-')}";
