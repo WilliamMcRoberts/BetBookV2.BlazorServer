@@ -1,4 +1,5 @@
 ﻿
+
 namespace BetBookGamingData.DbAccess;
 
 public class MongoDbConnection : IMongoDbConnection

@@ -1,7 +1,4 @@
-﻿using BetBookGamingData.Models;
-using MongoDB.Driver;
-
-namespace BetBookGamingData.DbAccess
+﻿namespace BetBookGamingData.DbAccess
 {
     public interface IMongoDbConnection
     {
@@ -9,6 +6,8 @@ namespace BetBookGamingData.DbAccess
         string DatabaseName { get; }
         IMongoCollection<GameModel> GamesCollection { get; }
         string GamesCollectionName { get; }
+        IMongoCollection<HouseAccountModel> HouseAccountCollection { get; }
+        string HouseAccountCollectionName { get; }
         IMongoCollection<ParleyBetSlipModel> ParleyBetSlipsCollection { get; }
         string ParleyBetSlipsCollectionName { get; }
         IMongoCollection<SingleBetModel> SingleBetsCollection { get; }
