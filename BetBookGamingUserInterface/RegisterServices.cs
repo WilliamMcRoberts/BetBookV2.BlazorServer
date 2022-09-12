@@ -30,6 +30,9 @@ public static class RegisterServices
             });
         });
 
+        builder.Services.AddHostedService<UpdateSingleBetsTimer>();
+        builder.Services.AddHostedService<UpdateParleyBetsTimer>();
+
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor().AddMicrosoftIdentityConsentHandler();
         builder.Services.AddMemoryCache();

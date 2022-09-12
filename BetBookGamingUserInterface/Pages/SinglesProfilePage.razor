@@ -124,6 +124,8 @@
     bool singleInProgressGrid;
     bool singlePushGrid;
     bool singleLosersGrid;
+    List<GameDto> gamesFinished = new();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -131,6 +133,8 @@
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
         games = await gameService.GetGamesByWeek(season, week);
+        gamesFinished = games.Where(g => g.IsOver == true).ToList();
+
 
         bettorSingleBets = await singleBetData.GetBettorSingleBets(loggedInUser.UserId);
 
@@ -149,6 +153,16 @@
         bettorSingleBetsLosers =
             bettorSingleBets.Where(pb =>
                 pb.SingleBetStatus == SingleBetStatus.LOSER).ToList();
+    }
+
+    private async Task CheckSingleBetsForWinners()
+    {
+        foreach(GameDto game in gamesFinished)
+        {
+            List<SingleBetModel> singleBetsOnGame = 
+                bettorSingleBetsInProgress.Where(b => b.ScoreIdOfGame == game.ScoreID).ToList();
+
+        }
     }
 
     private string GetPointsAfterSpreadForDisplay(decimal pointsAfterSpread)

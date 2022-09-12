@@ -56,10 +56,10 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
                     : user.AccountBalance;
 
         if (parleyBetSlip.ParleyBetSlipStatus != ParleyBetSlipStatus.LOSER)
-        {
-            await _userData.UpdateUser(user);
             parleyBetSlip.ParleyBetSlipPayoutStatus = ParleyBetSlipPayoutStatus.PAID;
-        }
+
+        await _userData.UpdateUser(user);
+
 
         var filter = Builders<ParleyBetSlipModel>.Filter.Eq(
             "ParleyBetSlipId", parleyBetSlip.ParleyBetSlipId);

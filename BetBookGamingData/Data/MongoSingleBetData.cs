@@ -59,12 +59,10 @@ public class MongoSingleBetData : IMongoSingleBetData
                     user.AccountBalance + singleBet.BetAmount
                     : user.AccountBalance;
 
-
         if (singleBet.SingleBetStatus != SingleBetStatus.LOSER)
-        {
-            await _userData.UpdateUser(user);
             singleBet.SingleBetPayoutStatus = SingleBetPayoutStatus.PAID;
-        }
+
+        await _userData.UpdateUser(user);
 
         var filter = Builders<SingleBetModel>.Filter.Eq(
             "SingleBetId", singleBet.SingleBetId);
