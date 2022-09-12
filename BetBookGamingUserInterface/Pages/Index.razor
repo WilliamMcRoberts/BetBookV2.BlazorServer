@@ -4,7 +4,6 @@
 @inject ILogger<Index> logger
 @inject IMongoUserData userData
 @inject IMongoSingleBetData singleBetData
-@inject IMongoSingleBetForParleyData singleBetForParleyData
 @inject IMongoParleyBetSlipData parleyBetSlipData
 @inject IGameService gameService
 
@@ -251,7 +250,6 @@
     public bool DisableParleyBetSlip { get; set; }
     public bool ExpandSinglesBetSlip { get; set; }
     public bool ExpandParleyBetSlip { get; set; }
-    SingleBetModel? sbId;
     UserModel? loggedInUser;
     string startedGameDescription = string.Empty;
     bool betAmountForSinglesBad;
@@ -372,8 +370,6 @@
 
             };
 
-            await singleBetForParleyData.CreateSingleBetForParley(
-                newSingleBetForParleyModel);
             newParleyBetSlipModel.SingleBetsForParleyList.Add(newSingleBetForParleyModel);
         }
 

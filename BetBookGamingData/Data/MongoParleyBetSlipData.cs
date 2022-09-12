@@ -7,11 +7,11 @@ namespace BetBookGamingData.Data;
 public class MongoParleyBetSlipData : IMongoParleyBetSlipData
 {
     private readonly IMongoCollection<ParleyBetSlipModel> _parleyBetSlips;
-    private readonly ILogger<MongoSingleBetForParleyData> _logger;
+    private readonly ILogger<MongoParleyBetSlipData> _logger;
     private readonly IMongoUserData _userData;
 
     public MongoParleyBetSlipData(
-        IMongoDbConnection mongoDbConnection, ILogger<MongoSingleBetForParleyData> logger, IMongoUserData userData)
+        IMongoDbConnection mongoDbConnection, ILogger<MongoParleyBetSlipData> logger, IMongoUserData userData)
     {
         _parleyBetSlips = mongoDbConnection.ParleyBetSlipsCollection;
         _logger = logger;
