@@ -19,14 +19,14 @@ public class MongoSingleBetData : IMongoSingleBetData
         _userData = userData;
     }
 
-    public Task CreateSingleBet(SingleBetModel singleBet, UserModel user)
+    public async Task CreateSingleBet(SingleBetModel singleBet, UserModel user)
     {
         _logger.LogInformation("Calling Create Single Bet / MongoSingleBetData");
 
         user.AccountBalance -= singleBet.BetAmount;
 
-        _userData.UpdateUser(user);
-        return _singleBets.InsertOneAsync(singleBet);
+        await _userData.UpdateUser(user);
+        await _singleBets.InsertOneAsync(singleBet);
     }
 
     public async Task<List<SingleBetModel>> GetBettorSingleBets(string userId)
@@ -34,5 +34,42 @@ public class MongoSingleBetData : IMongoSingleBetData
         var results = await _singleBets.FindAsync(b => b.BettorId == userId);
 
         return results.ToList();
+    }
+
+    public async Task<List<SingleBetModel>> GetAllSingleBetsOnGameInProgress(int scoreIdOfGame)
+    {
+        var results =
+            await _singleBets.FindAsync(
+                b => b.ScoreIdOfGame == scoreIdOfGame && b.SingleBetStatus == SingleBetStatus.IN_PROGRESS);
+
+        return results.ToList();
+    }
+
+    public async Task UpdateSingleBet(SingleBetModel singleBet)
+    {
+        _logger.LogInformation("Calling Update Single Bet / MongoSingleBetData");
+
+        UserModel user =
+                 await _userData.GetCurrentUserByUserId(singleBet.BettorId);
+
+        user.AccountBalance =
+                singleBet.SingleBetStatus == SingleBetStatus.WINNER ?
+                    user.AccountBalance + singleBet.BetPayout :
+                singleBet.SingleBetStatus == SingleBetStatus.PUSH ?
+                    user.AccountBalance + singleBet.BetAmount
+                    : user.AccountBalance;
+
+
+        if (singleBet.SingleBetStatus != SingleBetStatus.LOSER)
+        {
+            await _userData.UpdateUser(user);
+            singleBet.SingleBetPayoutStatus = SingleBetPayoutStatus.PAID;
+        }
+
+        var filter = Builders<SingleBetModel>.Filter.Eq(
+            "SingleBetId", singleBet.SingleBetId);
+
+        await _singleBets.ReplaceOneAsync(
+            filter, singleBet, new ReplaceOptions { IsUpsert = true });
     }
 }

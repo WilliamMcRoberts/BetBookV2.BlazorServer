@@ -49,7 +49,7 @@
                                 }
                                 <div style="text-align:center;margin:1em 1em;">
                                     <strong>Total Singles Payout</strong>
-                                    <strong>@GetPayoutForTotalBetsSingles().ToString("C")</strong>
+                                    <strong>$@GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
                                 </div>
                                 
                                 <div style="text-align: center">
@@ -90,7 +90,7 @@
 
                                     <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
                                         <strong>Total Parley Payout</strong>
-                                        <strong>@GetPayoutForTotalBetsParley().ToString("C")</strong>
+                                        <strong>$@GetPayoutForTotalBetsParley().ToString("#,##0.00")</strong>
                                     </div>
 
                                 </div>
@@ -244,7 +244,7 @@
     Dictionary<string, GameDto> winnersAndGamesForPointSpreadDictionary = new();
     Dictionary<string, GameDto> winnersAndGamesForMoneylineDictionary = new();
     Dictionary<string, GameDto> winnersAndGamesForOverUnderDictionary = new();
-    List<GameDto> gamesStarted = new();
+    List<GameDto> gamesFinished = new();
     List<CreateBetModel> preBets = new();
     decimal totalWagerForParley;
     decimal totalPayoutForParley;
@@ -268,7 +268,184 @@
         week = season.CalculateWeek(DateTime.Now);
         loggedInUser =  await authProvider.LoadAndVerifyUser(userData);
         games = await gameService.GetGamesByWeek(season, week);
-        gamesStarted = games.Where(g => g.HasStarted == true).ToList();
+        gamesFinished = games.Where(g => g.IsOver == true).ToList();
+        await CheckForSingleBetWinners(gamesFinished);
+    }
+
+    private async Task CheckForSingleBetWinners(List<GameDto> gamesFinished)
+    {
+        List<ParleyBetSlipModel> parleyBetSlipsInProgress =
+                await parleyBetSlipData.GetAllParleyBetSlipsInProgress();
+
+        foreach (GameDto game in gamesFinished)
+        {
+            List<SingleBetModel> singleBetsOnGame = 
+                await singleBetData.GetAllSingleBetsOnGameInProgress(game.ScoreID);
+            List<SingleBetForParleyModel> singleBetsForParleyOnGame = 
+                await singleBetForParleyData.GetAllSingleBetsForParleyOnGameInProgress(game.ScoreID);
+
+
+            foreach(SingleBetModel singleBetModel in singleBetsOnGame)
+            {
+                await CheckOutcomeOfSingleBet(singleBetModel, game);
+            }
+
+            foreach (SingleBetForParleyModel singleBetForParleyModel in singleBetsForParleyOnGame)
+            {
+                await CheckOutcomeOfSingleBetForParley(singleBetForParleyModel, game);
+            }
+        }
+    }
+
+
+    private async Task CheckOutcomeOfSingleBetForParley(SingleBetForParleyModel singleBetForParley, GameDto game)
+    {
+        bool getHomeScore = !decimal.TryParse(game.HomeScore?.ToString(), out var homeScore);
+        bool getAwayScore = !decimal.TryParse(game.AwayScore?.ToString(), out var awayScore);
+        decimal totalScore = homeScore + awayScore;
+
+        if (singleBetForParley.BetType == BetType.MONEYLINE)
+        {
+            string winningTeam = homeScore > awayScore ? game.HomeTeam
+                    : homeScore < awayScore ? game.AwayTeam
+                    : string.Empty;
+
+            singleBetForParley.SingleBetForParleyStatus =
+                    singleBetForParley.WinnerChosen == winningTeam ? SingleBetForParleyStatus.WINNER
+                    : winningTeam == string.Empty ? SingleBetForParleyStatus.PUSH
+                    : SingleBetForParleyStatus.LOSER;
+
+            await singleBetForParleyData.UpdateSingleBetForParley(singleBetForParley);
+            return;
+        }
+
+        else if (singleBetForParley.BetType == BetType.POINTSPREAD)
+        {
+            string winningTeam = string.Empty;
+
+            if (singleBetForParley.WinnerChosen == game.HomeTeam)
+            {
+                decimal finalHomeScore = singleBetForParley.PointsAfterSpread + homeScore;
+
+                winningTeam = finalHomeScore > awayScore ? game.HomeTeam
+                    : finalHomeScore < awayScore ? game.AwayTeam
+                    : string.Empty;
+            }
+
+            else if (singleBetForParley.WinnerChosen == game.AwayTeam)
+            {
+                decimal finalAwayScore = singleBetForParley.PointsAfterSpread + awayScore;
+
+                winningTeam = homeScore > finalAwayScore ? game.HomeTeam
+                    : homeScore < finalAwayScore ? game.AwayTeam
+                    : string.Empty;
+            }
+
+            singleBetForParley.SingleBetForParleyStatus =
+                    singleBetForParley.WinnerChosen == winningTeam ? SingleBetForParleyStatus.WINNER
+                    : winningTeam == string.Empty ? SingleBetForParleyStatus.PUSH
+                    : SingleBetForParleyStatus.LOSER;
+
+            await singleBetForParleyData.UpdateSingleBetForParley(singleBetForParley);
+            return;
+        }
+
+        else if (singleBetForParley.BetType == BetType.OVERUNDER)
+        {
+            if (singleBetForParley.WinnerChosen[0] == 'O')
+            {
+                singleBetForParley.SingleBetForParleyStatus =
+                    totalScore > singleBetForParley.OverUnder ? SingleBetForParleyStatus.WINNER
+                    : totalScore < singleBetForParley.OverUnder ? SingleBetForParleyStatus.LOSER
+                    : SingleBetForParleyStatus.PUSH;
+
+                await singleBetForParleyData.UpdateSingleBetForParley(singleBetForParley);
+                return;
+            }
+
+            singleBetForParley.SingleBetForParleyStatus =
+                    totalScore < singleBetForParley.OverUnder ? SingleBetForParleyStatus.WINNER
+                    : totalScore > singleBetForParley.OverUnder ? SingleBetForParleyStatus.LOSER
+                    : SingleBetForParleyStatus.PUSH;
+
+            await singleBetForParleyData.UpdateSingleBetForParley(singleBetForParley);
+            return;
+        }
+    }
+
+    private async Task CheckOutcomeOfSingleBet(SingleBetModel singleBetModel, GameDto game)
+    {
+        bool getHomeScore = !decimal.TryParse(game.HomeScore?.ToString(), out var homeScore);
+        bool getAwayScore = !decimal.TryParse(game.AwayScore?.ToString(), out var awayScore);
+        decimal totalScore = homeScore + awayScore;
+
+        if(singleBetModel.BetType == BetType.MONEYLINE)
+        {
+            string winningTeam = homeScore > awayScore ? game.HomeTeam 
+                    : homeScore < awayScore ? game.AwayTeam 
+                    : string.Empty;
+
+            singleBetModel.SingleBetStatus = 
+                    singleBetModel.WinnerChosen == winningTeam ? SingleBetStatus.WINNER 
+                    : winningTeam == string.Empty ? SingleBetStatus.PUSH 
+                    : SingleBetStatus.LOSER;
+
+            await singleBetData.UpdateSingleBet(singleBetModel);
+            return;
+        }
+
+        else if (singleBetModel.BetType == BetType.POINTSPREAD)
+        {
+            string winningTeam = string.Empty;
+
+            if(singleBetModel.WinnerChosen == game.HomeTeam)
+            {
+                decimal finalHomeScore = singleBetModel.PointsAfterSpread + homeScore;
+
+                winningTeam = finalHomeScore > awayScore ? game.HomeTeam
+                    : finalHomeScore < awayScore ? game.AwayTeam
+                    : string.Empty;
+            }
+
+            else if (singleBetModel.WinnerChosen == game.AwayTeam)
+            {
+                decimal finalAwayScore = singleBetModel.PointsAfterSpread + awayScore;
+
+                winningTeam = homeScore > finalAwayScore ? game.HomeTeam
+                    : homeScore < finalAwayScore ? game.AwayTeam
+                    : string.Empty;
+            }
+
+            singleBetModel.SingleBetStatus =
+                    singleBetModel.WinnerChosen == winningTeam ? SingleBetStatus.WINNER
+                    : winningTeam == string.Empty ? SingleBetStatus.PUSH
+                    : SingleBetStatus.LOSER;
+
+            await singleBetData.UpdateSingleBet(singleBetModel);
+            return;
+        }
+
+        else if(singleBetModel.BetType == BetType.OVERUNDER)
+        {
+            if(singleBetModel.WinnerChosen[0] == 'O')
+            {
+                singleBetModel.SingleBetStatus = 
+                    totalScore > singleBetModel.OverUnder ? SingleBetStatus.WINNER 
+                    : totalScore < singleBetModel.OverUnder ? SingleBetStatus.LOSER 
+                    : SingleBetStatus.PUSH;
+
+                await singleBetData.UpdateSingleBet(singleBetModel);
+                return;
+            }
+
+            singleBetModel.SingleBetStatus =
+                    totalScore < singleBetModel.OverUnder ? SingleBetStatus.WINNER
+                    : totalScore > singleBetModel.OverUnder ? SingleBetStatus.LOSER
+                    : SingleBetStatus.PUSH;
+
+            await singleBetData.UpdateSingleBet(singleBetModel);
+            return;
+        }
     }
 
     public async Task OnSubmitBetsFromSinglesBetSlip()

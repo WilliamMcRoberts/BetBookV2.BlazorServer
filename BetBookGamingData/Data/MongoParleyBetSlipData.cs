@@ -1,4 +1,5 @@
 ﻿
+using BetBookGamingData.Models;
 using Microsoft.Extensions.Logging;
 
 namespace BetBookGamingData.Data;
@@ -32,5 +33,38 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
         var results = await _parleyBetSlips.FindAsync(b => b.BettorId == userId);
 
         return results.ToList();
+    }
+
+    public async Task<List<ParleyBetSlipModel>> GetAllParleyBetSlipsInProgress()
+    {
+        var results = await _parleyBetSlips.FindAsync(b => b.ParleyBetSlipStatus == ParleyBetSlipStatus.IN_PROGRESS);
+
+        return results.ToList();
+    }
+
+    public async Task UpdateParleyBetSlip(ParleyBetSlipModel parleyBetSlip)
+    {
+        _logger.LogInformation("Calling Update Parley Bet Slip / MongoParleyBetSlipData");
+
+        UserModel user = await _userData.GetCurrentUserByUserId(parleyBetSlip.BettorId);
+
+        user.AccountBalance =
+                parleyBetSlip.ParleyBetSlipStatus == ParleyBetSlipStatus.WINNER ?
+                    user.AccountBalance + parleyBetSlip.ParleyBetPayout :
+                parleyBetSlip.ParleyBetSlipStatus == ParleyBetSlipStatus.PUSH ?
+                    user.AccountBalance + parleyBetSlip.ParleyBetAmount
+                    : user.AccountBalance;
+
+        if (parleyBetSlip.ParleyBetSlipStatus != ParleyBetSlipStatus.LOSER)
+        {
+            await _userData.UpdateUser(user);
+            parleyBetSlip.ParleyBetSlipPayoutStatus = ParleyBetSlipPayoutStatus.PAID;
+        }
+
+        var filter = Builders<ParleyBetSlipModel>.Filter.Eq(
+            "ParleyBetSlipId", parleyBetSlip.ParleyBetSlipId);
+
+        await _parleyBetSlips.ReplaceOneAsync(
+            filter, parleyBetSlip, new ReplaceOptions { IsUpsert = true });
     }
 }
