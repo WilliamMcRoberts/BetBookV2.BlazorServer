@@ -100,7 +100,11 @@ a, .btn-link {
     }
 
 .cell {
-    border-bottom: 1px dotted black;
+    border-bottom: 1px dashed black;
+    font-size: 10px;
+}
+
+.bottom-row-cell {
     font-size: 10px;
 }
 

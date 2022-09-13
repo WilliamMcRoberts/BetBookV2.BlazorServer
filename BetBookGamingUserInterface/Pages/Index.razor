@@ -108,7 +108,7 @@
         </div>
     }
     <div class="data-grid-container">
-        <SfGrid DataSource="@games?.OrderBy(g => g.DateTime)">
+        <SfGrid DataSource="@gameList">
             <GridColumns>
                 <GridColumn Width="80"
                             HeaderText="Date"
@@ -138,7 +138,7 @@
                         var game = (context as GameDto);
                         if (game?.HasStarted == false)
                         {
-                            <td class="cell" style="text-align:center;">
+                            <td class="@GetCellClass(game!)" style="text-align:center;">
                                 <div style="padding: .5em .5em;">
                                     <strong>@game?.Date.ToString("M-d")</strong>
                                 </div>
@@ -146,7 +146,7 @@
                                     <strong>@game?.Date.ToString("h:mm")</strong>
                                 </div>
                             </td>
-                            <td class="cell" style="text-align:center;">
+                            <td class="@GetCellClass(game!)" style="text-align:center;">
                                 <div class="teams">
                                     <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
                                         <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
@@ -156,12 +156,12 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="cell">
+                            <td class="@GetCellClass(game!)">
 
                                 <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)">
                                     <div style="display:flex;justify-content:space-evenly;">
-                                        <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game!, game!.AwayTeam)</strong>
+                                        <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game).Item1</strong>
                                         <strong>@GetMoneylineForDisplay(game?.PointSpreadAwayTeamMoneyLine)</strong>
                                     </div>
                                 </div>
@@ -169,13 +169,13 @@
                                 <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))"
                                             class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)">
                                     <div style="display:flex;justify-content:space-evenly;">
-                                        <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game!, game!.HomeTeam)</strong>
+                                        <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game).Item2</strong>
                                         <strong>@GetMoneylineForDisplay(game?.PointSpreadHomeTeamMoneyLine)</strong>
                                     </div>
                                 </div>
 
                             </td>
-                            <td class="cell" style="text-align:center;">
+                            <td class="@GetCellClass(game!)" style="text-align:center;">
 
                                 <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))"
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)">
@@ -188,7 +188,7 @@
                                 </div>
 
                             </td>
-                            <td class="cell">
+                            <td class="@GetCellClass(game!)">
 
                                 <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
                                     class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
@@ -207,7 +207,7 @@
                                 </div>
 
                             </td>
-                            <td class="cell">
+                            <td class="@GetCellClass(game!)">
                                 <div class="other-button">
                                     <strong>Other Wagers</strong>
                                 </div>
@@ -236,6 +236,7 @@
 @code {
 
     GameDto[]? games;
+    List<GameDto> gameList = new();
     int week;
     SeasonType season;
     private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(5));
@@ -264,6 +265,7 @@
         week = season.CalculateWeek(DateTime.Now);
         loggedInUser =  await authProvider.LoadAndVerifyUser(userData);
         games = await gameService.GetGamesByWeek(season, week);
+        gameList = games.OrderBy(g => g.DateTime).ToList();
     }
 
     public async Task OnSubmitBetsFromSinglesBetSlip()
@@ -307,10 +309,7 @@
                 BetAmount = createBetModel.BetAmount,
                 SingleBetStatus = SingleBetStatus.IN_PROGRESS,
                 SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
-                PointSpread = createBetModel.BetType == BetType.POINTSPREAD ? createBetModel.PointSpread : null,
-                OverUnder = createBetModel.BetType == BetType.OVERUNDER ? createBetModel.OverUnder : null,
-                MoneylinePayout = createBetModel.MoneylinePayout,
-                ScoreIdOfGame = createBetModel.Game.ScoreID,
+                GameSnapshot = CreateGameSnapshot(createBetModel.Game),
                 PointsAfterSpread = CalculatePointsAfterSpread(createBetModel.Game, createBetModel.Winner)
 
             };
@@ -362,12 +361,8 @@
                 BettorId = loggedInUser.UserId,
                 BetType = createBetModel.BetType,
                 SingleBetForParleyStatus = SingleBetForParleyStatus.IN_PROGRESS,
-                PointSpread = createBetModel.BetType == BetType.POINTSPREAD ? createBetModel.PointSpread : null,
-                OverUnder = createBetModel.BetType == BetType.OVERUNDER ? createBetModel.OverUnder : null,
-                MoneylinePayout = createBetModel.MoneylinePayout,
-                ScoreIdOfGame = createBetModel.Game.ScoreID,
+                GameSnapshot = CreateGameSnapshot(createBetModel.Game),
                 PointsAfterSpread = CalculatePointsAfterSpread(createBetModel.Game, createBetModel.Winner)
-
             };
 
             newParleyBetSlipModel.SingleBetsForParleyList.Add(newSingleBetForParleyModel);
@@ -424,8 +419,8 @@
     {
         return createBetModel.BetType == BetType.POINTSPREAD ?
                         (createBetModel.Winner == createBetModel.Game.HomeTeam ?
-                        $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game, createBetModel.Winner)}" :
-                        $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game, createBetModel.Winner)}") :
+                        $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game).Item2}" :
+                        $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game).Item1}") :
                createBetModel.BetType == BetType.MONEYLINE ? (createBetModel.Winner == createBetModel.Game.HomeTeam ?
                         $"{createBetModel.Winner}" :
                         $"{createBetModel.Winner}")
@@ -512,6 +507,28 @@
 
     }
 
+    private GameSnapshotModel CreateGameSnapshot(GameDto gameDto)
+    {
+        GameSnapshotModel snapshot = new()
+        {
+            Week = gameDto.Week,
+            Date = gameDto.Date,
+            AwayTeam = gameDto.AwayTeam,
+            HomeTeam = gameDto.HomeTeam,
+            PointSpread = Math.Round(Convert.ToDecimal(gameDto.PointSpread), 1),
+            OverUnder = Math.Round(Convert.ToDecimal(gameDto.OverUnder), 1),
+            AwayTeamMoneyLine = gameDto.AwayTeamMoneyLine,
+            HomeTeamMoneyLine = gameDto.HomeTeamMoneyLine,
+            PointSpreadAwayTeamMoneyLine = gameDto.PointSpreadAwayTeamMoneyLine,
+            PointSpreadHomeTeamMoneyLine = gameDto.PointSpreadHomeTeamMoneyLine,
+            ScoreID = gameDto.ScoreID,
+            OverPayout = gameDto.OverPayout,
+            UnderPayout = gameDto.UnderPayout
+        };
+
+        return snapshot;
+    }
+
     private int GetMoneylinePayoutForBet(string winner, GameDto game, BetType betType)
     {
         return betType == BetType.POINTSPREAD ?
@@ -534,21 +551,23 @@
                 : 0 - (decimal)game.PointSpread!;
     }
 
-    private string GetPointSpreadForDisplay(GameDto game, string team)
+    // returns (away, home)
+    private (string, string) GetPointSpreadForDisplay(GameDto game)
     {
-        return team == game.AwayTeam ?
-                (game.PointSpread > 0 ? $"- {game.PointSpread}" :
-                    game.PointSpread < 0 ? $"+ {game.PointSpread?.ToString().Trim('-')}"
-                    : "+ 0")
-              : (game.PointSpread > 0 ? $"+ {game.PointSpread}" :
-                    game.PointSpread < 0 ? $"- {game.PointSpread?.ToString().Trim('-')}"
-                    : "- 0");
+        return game.PointSpread > 0 ? ($"- {game.PointSpread}", $"+ {game.PointSpread}") 
+                : game.PointSpread < 0 ? ($"+ {game.PointSpread?.ToString().Trim('-')}", $"- {game.PointSpread?.ToString().Trim('-')}") 
+                : ($"+ {game.PointSpread}", $"+ {game.PointSpread}");
     }
 
     private string GetMoneylineForDisplay(int? moneyline)
     {
         return moneyline > 0 ? $"+ {moneyline}"
                : $"- {moneyline?.ToString().Trim('-')}";
+    }
+
+    private string GetCellClass(GameDto game)
+    {
+        return gameList.IndexOf(game) == gameList.Count - 1 ? "bottom-row-cell" : "cell";
     }
 }
 

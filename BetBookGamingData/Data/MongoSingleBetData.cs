@@ -40,7 +40,7 @@ public class MongoSingleBetData : IMongoSingleBetData
     {
         var results =
             await _singleBets.FindAsync(
-                b => b.ScoreIdOfGame == scoreIdOfGame && b.SingleBetStatus == SingleBetStatus.IN_PROGRESS);
+                b => b.GameSnapshot.ScoreID == scoreIdOfGame && b.SingleBetStatus == SingleBetStatus.IN_PROGRESS);
 
         return results.ToList();
     }

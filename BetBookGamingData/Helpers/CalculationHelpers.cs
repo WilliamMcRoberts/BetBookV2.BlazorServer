@@ -26,16 +26,6 @@ public static class CalculationHelpers
             : dateTime > new DateTime(2022, 8, 31) && dateTime < new DateTime(2023, 1, 14) ? SeasonType.REG
             : SeasonType.POST;
     }
-
-    public static decimal CalculateParleyBetPayout(this int gamecount, decimal betAmount)
-    { 
-        betAmount -= betAmount * (decimal).1;
-
-        return gamecount == 2 ? betAmount * (decimal)2.6 
-            : gamecount == 3 ? betAmount * (decimal)6 
-            : gamecount == 4 ? betAmount * (decimal)11 
-            : betAmount * (decimal)22;
-    }
 }
 
 #nullable restore

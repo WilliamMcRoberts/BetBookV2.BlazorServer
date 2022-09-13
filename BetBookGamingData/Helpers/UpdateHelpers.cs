@@ -73,16 +73,16 @@ public static class UpdateHelpers
                     if (singleBet.WinnerChosen[0] == 'O')
                     {
                         singleBet.SingleBetStatus =
-                            totalScore > singleBet.OverUnder ? SingleBetStatus.WINNER
-                            : totalScore < singleBet.OverUnder ? SingleBetStatus.LOSER
+                            totalScore > singleBet.GameSnapshot.OverUnder ? SingleBetStatus.WINNER
+                            : totalScore < singleBet.GameSnapshot.OverUnder ? SingleBetStatus.LOSER
                             : SingleBetStatus.PUSH;
 
                         await singleBetData.UpdateSingleBet(singleBet);
                     }
 
                     singleBet.SingleBetStatus =
-                            totalScore < singleBet.OverUnder ? SingleBetStatus.WINNER
-                            : totalScore > singleBet.OverUnder ? SingleBetStatus.LOSER
+                            totalScore < singleBet.GameSnapshot.OverUnder ? SingleBetStatus.WINNER
+                            : totalScore > singleBet.GameSnapshot.OverUnder ? SingleBetStatus.LOSER
                             : SingleBetStatus.PUSH;
 
                     await singleBetData.UpdateSingleBet(singleBet);
@@ -104,7 +104,7 @@ public static class UpdateHelpers
             foreach (SingleBetForParleyModel singleBetForParley in parleyBet.SingleBetsForParleyList)
             {
                 GameDto game =
-                    games.Where(g => g.ScoreID == singleBetForParley.ScoreIdOfGame)
+                    games.Where(g => g.ScoreID == singleBetForParley.GameSnapshot.ScoreID)
                          .FirstOrDefault();
 
                 if (game.IsOver)
@@ -216,15 +216,15 @@ public static class UpdateHelpers
             if (singleBetForParley.WinnerChosen[0] == 'O')
             {
                 return
-                    totalScore > singleBetForParley.OverUnder ? SingleBetForParleyStatus.WINNER
-                    : totalScore < singleBetForParley.OverUnder ? SingleBetForParleyStatus.LOSER
+                    totalScore > singleBetForParley.GameSnapshot.OverUnder ? SingleBetForParleyStatus.WINNER
+                    : totalScore < singleBetForParley.GameSnapshot.OverUnder ? SingleBetForParleyStatus.LOSER
                     : SingleBetForParleyStatus.PUSH;
 
             }
 
             return
-                    totalScore < singleBetForParley.OverUnder ? SingleBetForParleyStatus.WINNER
-                    : totalScore > singleBetForParley.OverUnder ? SingleBetForParleyStatus.LOSER
+                    totalScore < singleBetForParley.GameSnapshot.OverUnder ? SingleBetForParleyStatus.WINNER
+                    : totalScore > singleBetForParley.GameSnapshot.OverUnder ? SingleBetForParleyStatus.LOSER
                     : SingleBetForParleyStatus.PUSH;
 
         }

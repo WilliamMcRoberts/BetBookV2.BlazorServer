@@ -49,40 +49,42 @@
             <RowTemplate>
                 @{
                     var bet = (context as SingleBetModel);
-                    
-                    <td class="cell" style="text-align:center;">
+
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+
                         <div style="padding: .5em .5em;">
-                            <strong>@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.Date.ToString("M-d")</strong>
+                            <strong>@bet?.GameSnapshot.Date.ToString("M-d")</strong>
                         </div>
                         <div style="padding:.5em .5em;">
-                            <strong>@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.Date.ToString("h:mm")</strong>
+                            <strong>@bet?.GameSnapshot.Date.ToString("h:mm")</strong>
                         </div>
+                        
                     </td>
-                    <td class="cell" style="text-align:center;">
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
                         <div class="teams">
                             <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                <img class="team-icon-top-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.AwayTeam</strong>
+                                <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
                             </div>
                             <div style="padding:.5em .5em;">
-                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@games?.Where(g => g.ScoreID == bet?.ScoreIdOfGame).FirstOrDefault()?.HomeTeam</strong>
+                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@bet?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.HomeTeam</strong>
                             </div>
                         </div>
                     </td>
-                    <td class="cell" style="text-align:center;">
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
 
                         <div>
                             <strong>@bet?.BetType</strong>
                         </div>
 
                     </td>
-                    <td class="cell" style="text-align:center;">
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
 
                         <div>
                             <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
                         </div>
 
                     </td>
-                    <td class="cell" style="text-align:center;">
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
                         @if(bet?.BetType == BetType.POINTSPREAD)
                         {
                             <div>
@@ -92,7 +94,7 @@
                         else if(bet?.BetType == BetType.OVERUNDER)
                         {
                             <div>
-                                <strong>@bet?.WinnerChosen @bet?.OverUnder</strong>
+                                <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
                             </div>
                         }
                         else 
@@ -117,9 +119,6 @@
     List<SingleBetModel> bettorSingleBetsPush = new();
     List<SingleBetModel> bettorSingleBetsLosers = new();
     UserModel? loggedInUser;
-    GameDto[]? games;
-    int week;
-    SeasonType season;
     bool singleWinnersGrid;
     bool singleInProgressGrid;
     bool singlePushGrid;
@@ -129,9 +128,6 @@
     protected override async Task OnInitializedAsync()
     {
         loggedInUser = await authProvider.LoadAndVerifyUser(userData);
-        season = DateTime.Now.CalculateSeason();
-        week = season.CalculateWeek(DateTime.Now);
-        games = await gameService.GetGamesByWeek(season, week);
 
         bettorSingleBets = await singleBetData.GetBettorSingleBets(loggedInUser.UserId);
 
@@ -199,5 +195,13 @@
                 : singleWinnersGrid ? bettorSingleBetsWinners 
                 : singlePushGrid ? bettorSingleBetsPush 
                 : bettorSingleBetsInProgress;
+    }
+
+    private string GetCellClass(SingleBetModel singleBet)
+    {
+        return singleLosersGrid ? (bettorSingleBetsLosers.IndexOf(singleBet) == bettorSingleBetsLosers.Count - 1 ? "bottom-row-cell" : "cell")
+                : singleWinnersGrid ? (bettorSingleBetsWinners.IndexOf(singleBet) == bettorSingleBetsWinners.Count - 1 ? "bottom-row-cell" : "cell")
+                : singlePushGrid ? (bettorSingleBetsPush.IndexOf(singleBet) == bettorSingleBetsPush.Count - 1 ? "bottom-row-cell" : "cell")
+                : bettorSingleBetsInProgress.IndexOf(singleBet) == bettorSingleBetsInProgress.Count - 1 ? "bottom-row-cell" : "cell";
     }
 }
