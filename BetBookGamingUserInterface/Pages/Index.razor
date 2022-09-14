@@ -618,7 +618,8 @@
 
     private string GetCellClass(GameDto game)
     {
-        return gameList.IndexOf(game) == gameList.Count - 1 ? "bottom-row-cell" : "cell";
+        return gameList.IndexOf(game) == gameList.Count - 1 ? "bottom-row-cell" 
+                : "cell";
     }
 }
 
