@@ -29,7 +29,7 @@
                                 @foreach (CreateBetModel createBetModel in preBets)
                                 {
                                     <div class="create-bet-model-container">
-                                        <button @onclick="(() => RemoveBetFromPreBetsHashSet(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                        <button @onclick="(() => RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
                                         <div class="bet-info-container">
                                             <div class="game-bet-type">
                                                 <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
@@ -49,7 +49,10 @@
                                     <strong>Total Singles Payout</strong>
                                     <strong>$@GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
                                 </div>
-                                
+                                @if (betAmountForSinglesBad)
+                                {
+                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
+                                }
                                 <div style="text-align: center">
                                     <SfButton CssClass="e-custom" @onclick="@OnSubmitBetsFromSinglesBetSlip">Submit Singles Bet</SfButton>
                                 </div>
@@ -63,7 +66,7 @@
                                 @foreach (CreateBetModel createBetModel in preBets)
                                 {
                                     <div class="create-bet-model-container">
-                                        <button @onclick="(() => RemoveBetFromPreBetsHashSet(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                        <button @onclick="(() => RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
                                         <div class="bet-info-container">
                                             <div class="game-bet-type">
                                                 <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
@@ -218,10 +221,42 @@
             </GridTemplates>
         </SfGrid>
     </div>
-    
 </div>
 
+<SfToast @ref="ToastObj" Timeout="0" ShowCloseButton="true" Title="Good Luck On Your New Wager!" Content="@Content">
+    <ToastPosition X="Right" Y="Bottom"></ToastPosition>
+    <ToastAnimationSettings>
+        <ToastShowAnimationSettings Effect="@ShowAnimation"></ToastShowAnimationSettings>
+        <ToastHideAnimationSettings Effect="@HideAnimation"></ToastHideAnimationSettings>
+    </ToastAnimationSettings>
+</SfToast>
+
 <style>
+
+    /*Toast Background*/
+    .e-toast-container .e-toast {
+        background-color: rgba(0,0,0, .9);
+        border: 1px solid white;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+    }
+        /*Toast Background Hover*/
+        .e-toast-container .e-toast:hover {
+            background-color: rgba(0,0,0, .9);
+        }
+
+        /*Toast Title*/
+        .e-toast-container .e-toast .e-toast-message .e-toast-title {
+            color: white;
+            font-weight: 700;
+        }
+
+        /*Toast Content*/
+        .e-toast-container .e-toast .e-toast-message .e-toast-content {
+            color: white;
+            font-weight: 700;
+        }
+
     .e-custom {
         background-color: rgb(255,99,71, .8);
         color: #fff;
@@ -258,6 +293,10 @@
     bool gameHasStarted;
     bool parleyBetAmountBad;
     bool conflictingBetsForParley;
+    private SfToast? ToastObj;
+    private ToastEffect ShowAnimation = ToastEffect.FadeIn;
+    private ToastEffect HideAnimation = ToastEffect.FadeOut;
+    private string Content { get => $"Thank you for choosing Bet Book."; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -319,14 +358,12 @@
         }
 
         preBets.Clear();
+        await this.ToastObj!.ShowAsync();
     }
 
     public async Task OnSubmitBetsFromParleyBetSlip()
     {
-        if (loggedInUser is null) 
-            return;
-
-        if (conflictingBetsForParley)
+        if (conflictingBetsForParley || loggedInUser is null)
             return;
 
         if (totalWagerForParley <= 0) 
@@ -380,6 +417,7 @@
         preBets.Clear();
         totalWagerForParley = 0;
         totalPayoutForParley = 0;
+        await this.ToastObj!.ShowAsync();
     }
 
     private bool CheckForConflictingBets()
@@ -393,7 +431,7 @@
         return false;
     }
 
-    public void RemoveBetFromPreBetsHashSet(CreateBetModel createBetModel)
+    public void RemoveBetFromPreBetsList(CreateBetModel createBetModel)
     {
         preBets.Remove(createBetModel);
     }
@@ -417,16 +455,30 @@
 
     private string GetWinnerSummary(CreateBetModel createBetModel)
     {
-        return createBetModel.BetType == BetType.POINTSPREAD ?
-                        (createBetModel.Winner == createBetModel.Game.HomeTeam ?
-                        $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game).Item2}" :
-                        $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game).Item1}") :
-               createBetModel.BetType == BetType.MONEYLINE ? (createBetModel.Winner == createBetModel.Game.HomeTeam ?
-                        $"{createBetModel.Winner}" :
-                        $"{createBetModel.Winner}")
-                        : (createBetModel.Winner[0] == 'O' ?
-                            $"Over {createBetModel.Game.OverUnder}" :
-                            $"Under {createBetModel.Game.OverUnder}");
+        return createBetModel.BetType == BetType.POINTSPREAD ? 
+            GetWinnerSummaryForPointSpread(createBetModel) 
+                : createBetModel.BetType == BetType.MONEYLINE ? 
+            GetWinnerSummaryForMoneyline(createBetModel) 
+                : GetWinnerSummaryForOverUnder(createBetModel);
+    }
+
+    private string GetWinnerSummaryForOverUnder(CreateBetModel createBetModel)
+    {
+        return createBetModel.Winner[0] == 'O' ? $"Over {createBetModel.Game.OverUnder}" 
+            : $"Under {createBetModel.Game.OverUnder}";
+    }
+
+    private string GetWinnerSummaryForMoneyline(CreateBetModel createBetModel)
+    {
+        return createBetModel.Winner == createBetModel.Game.HomeTeam ? 
+            $"{createBetModel.Winner}" : $"{createBetModel.Winner}";
+    }
+
+    private string GetWinnerSummaryForPointSpread(CreateBetModel createBetModel)
+    {
+        return createBetModel.Winner == createBetModel.Game.HomeTeam ? 
+            $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game).Item2}" 
+            : $"{createBetModel.Winner} {GetPointSpreadForDisplay(createBetModel.Game).Item1}";
     }
 
     private decimal GetPayoutForTotalBetsParley()
@@ -504,7 +556,6 @@
         });
 
         conflictingBetsForParley = CheckForConflictingBets() ? true : false;
-
     }
 
     private GameSnapshotModel CreateGameSnapshot(GameDto gameDto)
