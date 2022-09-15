@@ -10,17 +10,23 @@ public class MongoSingleBetData : IMongoSingleBetData
     private readonly IMongoCollection<SingleBetModel> _singleBets;
     private readonly IMongoDbConnection _database;
     private readonly IMongoUserData _userData;
+    private readonly IMongoHouseAccountData _houseData;
     private readonly ILogger<MongoSingleBetData> _logger;
+    private readonly IConfiguration _config;
 
 
     public MongoSingleBetData(IMongoDbConnection mongoDbConnection,
                               ILogger<MongoSingleBetData> logger,
-                              IMongoUserData userData)
+                              IMongoUserData userData,
+                              IMongoHouseAccountData houseData,
+                              IConfiguration config)
     {
         _singleBets = mongoDbConnection.SingleBetsCollection;
         _logger = logger;
         _userData = userData;
         _database = mongoDbConnection;
+        _houseData = houseData;
+        _config = config;
     }
 
     public async Task CreateSingleBet(SingleBetModel singleBet)
@@ -40,12 +46,20 @@ public class MongoSingleBetData : IMongoSingleBetData
             var usersInTransaction = db.GetCollection<UserModel>(
                 _database.UsersCollectionName);
 
+            var houseAccountInTransaction = db.GetCollection<HouseAccountModel>(
+                _database.HouseAccountCollectionName);
+
             var user = await _userData.GetCurrentUserByUserId(singleBet.BettorId);
+            var house = await _houseData.GetHouseAccount();
 
             user.AccountBalance -= singleBet.BetAmount;
+            house.HouseAccountBalance += singleBet.BetAmount;
 
             await usersInTransaction.ReplaceOneAsync(
                 session, u => u.UserId == singleBet.BettorId, user);
+
+            await houseAccountInTransaction.ReplaceOneAsync(
+                session, h => h.HouseId == _config.GetSection("HouseAccount:HouseId").Value, house);
 
             await _singleBets.InsertOneAsync(singleBet);
 
@@ -93,7 +107,11 @@ public class MongoSingleBetData : IMongoSingleBetData
             var usersInTransaction = db.GetCollection<UserModel>(
                 _database.UsersCollectionName);
 
+            var houseAccountInTransaction = db.GetCollection<HouseAccountModel>(
+                _database.HouseAccountCollectionName);
+
             var user = await _userData.GetCurrentUserByUserId(singleBet.BettorId);
+            var house = await _houseData.GetHouseAccount();
 
             user.AccountBalance =
                 singleBet.SingleBetStatus == SingleBetStatus.WINNER ?
@@ -102,11 +120,21 @@ public class MongoSingleBetData : IMongoSingleBetData
                     user.AccountBalance + singleBet.BetAmount
                     : user.AccountBalance;
 
+            house.HouseAccountBalance =
+                singleBet.SingleBetStatus == SingleBetStatus.WINNER ?
+                    house.HouseAccountBalance - singleBet.BetPayout :
+                singleBet.SingleBetStatus == SingleBetStatus.PUSH ?
+                    house.HouseAccountBalance - singleBet.BetAmount
+                    : house.HouseAccountBalance;
+
             if (singleBet.SingleBetStatus != SingleBetStatus.LOSER)
                 singleBet.SingleBetPayoutStatus = SingleBetPayoutStatus.PAID;
 
             await usersInTransaction.ReplaceOneAsync(
                 session, u => u.UserId == singleBet.BettorId, user);
+
+            await houseAccountInTransaction.ReplaceOneAsync(
+                session, h => h.HouseId == _config.GetSection("HouseAccount:HouseId").Value, house);
 
             var filter = Builders<SingleBetModel>.Filter.Eq(
             "SingleBetId", singleBet.SingleBetId);

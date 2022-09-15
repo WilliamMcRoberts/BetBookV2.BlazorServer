@@ -159,7 +159,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        loggedInUser = await authProvider.LoadAndVerifyUser(userData);
+        loggedInUser = await authProvider.GetUserFromAuth(userData);
 
         bettorParleyBetSlips = await parleyBetSlipData.GetBettorParleyBetSlips(loggedInUser.UserId);
 

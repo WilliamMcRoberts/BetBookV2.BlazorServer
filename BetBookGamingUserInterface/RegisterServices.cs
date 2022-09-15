@@ -57,5 +57,6 @@ public static class RegisterServices
         builder.Services.AddTransient<IMongoUserData, MongoUserData>();
         builder.Services.AddTransient<IMongoSingleBetData, MongoSingleBetData>();
         builder.Services.AddTransient<IMongoParleyBetSlipData, MongoParleyBetSlipData>();
+        builder.Services.AddTransient<IMongoHouseAccountData, MongoHouseAccountData>();
     }
 }

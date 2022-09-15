@@ -6,7 +6,7 @@
 @inject IMongoSingleBetData singleBetData
 @inject IMongoParleyBetSlipData parleyBetSlipData
 @inject IGameService gameService
-
+@inject IMongoHouseAccountData houseData
 <PageTitle>Home</PageTitle>
 
 <div class="bar">
@@ -58,6 +58,10 @@
                                     <strong>Total Singles Payout</strong>
                                     <strong>$@GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
                                 </div>
+                                @if (userStatusBad)
+                                {
+                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
+                                }
                                 @if (betAmountForSinglesBad)
                                 {
                                     <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
@@ -108,6 +112,10 @@
                                     </div>
 
                                 </div>
+                                @if (userStatusBad)
+                                {
+                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
+                                }
                                 @if (parleyBetAmountBad && totalWagerForParley <= 0)
                                 {
                                     <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Must Have A Wager Amount *</h6>
@@ -286,13 +294,13 @@
 
 @code {
 
-    private GameDto[]? games;
+    private GameDto[] games;
     private List<GameDto> gameList = new();
     private List<GameDto> afcGames = new();
     private List<CreateBetModel> preBets = new();
-    private UserModel? loggedInUser;
-    private SfAccordion? Accordion;
-    private SfToast? ToastObj;
+    private UserModel loggedInUser;
+    private SfAccordion Accordion;
+    private SfToast ToastObj;
     private decimal totalWagerForParley;
     private decimal totalPayoutForParley;
     private int week;
@@ -310,20 +318,24 @@
     private bool conflictingBetsForParley;
     private string Content { get => $"Thank you for choosing Bet Book."; }
     private string startedGameDescription = string.Empty;
+    private bool userStatusBad;
 
     protected override async Task OnInitializedAsync()
     {
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
-        loggedInUser =  await authProvider.LoadAndVerifyUser(userData);
         games = await gameService.GetGamesByWeek(season, week);
         gameList = games.OrderBy(g => g.DateTime).ToList();
-        
+        await LoadAndVerifyUser();
     }
 
     public async Task OnSubmitBetsFromSinglesBetSlip()
     {
-        if (loggedInUser is null) return;
+        if (loggedInUser.AccountBalance == 0)
+        {
+            userStatusBad = true;
+            return;
+        }
 
         GameDto[] gameCheckArray = 
             await gameService.GetGamesByWeek(season, week);
@@ -376,7 +388,13 @@
 
     public async Task OnSubmitBetsFromParleyBetSlip()
     {
-        if (conflictingBetsForParley || loggedInUser is null)
+        if(loggedInUser.AccountBalance == 0)
+        {
+            userStatusBad = true;
+            return;
+        }   
+
+        if (conflictingBetsForParley)
             return;
 
         if (totalWagerForParley <= 0) 
@@ -634,6 +652,65 @@
     {
         return gameList.IndexOf(game) == gameList.Count - 1 ? "bottom-row-cell" 
                 : "cell";
+    }
+
+    public async Task LoadAndVerifyUser()
+    {
+        var authState = await authProvider.GetAuthenticationStateAsync();
+        string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+        loggedInUser = await userData.GetCurrentUserFromAuthentication(objectId) ?? new();
+
+        if (string.IsNullOrWhiteSpace(objectId) == false)
+        {
+            string firstName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("givenname"))?.Value;
+            string lastName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("surname"))?.Value;
+            string displayName = authState.User.Claims.FirstOrDefault(c => c.Type.Equals("name"))?.Value;
+            string emailAddress = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("email"))?.Value;
+            bool isDirty = false;
+            if (objectId.Equals(loggedInUser.ObjectIdentifier) == false)
+            {
+                isDirty = true;
+                loggedInUser.ObjectIdentifier = objectId;
+            }
+
+            if (firstName.Equals(loggedInUser.FirstName) == false)
+            {
+                isDirty = true;
+                loggedInUser.FirstName = firstName;
+            }
+
+            if (lastName.Equals(loggedInUser.LastName) == false)
+            {
+                isDirty = true;
+                loggedInUser.LastName = lastName;
+            }
+
+            if (displayName.Equals(loggedInUser.DisplayName) == false)
+            {
+                isDirty = true;
+                loggedInUser.DisplayName = displayName;
+            }
+
+            if (emailAddress.Equals(loggedInUser.EmailAddress) == false)
+            {
+                isDirty = true;
+                loggedInUser.EmailAddress = emailAddress;
+            }
+
+            if (isDirty)
+            {
+                if (string.IsNullOrWhiteSpace(loggedInUser.UserId))
+                {
+                    loggedInUser.AccountBalance = 10000;
+
+                    await userData.CreateUser(loggedInUser);
+                }
+                else
+                {
+                    await userData.UpdateUser(loggedInUser);
+                }
+            }
+        }
     }
 }
 

@@ -10,16 +10,23 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
     private readonly IMongoDbConnection _database;
     private readonly ILogger<MongoParleyBetSlipData> _logger;
     private readonly IMongoUserData _userData;
+    private readonly IConfiguration _config;
+    private readonly IMongoHouseAccountData _houseData;
+
 
     public MongoParleyBetSlipData(
                                   IMongoDbConnection mongoDbConnection,
                                   ILogger<MongoParleyBetSlipData> logger,
-                                  IMongoUserData userData)
+                                  IMongoUserData userData,
+                                  IConfiguration config,
+                                  IMongoHouseAccountData houseData)
     {
         _parleyBetSlips = mongoDbConnection.ParleyBetSlipsCollection;
         _logger = logger;
         _userData = userData;
         _database = mongoDbConnection;
+        _config = config;
+        _houseData = houseData;
     }
 
     public async Task CreateParleyBetSlip(ParleyBetSlipModel parleyBetSlip)
@@ -38,12 +45,21 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
             var usersInTransaction = db.GetCollection<UserModel>(
                 _database.UsersCollectionName);
 
+            var houseAccountInTransaction = db.GetCollection<HouseAccountModel>(
+                _database.HouseAccountCollectionName);
+
             var user = await _userData.GetCurrentUserByUserId(parleyBetSlip.BettorId);
+            var house = await _houseData.GetHouseAccount();
+
 
             user.AccountBalance -= parleyBetSlip.ParleyBetAmount;
+            house.HouseAccountBalance += parleyBetSlip.ParleyBetAmount;
 
             await usersInTransaction.ReplaceOneAsync(
                 session, u => u.UserId == parleyBetSlip.BettorId, user);
+
+            await houseAccountInTransaction.ReplaceOneAsync(
+                session, h => h.HouseId == _config.GetSection("HouseAccount:HouseId").Value, house);
 
             await _parleyBetSlips.InsertOneAsync(parleyBetSlip);
 
@@ -87,7 +103,11 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
             var usersInTransaction = db.GetCollection<UserModel>(
                 _database.UsersCollectionName);
 
+            var houseAccountInTransaction = db.GetCollection<HouseAccountModel>(
+                _database.HouseAccountCollectionName);
+
             var user = await _userData.GetCurrentUserByUserId(parleyBetSlip.BettorId);
+            var house = await _houseData.GetHouseAccount();
 
             user.AccountBalance =
                 parleyBetSlip.ParleyBetSlipStatus == ParleyBetSlipStatus.WINNER ?
@@ -96,11 +116,21 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
                     user.AccountBalance + parleyBetSlip.ParleyBetAmount
                     : user.AccountBalance;
 
+            house.HouseAccountBalance =
+                parleyBetSlip.ParleyBetSlipStatus == ParleyBetSlipStatus.WINNER ?
+                    house.HouseAccountBalance - parleyBetSlip.ParleyBetPayout :
+                parleyBetSlip.ParleyBetSlipStatus == ParleyBetSlipStatus.PUSH ?
+                    house.HouseAccountBalance - parleyBetSlip.ParleyBetAmount
+                    : house.HouseAccountBalance;
+
             if (parleyBetSlip.ParleyBetSlipStatus != ParleyBetSlipStatus.LOSER)
                 parleyBetSlip.ParleyBetSlipPayoutStatus = ParleyBetSlipPayoutStatus.PAID;
 
             await usersInTransaction.ReplaceOneAsync(
                 session, u => u.UserId == parleyBetSlip.BettorId, user);
+
+            await houseAccountInTransaction.ReplaceOneAsync(
+                session, h => h.HouseId == _config.GetSection("HouseAccount:HouseId").Value, house);
 
             var filter = Builders<ParleyBetSlipModel>.Filter.Eq(
             "ParleyBetSlipId", parleyBetSlip.ParleyBetSlipId);

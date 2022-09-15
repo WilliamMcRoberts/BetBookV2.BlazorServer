@@ -22,7 +22,7 @@
 </div>
 
 @code {
-    UserModel? loggedInUser;
+    UserModel loggedInUser;
     protected override async Task OnInitializedAsync()
     {
         loggedInUser = await authProvider.GetUserFromAuth(userData);
