@@ -9,6 +9,14 @@
 
 <PageTitle>Home</PageTitle>
 
+<div class="bar">
+
+    <div style="">
+        <label style="margin:.35em auto;text-decoration:underline">Available Wagers</label>
+    </div>
+
+</div>
+
 <div class="data-grid-accordion-container">
 
     @if(gameHasStarted)
@@ -280,6 +288,7 @@
 
     private GameDto[]? games;
     private List<GameDto> gameList = new();
+    private List<GameDto> afcGames = new();
     private List<CreateBetModel> preBets = new();
     private UserModel? loggedInUser;
     private SfAccordion? Accordion;
@@ -309,6 +318,7 @@
         loggedInUser =  await authProvider.LoadAndVerifyUser(userData);
         games = await gameService.GetGamesByWeek(season, week);
         gameList = games.OrderBy(g => g.DateTime).ToList();
+        
     }
 
     public async Task OnSubmitBetsFromSinglesBetSlip()
