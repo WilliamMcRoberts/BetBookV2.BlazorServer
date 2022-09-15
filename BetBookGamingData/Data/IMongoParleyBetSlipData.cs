@@ -2,7 +2,7 @@
 {
     public interface IMongoParleyBetSlipData
     {
-        Task CreateParleyBetSlip(ParleyBetSlipModel parleyBetSlip, UserModel user);
+        Task CreateParleyBetSlip(ParleyBetSlipModel parleyBetSlip);
         Task<List<ParleyBetSlipModel>> GetAllParleyBetSlipsInProgress();
         Task<List<ParleyBetSlipModel>> GetBettorParleyBetSlips(string userId);
         Task UpdateParleyBetSlip(ParleyBetSlipModel parleyBetSlip);

@@ -40,6 +40,7 @@
                                                 <strong class="winner-moneyline">@GetMoneylineForDisplay(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType))</strong>
                                             </div>
                                             <div class="bet-amount-input-container">
+                                                <strong style="margin:.25em .25em">$</strong>
                                                 <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
                                             </div>
                                         </div>
@@ -77,6 +78,7 @@
                                                 <strong class="winner-moneyline">@GetMoneylineForDisplay(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType))</strong>
                                             </div>
                                             <div class="bet-amount-input-container">
+                                                <strong style="margin:.25em .25em">$</strong>
                                                 <input class="bet-amount-input-disabled" disabled type="number" placeholder="0" />
                                             </div>
                                         </div>
@@ -86,7 +88,10 @@
 
                                     <div style="display:flex;flex-direction:column;width:35%;margin:.5em auto;text-align:center;">
                                         <strong style="">Wager Amount</strong>
-                                        <input type="number" @bind-value="@totalWagerForParley" @bind-value:event="oninput" />
+                                        <div style="display:flex">
+                                            <strong style="margin:.25em .25em">$</strong>
+                                            <input type="number" @bind-value="@totalWagerForParley" @bind-value:event="oninput" />
+                                        </div>
                                     </div>
 
                                     <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
@@ -95,6 +100,10 @@
                                     </div>
 
                                 </div>
+                                @if (parleyBetAmountBad && totalWagerForParley <= 0)
+                                {
+                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Must Have A Wager Amount *</h6>
+                                }
                                 @if (conflictingBetsForParley)
                                 {
                                     <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
@@ -164,7 +173,7 @@
                                 <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)">
                                     <div style="display:flex;justify-content:space-evenly;">
-                                        <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game).Item1</strong>
+                                        <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game!).Item1</strong>
                                         <strong>@GetMoneylineForDisplay(game?.PointSpreadAwayTeamMoneyLine)</strong>
                                     </div>
                                 </div>
@@ -232,7 +241,6 @@
 </SfToast>
 
 <style>
-
     /*Toast Background*/
     .e-toast-container .e-toast {
         background-color: rgba(0,0,0, .9);
@@ -270,33 +278,29 @@
 
 @code {
 
-    GameDto[]? games;
-    List<GameDto> gameList = new();
-    int week;
-    SeasonType season;
-    private readonly PeriodicTimer _timer = new(TimeSpan.FromMinutes(5));
-    Dictionary<string, GameDto> winnersAndGamesForPointSpreadDictionary = new();
-    Dictionary<string, GameDto> winnersAndGamesForMoneylineDictionary = new();
-    Dictionary<string, GameDto> winnersAndGamesForOverUnderDictionary = new();
-    List<CreateBetModel> preBets = new();
-    decimal totalWagerForParley;
-    decimal totalPayoutForParley;
-    SfAccordion? Accordion;
-    public bool DisableSinglesBetSlip { get; set; }
-    public bool DisableParleyBetSlip { get; set; }
-    public bool ExpandSinglesBetSlip { get; set; }
-    public bool ExpandParleyBetSlip { get; set; }
-    UserModel? loggedInUser;
-    string startedGameDescription = string.Empty;
-    bool betAmountForSinglesBad;
-    bool betAmountForParleyBad;
-    bool gameHasStarted;
-    bool parleyBetAmountBad;
-    bool conflictingBetsForParley;
+    private GameDto[]? games;
+    private List<GameDto> gameList = new();
+    private List<CreateBetModel> preBets = new();
+    private UserModel? loggedInUser;
+    private SfAccordion? Accordion;
     private SfToast? ToastObj;
+    private decimal totalWagerForParley;
+    private decimal totalPayoutForParley;
+    private int week;
+    private SeasonType season;
     private ToastEffect ShowAnimation = ToastEffect.FadeIn;
     private ToastEffect HideAnimation = ToastEffect.FadeOut;
+    private bool DisableSinglesBetSlip { get; set; }
+    private bool DisableParleyBetSlip { get; set; }
+    private bool ExpandSinglesBetSlip { get; set; }
+    private bool ExpandParleyBetSlip { get; set; }
+    private bool betAmountForSinglesBad;
+    private bool betAmountForParleyBad;
+    private bool gameHasStarted;
+    private bool parleyBetAmountBad;
+    private bool conflictingBetsForParley;
     private string Content { get => $"Thank you for choosing Bet Book."; }
+    private string startedGameDescription = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -349,12 +353,11 @@
                 SingleBetStatus = SingleBetStatus.IN_PROGRESS,
                 SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
                 GameSnapshot = CreateGameSnapshot(createBetModel.Game),
-                PointsAfterSpread = CalculatePointsAfterSpread(createBetModel.Game, createBetModel.Winner)
-
+                PointsAfterSpread = CalculatePointsAfterSpread(
+                    createBetModel.Game, createBetModel.Winner)
             };
 
-            await singleBetData.CreateSingleBet(
-                newSingleBetModel, loggedInUser);
+            await singleBetData.CreateSingleBet(newSingleBetModel);
         }
 
         preBets.Clear();
@@ -411,8 +414,7 @@
         newParleyBetSlipModel.ParleyBetSlipStatus = ParleyBetSlipStatus.IN_PROGRESS;
         newParleyBetSlipModel.ParleyBetSlipPayoutStatus = ParleyBetSlipPayoutStatus.UNPAID;
 
-        await parleyBetSlipData.CreateParleyBetSlip(
-            newParleyBetSlipModel, loggedInUser);
+        await parleyBetSlipData.CreateParleyBetSlip(newParleyBetSlipModel);
 
         preBets.Clear();
         totalWagerForParley = 0;
@@ -445,7 +447,9 @@
 
     public bool GetDisableParleyBetSlip()
     {
-        return ExpandSinglesBetSlip || preBets.Count < 2 ? true : false;
+        return 
+            ExpandSinglesBetSlip || preBets.Count < 2 && !ExpandParleyBetSlip ? true 
+                : false;
     }
 
     public bool GetDisableSinglesBetSlip()

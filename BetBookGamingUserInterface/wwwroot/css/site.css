@@ -218,6 +218,7 @@ a, .btn-link {
 
 .bet-amount-input-container {
     width: 30%;
+    display:flex;
 }
 
 .bet-amount-input {
@@ -263,14 +264,12 @@ a, .btn-link {
 .e-accordion .e-acrdn-item .e-acrdn-header .e-toggle-icon .e-icons {
     color: rgb(255,99,71);
 }
-    /*Selected Accordion Item Header Text*/
-    .e-accordion .e-acrdn-item.e-select.e-active > .e-acrdn-header .e-acrdn-header-content,
-    .e-accordion .e-acrdn-item.e-select.e-item-focus > .e-acrdn-header .e-acrdn-header-content {
-        color: rgb(255,99,71);
-        font-weight: 700;
-    }
-
-
+/*Selected Accordion Item Header Text*/
+.e-accordion .e-acrdn-item.e-select.e-active > .e-acrdn-header .e-acrdn-header-content,
+.e-accordion .e-acrdn-item.e-select.e-item-focus > .e-acrdn-header .e-acrdn-header-content {
+    color: rgb(255,99,71);
+    font-weight: 700;
+}
 
 /*********************************
         About Page
