@@ -3,13 +3,14 @@
 Version 2 of Bet Book NFL is updated with more betting styles and professional wagers.  Lines and spreads are consumed via a SportsData.IO API. User data and wager data is stored via Mongo DB. 
 
 WAGER SELECTION
-![AW](https://user-images.githubusercontent.com/95720340/189459748-b49e8bb8-a235-412c-addd-0b2675fa1a8a.png)
+![WagerPage](https://user-images.githubusercontent.com/95720340/190487269-ebb5cb10-ee48-4f43-8309-60fc2718c4e2.png)
 
 BET SLIP CREATION
-![CB](https://user-images.githubusercontent.com/95720340/189459740-8c64b15b-0f3a-412c-8629-3bd3454a08de.png)
+![WagerCreation](https://user-images.githubusercontent.com/95720340/190487244-1e0cb888-ead2-4b49-961c-d88550b59f04.png)
 
 SINGLE BETS PROFILE
-![SBP](https://user-images.githubusercontent.com/95720340/189459736-5ceb260d-21f4-49ab-b2a4-3201af91bce2.png)
+![ProfileSingle](https://user-images.githubusercontent.com/95720340/190487259-ecaac32c-cce2-4bb3-b044-3a42c355fc88.png)
 
 PARLEY BETS PROFILE
-![PBP](https://user-images.githubusercontent.com/95720340/189459753-1ffe778b-76ba-4a81-83ef-e84c5abd2392.png)
+![ProfileParley](https://user-images.githubusercontent.com/95720340/190487252-bc80842e-417a-4537-a366-0cada319a859.png)
+
