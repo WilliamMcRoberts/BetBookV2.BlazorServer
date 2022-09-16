@@ -142,8 +142,8 @@
                             HeaderText="Date"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
-                <GridColumn Width="200"
-                            HeaderText="Away/Home"
+                <GridColumn Width="90"
+                            HeaderText="Game"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
                 <GridColumn HeaderText="Point Spread"
@@ -153,10 +153,6 @@
                             TextAlign="TextAlign.Center">
                 </GridColumn>
                 <GridColumn HeaderText="Over/Under"
-                            TextAlign="TextAlign.Center">
-                </GridColumn>
-                <GridColumn Width="80"
-                            HeaderText="Other"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
             </GridColumns>
@@ -232,12 +228,6 @@
                                         <strong>Under @game?.OverUnder</strong>
                                         <strong>@GetMoneylineForDisplay(game?.UnderPayout)</strong>
                                     </div>
-                                </div>
-
-                            </td>
-                            <td class="@GetCellClass(game!)">
-                                <div class="other-button">
-                                    <strong>Other Wagers</strong>
                                 </div>
                             </td>
                         }

@@ -498,6 +498,22 @@ ul {
     }
 }
 
+@media (max-width: 735px) {
+
+    .data-grid-container {
+        width:95%;
+    }
+
+    .bar {
+        width:95%;
+    }
+}
+
+@media (max-width: 555px) {
+
+    
+}
+
 @media (max-width: 800px) {
 
     .title {
