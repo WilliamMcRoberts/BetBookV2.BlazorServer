@@ -8,17 +8,12 @@
         <h3 class="name">Bet Book V2</h3>
     </a>
 
-    <div class="balance-item">
-        <h6 class="balance-value">$@Convert.ToDecimal(LoggedInUser?.AccountBalance).ToString("#,##0.00")</h6>
-    </div>
-
     <div class="login">
-        <LoginDisplay Balance="@Convert.ToDecimal(LoggedInUser?.AccountBalance).ToString("C")" />
+        <LoginDisplay />
     </div>
     
 </div>
 
 @code {
-    [Parameter]
-    public UserModel LoggedInUser { get; set; }
+
 }

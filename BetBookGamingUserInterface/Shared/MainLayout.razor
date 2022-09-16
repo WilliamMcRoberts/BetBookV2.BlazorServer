@@ -10,7 +10,7 @@
 <div class="page">
     <main>
         
-        <Header LoggedInUser="loggedInUser"/>
+        <Header/>
 
         <article class="content px-4">
             @Body
@@ -22,9 +22,5 @@
 </div>
 
 @code {
-    UserModel loggedInUser;
-    protected override async Task OnInitializedAsync()
-    {
-        loggedInUser = await authProvider.GetUserFromAuth(userData);
-    }
+
 }

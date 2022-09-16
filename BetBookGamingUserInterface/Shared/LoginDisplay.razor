@@ -2,17 +2,20 @@
 @inject IMongoUserData userData
 @inject NavigationManager navManager
 
-<AuthorizeView Policy="Admin">
-    <Authorized>
-        <SfDropDownButton CssClass="e-caret-hide" Content="Admin">
+    <AuthorizeView Policy="Admin">
+        <Authorized>
+            <SfDropDownButton CssClass="e-caret-hide" Content="Admin">
                 <DropDownMenuItems>
                     <DropDownMenuItem Url="AdminPage" Text="Admin Page"></DropDownMenuItem>
                 </DropDownMenuItems>
-        </SfDropDownButton>
-    </Authorized>
-</AuthorizeView>
-<AuthorizeView>
-    <Authorized>
+            </SfDropDownButton>
+        </Authorized>
+    </AuthorizeView>
+
+    <AuthorizeView>
+        <Authorized>
+            <div class="login-display">
+
             <SfDropDownButton CssClass="e-caret-hide" Content="About">
                 <DropDownMenuItems>
                     <DropDownMenuItem Url="About" Text="Bet Book V2"></DropDownMenuItem>
@@ -23,7 +26,7 @@
                     <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
                 </DropDownMenuItems>
             </SfDropDownButton>
-            <SfDropDownButton  CssClass="e-caret-hide" Content="Profile">
+            <SfDropDownButton CssClass="e-caret-hide" Content="Profile">
                 <DropDownMenuItems>
                     <DropDownMenuItem Url="SinglesProfilePage" Text="Single Bets"></DropDownMenuItem>
                     <DropDownMenuItem Url="ParleyProfilePage" Text="Parley Bets"></DropDownMenuItem>
@@ -33,24 +36,71 @@
             <SfDropDownButton CssClass="e-caret-hide" Content="Account">
                 <DropDownMenuItems>
                     <DropDownMenuItem Url="MicrosoftIdentity/Account/SignOut" Text="Sign Out"></DropDownMenuItem>
-                    <DropDownMenuItem Text="@Balance"></DropDownMenuItem>
                 </DropDownMenuItems>
             </SfDropDownButton>
-    </Authorized>
-    <NotAuthorized>
-        <SfDropDownButton CssClass="e-caret-hide" Content="Sign In / Sign Up">
-            <DropDownMenuItems>
-                <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign In / Sign Up"></DropDownMenuItem>
-            </DropDownMenuItems>
-        </SfDropDownButton>
-    </NotAuthorized>
-</AuthorizeView>
+        </div>
+
+            
+
+        </Authorized>
+
+        <NotAuthorized>
+            <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up">
+                <DropDownMenuItems>
+                    <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign In"></DropDownMenuItem>
+                    <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign Up"></DropDownMenuItem>
+                </DropDownMenuItems>
+            </SfDropDownButton>
+        </NotAuthorized>
+    </AuthorizeView>
+
+    <AuthorizeView Policy="Admin">
+        <Authorized>
+            <SfDropDownButton CssClass="e-caret-hide" Content="Admin">
+                <DropDownMenuItems>
+                    <DropDownMenuItem Url="AdminPage" Text="Admin Page"></DropDownMenuItem>
+                </DropDownMenuItems>
+            </SfDropDownButton>
+        </Authorized>
+    </AuthorizeView>
+    <AuthorizeView>
+        <Authorized>
+            <div class="login-display-mini">
+                <SfDropDownButton CssClass="e-caret-hide" Content="">
+                    <DropDownMenuItems>
+                        <DropDownMenuItem Url="About" Text="About"></DropDownMenuItem>
+                        <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
+                        <DropDownMenuItem Url="SinglesProfilePage" Text="Bettor Single Bets"></DropDownMenuItem>
+                        <DropDownMenuItem Url="ParleyProfilePage" Text="Bettor Parley Bets"></DropDownMenuItem>
+                        <DropDownMenuItem Url="MicrosoftIdentity/Account/SignOut" Text="Sign Out"></DropDownMenuItem>
+                    </DropDownMenuItems>
+                </SfDropDownButton>
+            </div>
+        </Authorized>
+    </AuthorizeView>
 
 @code {
-    [Parameter]
-    public string Balance { get; set; } = string.Empty;
+
 }
 <style>
+
+    .e-btn {
+        color: white;
+        background: none;
+        border: none;
+        font-size: 17px;
+    }
+
+        .e-btn:hover {
+            color: darkblue;
+            background:transparent;
+        }
+
+        .e-btn.e-active {
+            color: darkblue;
+            background: transparent;
+        }
+
     .e-dropdown-btn, .e-dropdown-btn.e-btn {
         color: white;
         background: none;
@@ -64,7 +114,6 @@
     .e-dropdown-popup {/******PopUP********/
         border: 1px solid darkblue;
         border-radius: 10px;
-        width: 10%;
     }
 
     .e-dropdown-btn.e-active {/*********Dropdown on active*********/
@@ -83,21 +132,21 @@
         color: white;
     }
 
-    @@media (max-width: 800px) {
-            .e-dropdown-btn, .e-dropdown-btn.e-btn {
-            font-size:13px;
+    .login-display-mini {
+        background-image: url(../images/togglebutton.png);
+    }
+
+    @@media (max-width: 700px) {
+        .login-display {
+            display: none;
         }
     }
 
-    @@media(max-width: 650px) {
-            .e-dropdown-btn, .e-dropdown-btn.e-btn {
-            font-size: 10px;
+    @@media (min-width: 700px) {
+        .login-display-mini {
+            display: none;
         }
     }
 
-    @@media(max-width: 550px) {
-            .e-dropdown-btn, .e-dropdown-btn.e-btn {
-            font-size: 7px;
-        }
-    }
+
 </style>

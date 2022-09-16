@@ -9,6 +9,14 @@
 @inject IMongoHouseAccountData houseData
 <PageTitle>Home</PageTitle>
 
+<div class="user-info-bar">
+
+    <div style="">
+        <label style="margin:.35em auto;">$@loggedInUser?.AccountBalance.ToString("#,##0.00")</label>
+    </div>
+
+</div>
+
 <div class="bar">
 
     <div style="">
@@ -162,74 +170,126 @@
                         var game = (context as GameDto);
                         if (game?.HasStarted == false)
                         {
-                            <td class="@GetCellClass(game!)" style="text-align:center;">
-                                <div style="padding: .5em .5em;">
-                                    <strong>@game?.Date.ToString("M-d")</strong>
-                                </div>
-                                <div style="padding:.5em .5em;">
-                                    <strong>@game?.Date.ToString("h:mm")</strong>
-                                </div>
-                            </td>
-                            <td class="@GetCellClass(game!)" style="text-align:center;">
-                                <div class="teams">
-                                    <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                        <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
-                                    </div>
-                                    <div style="padding:.5em .5em;">
-                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="@GetCellClass(game!)">
+                                    <td class="@GetCellClass(game!)" style="text-align:center;">
+                                        <div style="padding: .5em .5em;">
+                                            <strong>@game?.Date.ToString("M-d")</strong>
+                                        </div>
+                                        <div style="padding:.5em .5em;">
+                                            <strong>@game?.Date.ToString("h:mm")</strong>
+                                        </div>
+                                    </td>
+                                    <td class="@GetCellClass(game!)" style="text-align:center;">
+                                        <div class="teams">
+                                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                                <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                            </div>
+                                            <div style="padding:.5em .5em;">
+                                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="@GetCellClass(game!)">
 
-                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
+                                        <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)">
-                                    <div style="display:flex;justify-content:space-evenly;">
-                                        <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game!).Item1</strong>
-                                        <strong>@GetMoneylineForDisplay(game?.PointSpreadAwayTeamMoneyLine)</strong>
-                                    </div>
-                                </div>
+                                            <div style="display:flex;justify-content:space-evenly;">
+                                                <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game!).Item1</strong>
+                                                <strong>@GetMoneylineForDisplay(game?.PointSpreadAwayTeamMoneyLine)</strong>
+                                            </div>
+                                        </div>
 
-                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))"
+                                        <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))"
                                             class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)">
-                                    <div style="display:flex;justify-content:space-evenly;">
-                                        <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game).Item2</strong>
-                                        <strong>@GetMoneylineForDisplay(game?.PointSpreadHomeTeamMoneyLine)</strong>
-                                    </div>
-                                </div>
+                                            <div style="display:flex;justify-content:space-evenly;">
+                                                <strong style="margin-right:.5em;">@GetPointSpreadForDisplay(game).Item2</strong>
+                                                <strong>@GetMoneylineForDisplay(game?.PointSpreadHomeTeamMoneyLine)</strong>
+                                            </div>
+                                        </div>
 
-                            </td>
-                            <td class="@GetCellClass(game!)" style="text-align:center;">
+                                    </td>
+                                    <td class="@GetCellClass(game!)" style="text-align:center;">
 
-                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))"
+                                        <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))"
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)">
-                                    <strong>@GetMoneylineForDisplay(game?.AwayTeamMoneyLine)</strong>
-                                </div>
+                                            <strong>@GetMoneylineForDisplay(game?.AwayTeamMoneyLine)</strong>
+                                        </div>
 
-                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))"
+                                        <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))"
                                     class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE)">
-                                    <strong>@GetMoneylineForDisplay(game?.HomeTeamMoneyLine)</strong>
-                                </div>
+                                            <strong>@GetMoneylineForDisplay(game?.HomeTeamMoneyLine)</strong>
+                                        </div>
 
-                            </td>
-                            <td class="@GetCellClass(game!)">
+                                    </td>
+                                    <td class="@GetCellClass(game!)">
 
-                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
+                                        <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
                                     class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
-                                    <div style="display:flex;justify-content:space-evenly;">
-                                        <strong>Over @game?.OverUnder</strong>
-                                        <strong>@GetMoneylineForDisplay(game?.OverPayout)</strong>
-                                    </div>
-                                </div>
+                                            <div style="display:flex;justify-content:space-evenly;">
+                                                <strong>Over @game?.OverUnder</strong>
+                                                <strong>@GetMoneylineForDisplay(game?.OverPayout)</strong>
+                                            </div>
+                                        </div>
 
-                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
+                                        <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
                                     class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
-                                    <div style="display:flex;justify-content:space-evenly;">
-                                        <strong>Under @game?.OverUnder</strong>
-                                        <strong>@GetMoneylineForDisplay(game?.UnderPayout)</strong>
-                                    </div>
-                                </div>
-                            </td>
+                                            <div style="display:flex;justify-content:space-evenly;">
+                                                <strong>Under @game?.OverUnder</strong>
+                                                <strong>@GetMoneylineForDisplay(game?.UnderPayout)</strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                        }
+                    }
+                </RowTemplate>
+            </GridTemplates>
+        </SfGrid>
+    </div>
+    <div class="data-grid-container-mini">
+        <SfGrid DataSource="@gameList">
+            <GridColumns>
+                <GridColumn Width="80"
+                            HeaderText="Date"
+                            TextAlign="TextAlign.Center">
+                </GridColumn>
+                <GridColumn Width="90"
+                            HeaderText="Game"
+                            TextAlign="TextAlign.Center">
+                </GridColumn>
+                <GridColumn HeaderText="Wagers"
+                            TextAlign="TextAlign.Center">
+                </GridColumn>
+            </GridColumns>
+            <GridTemplates>
+                <RowTemplate>
+                    @{
+                        var game = (context as GameDto);
+                        if (game?.HasStarted == false)
+                        {
+                                    <td class="@GetCellClass(game!)" style="text-align:center;">
+                                        <div style="padding: .5em .5em;">
+                                            <strong>@game?.Date.ToString("M-d")</strong>
+                                        </div>
+                                        <div style="padding:.5em .5em;">
+                                            <strong>@game?.Date.ToString("h:mm")</strong>
+                                        </div>
+                                    </td>
+                                    <td class="@GetCellClass(game!)" style="text-align:center;">
+                                        <div class="teams">
+                                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                                <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                            </div>
+                                            <div style="padding:.5em .5em;">
+                                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="@GetCellClass(game!)">
+
+                                        <div class="clickable-cell">
+                                                <strong style="">Make Wager</strong>
+                                        </div>
+
+                                    </td>
                         }
                     }
                 </RowTemplate>
