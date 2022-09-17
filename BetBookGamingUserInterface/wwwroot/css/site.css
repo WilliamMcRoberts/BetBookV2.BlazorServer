@@ -545,11 +545,9 @@ ul {
     }
 
     .clickable-cell {
-        margin: .25em .25em;
         text-align: center;
         border: 1px solid lightgrey;
         background-color: rgb(135,206,250);
-        padding:1.25em;
     }
 }
 
