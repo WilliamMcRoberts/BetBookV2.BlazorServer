@@ -143,50 +143,57 @@
             </AccordionItems>
         </SfAccordion>
     </div>
-    <div class="wager-container">
-    <div style="display:flex;flex-direction:column;">
-        <label style="color:darkblue;text-align:center;margin-top:1em;">Moneyline</label>
-        <div >
-            <div class="clickable-cell" style="display:flex;justify-content:space-evenly">
-                <strong style="margin:.25em .25em">@game?.AwayTeam</strong>
-                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#;+#;+0")</strong>
+<div class="wager-container">
+
+        <div style="display:flex;flex-direction:column;">
+            <div class="bet-type-title-container">
+                <label style="">Point Spread</label>
             </div>
-            <div class="clickable-cell" style="display:flex;justify-content:space-evenly">
-                <strong style="margin:.25em .25em">@game?.HomeTeam</strong>
-                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#;+#;+0")</strong>
-            </div>
-        </div>
-    </div>
-    
-    <div style="display:flex;flex-direction:column;">
-            <label style="color:darkblue;text-align:center;margin-top:1em;">PointSpread</label>
-        <div >
-            <div class="clickable-cell" style="display:flex;justify-content:space-evenly">
-                <strong style="margin:.25em .25em">@game?.AwayTeam</strong>
-                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread * -1).ToString("-#.#;+#.#;+0.#")</strong>
-                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#;+#;+0")</strong>
-            </div>
-            <div class="clickable-cell" style="display:flex;justify-content:space-evenly">
-                <strong style="margin:.25em .25em">@game?.HomeTeam</strong>
-                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread).ToString("-#.#;+#.#;+0.#")</strong>
-                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#;+#;+0")</strong>
+            <div style="background:white;">
+                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)" style="display:flex;justify-content:space-evenly">
+                    <strong style="margin:.25em .25em">@game?.AwayTeam</strong>
+                    <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread * -1).ToString("-#.#;+#.#;+0.#")</strong>
+                    <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#;+#;+0")</strong>
+                </div>
+                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)" style="display:flex;justify-content:space-evenly;">
+                    <strong style="margin:.25em .25em">@game?.HomeTeam</strong>
+                    <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread).ToString("-#.#;+#.#;+0.#")</strong>
+                    <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#;+#;+0")</strong>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <div style="display:flex;flex-direction:column;">
-            <label style="color:darkblue;text-align:center;margin-top:1em;">OverUnder</label>
-        <div >
-            <div class="clickable-cell" style="display:flex;justify-content:space-evenly">
-                <strong style="margin:.25em .25em">Under @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
-                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.OverPayout).ToString("-#;+#;+0")</strong>
+
+        <div style="display:flex;flex-direction:column;">
+            <div class="bet-type-title-container">
+                <label style="">Moneyline</label>
             </div>
-            <div class="clickable-cell" style="display:flex;justify-content:space-evenly">
-                <strong style="margin:.25em .25em">Over @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
-                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.UnderPayout).ToString("-#;+#;+0")</strong>
+            <div style="background:white;">
+                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)" style="display:flex;justify-content:space-evenly">
+                    <strong style="margin:.25em .25em">@game?.AwayTeam</strong>
+                    <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#;+#;+0")</strong>
+                </div>
+                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE)" style="display:flex;justify-content:space-evenly">
+                    <strong style="margin:.25em .25em">@game?.HomeTeam</strong>
+                    <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#;+#;+0")</strong>
+                </div>
             </div>
         </div>
-    </div>
+
+        <div style="display:flex;flex-direction:column;">
+            <div class="bet-type-title-container">
+                <label style="">OverUnder</label>
+            </div>
+            <div style="background:white;">
+                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)" style="display:flex;justify-content:space-evenly">
+                    <strong style="margin:.25em .25em">Under @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
+                    <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.OverPayout).ToString("-#;+#;+0")</strong>
+                </div>
+                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)" style="display:flex;justify-content:space-evenly">
+                    <strong style="margin:.25em .25em">Over @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
+                    <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.UnderPayout).ToString("-#;+#;+0")</strong>
+                </div>
+            </div>
+        </div>
 </div>
 
 
@@ -253,6 +260,18 @@
         width:60%;
     }
 
+    .bet-type-title-container {
+        background-color: rgb(0,0,0); /*Fallback color */
+        background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+        backdrop-filter: blur(10px);
+        margin: 0 auto;
+        border: 2px solid darkblue;
+        color:white;
+        width:100%;
+        text-align:center;
+        margin-top:1em;
+    }
+
     .wager-container {
         margin: 0 auto;
         width: 60%;
@@ -260,8 +279,9 @@
 
     .accordion-container-wager-details {
         width: 60%;
-        margin: 2em auto;
+        margin: 0 auto;
         position: center;
+        margin-top:1em;
     }
 
     .name-of-team {
@@ -314,8 +334,6 @@
     private ToastEffect HideAnimation = ToastEffect.FadeOut;
     private string Content { get => $"Thank you for choosing Bet Book."; }
 
-
-
     protected override async Task OnInitializedAsync()
     {
         season = DateTime.Now.CalculateSeason();
@@ -323,25 +341,6 @@
         games = await gameService.GetGamesByWeek(season, week);
         game = games.Where(g => g.ScoreID == ScoreId).FirstOrDefault();
         loggedInUser = await authProvider.GetUserFromAuth(userData);
-    }
-
-    public void OnAccordionCreate()
-    {
-        ExpandSinglesBetSlip = false;
-        ExpandParleyBetSlip = false;
-        DisableParleyBetSlip = true;
-    }
-
-    public bool GetDisableParleyBetSlip()
-    {
-        return
-            ExpandSinglesBetSlip || betSlip.preBets.Count < 2 && !ExpandParleyBetSlip ? true
-                : false;
-    }
-
-    public bool GetDisableSinglesBetSlip()
-    {
-        return ExpandParleyBetSlip ? true : false;
     }
 
     private async Task SubmitSinglesBetSlip()
@@ -356,5 +355,31 @@
         showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
         if (showToastParley)
             await this.ToastObj.ShowAsync();
+    }
+
+    public void OnAccordionCreate()
+    {
+        ExpandSinglesBetSlip = false;
+        ExpandParleyBetSlip = false;
+        DisableParleyBetSlip = true;
+    }
+
+    private bool GetDisableParleyBetSlip()
+    {
+        return
+            ExpandSinglesBetSlip || betSlip.preBets.Count < 2 && !ExpandParleyBetSlip ? true
+                : false;
+    }
+
+    private bool GetDisableSinglesBetSlip()
+    {
+        return ExpandParleyBetSlip ? true : false;
+    }
+
+    private string GetCellClass(string winner, GameDto game, BetType betType)
+    {
+        return betSlip.preBets.Contains(
+               betSlip.preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
+                       .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
     }
 }
