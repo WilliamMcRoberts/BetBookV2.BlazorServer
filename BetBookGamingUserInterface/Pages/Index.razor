@@ -49,7 +49,7 @@
                         {
                             <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:0 auto;">* @betSlip.startedGameDescription has already started *</h6>
                         }
-                        @if (betSlip.userStatusBad)
+                        @if (userStatusBad)
                         {
                             <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
                         }
@@ -101,7 +101,7 @@
                             </div>
 
                         </div>
-                        @if (betSlip.userStatusBad)
+                        @if (userStatusBad)
                         {
                             <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
                         }
@@ -347,6 +347,7 @@
     private bool DisableParleyBetSlip { get; set; }
     private bool ExpandSinglesBetSlip { get; set; }
     private bool ExpandParleyBetSlip { get; set; }
+    private bool userStatusBad;
     private bool showToastSingle;
     private bool showToastParley;
     private SfAccordion Accordion;
@@ -363,6 +364,12 @@
 
     private async Task SubmitSinglesBetSlip()
     {
+        if (loggedInUser.AccountBalance == 0)
+        {
+            userStatusBad = true;
+            return;
+        }
+
         showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
         if (showToastSingle)
             await this.ToastObj.ShowAsync();
@@ -371,6 +378,12 @@
 
     private async Task SubmitParleyBetSlip()
     {
+        if(loggedInUser.AccountBalance == 0)
+        {
+            userStatusBad = true;
+            return;
+        }
+
         showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
         if (showToastParley)
             await this.ToastObj.ShowAsync();

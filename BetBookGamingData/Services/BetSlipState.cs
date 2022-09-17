@@ -11,7 +11,6 @@ public class BetSlipState
     public bool conflictingBetsForParley;
     public decimal totalWagerForParley;
     public decimal totalPayoutForParley;
-    public bool userStatusBad;
     public bool parleyBetAmountBad;
     public bool gameHasStarted;
     public bool betAmountForSinglesBad;
@@ -75,12 +74,6 @@ public class BetSlipState
     {
         if(preBets.Count < 1) return false;
 
-        if (loggedInUser.AccountBalance == 0)
-        {
-            userStatusBad = true;
-            return false;
-        }
-
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
 
@@ -136,9 +129,6 @@ public class BetSlipState
     public async Task<bool> OnSubmitBetsFromParleyBetSlip(UserModel loggedInUser)
     {
         if (preBets.Count < 1) return false;
-
-        if (loggedInUser.AccountBalance < totalWagerForParley)
-            return userStatusBad = false;
 
         if (conflictingBetsForParley)
         {
