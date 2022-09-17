@@ -189,11 +189,11 @@
                     </div>
                     <div style="background:white;">
                             <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)" style="display:flex;justify-content:space-evenly">
-                            <strong style="margin:.25em .25em">Under @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
+                            <strong style="margin:.25em .25em">Over @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
                             <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.OverPayout).ToString("-#;+#;+0")</strong>
                         </div>
                             <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)" style="display:flex;justify-content:space-evenly">
-                            <strong style="margin:.25em .25em">Over @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
+                            <strong style="margin:.25em .25em">Under @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
                             <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.UnderPayout).ToString("-#;+#;+0")</strong>
                         </div>
                     </div>

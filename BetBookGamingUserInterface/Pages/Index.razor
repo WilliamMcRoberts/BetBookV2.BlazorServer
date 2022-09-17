@@ -263,7 +263,7 @@
                                 <strong>@game?.Date.ToString("h:mm")</strong>
                             </div>
                         </td>
-                        <td class="@GetCellClass(game!)" style="text-align:center;">
+                        <td @onclick="(() => GoToGameWagers(game.ScoreID))" class="@GetCellClass(game!)" style="text-align:center;">
                             <div class="teams">
                                 <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
                                     <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
@@ -366,6 +366,7 @@
         showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
         if (showToastSingle)
             await this.ToastObj.ShowAsync();
+        showToastSingle = false;
     }
 
     private async Task SubmitParleyBetSlip()
@@ -373,6 +374,7 @@
         showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
         if (showToastParley)
             await this.ToastObj.ShowAsync();
+        showToastParley = false;
     }
 
     private void GoToGameWagers(int scoreId)

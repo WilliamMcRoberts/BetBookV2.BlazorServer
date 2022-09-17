@@ -73,7 +73,8 @@ public class BetSlipState
 
     public async Task<bool> OnSubmitBetsFromSinglesBetSlip(UserModel loggedInUser)
     {
-        
+        if(preBets.Count < 1) return false;
+
         if (loggedInUser.AccountBalance == 0)
         {
             userStatusBad = true;
@@ -134,6 +135,8 @@ public class BetSlipState
 
     public async Task<bool> OnSubmitBetsFromParleyBetSlip(UserModel loggedInUser)
     {
+        if (preBets.Count < 1) return false;
+
         if (loggedInUser.AccountBalance < totalWagerForParley)
             return userStatusBad = false;
 
