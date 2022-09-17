@@ -1,0 +1,121 @@
+﻿@page "/GameWagers/{ScoreId:int}"
+@attribute [Authorize]
+@inject IGameService gameService
+@inject AuthenticationStateProvider authProvider
+@inject IMongoUserData userData
+
+<PageTitle>GameWagers</PageTitle>
+
+<div class="matchup-title">
+    <div style="display:flex">
+        <img style="height:60px" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> 
+        <strong class="name-of-team">@game?.AwayTeam</strong>
+
+    </div>
+    <strong style="font-size:40px;color:white;">@@</strong>
+    <div style="display:flex">
+        <img style="height:60px;" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> 
+        <strong class="name-of-team">@game?.HomeTeam</strong>
+    </div>
+
+</div>
+
+
+<div class="wager-container">
+    <div style="display:flex;flex-direction:column;">
+        <label style="color:white;text-align:center;">Moneyline</label>
+        <div >
+            <div class="clickable-cell" style="display:flex;justify-content:space-between">
+                <strong style="margin:.25em .25em">@game?.AwayTeam</strong>
+                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#;+#;+0")</strong>
+            </div>
+            <div class="clickable-cell" style="display:flex;justify-content:space-between">
+                <strong style="margin:.25em .25em">@game?.HomeTeam</strong>
+                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#;+#;+0")</strong>
+            </div>
+        </div>
+    </div>
+    
+    <div style="display:flex;flex-direction:column;">
+        <label style="color:white;text-align:center;">PointSpread</label>
+        <div >
+            <div class="clickable-cell" style="display:flex;justify-content:space-between">
+                <strong style="margin:.25em .25em">@game?.AwayTeam</strong>
+                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread * -1).ToString("-#.#;+#.#;+0.#")</strong>
+                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#;+#;+0")</strong>
+            </div>
+            <div class="clickable-cell" style="display:flex;justify-content:space-between">
+                <strong style="margin:.25em .25em">@game?.HomeTeam</strong>
+                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread).ToString("-#.#;+#.#;+0.#")</strong>
+                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#;+#;+0")</strong>
+            </div>
+        </div>
+    </div>
+    
+    <div style="display:flex;flex-direction:column;">
+        <label style="color:white;text-align:center;">OverUnder</label>
+        <div >
+            <div class="clickable-cell" style="display:flex;justify-content:space-between">
+                <strong style="margin:.25em .25em">Under @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
+                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.OverPayout).ToString("-#;+#;+0")</strong>
+            </div>
+            <div class="clickable-cell" style="display:flex;justify-content:space-between">
+                <strong style="margin:.25em .25em">Over @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
+                <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.UnderPayout).ToString("-#;+#;+0")</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    .matchup-title {
+        text-align: center;
+        display: flex;
+        justify-content: space-evenly;
+        margin-bottom:4em;
+    }
+
+    .wager-container {
+        margin: 0 auto;
+        width: 33%;
+    }
+
+    .name-of-team {
+        font-size: 45px;
+        font-weight: 700;
+        color: white;
+        margin-left: .25em;
+        text-decoration: underline;
+    }
+
+    @@media (max-width: 575px) {
+        .wager-container {
+            width:90%;
+        }
+
+        .name-of-team {
+            display:none;
+        }
+    }
+
+</style>
+
+@code {
+
+    [Parameter]
+    public int ScoreId { get; set; }
+    private GameDto[] games;
+    private List<GameDto> gameList = new();
+    private int week;
+    private SeasonType season;
+    private GameDto game;
+
+    protected override async Task OnInitializedAsync()
+    {
+        season = DateTime.Now.CalculateSeason();
+        week = season.CalculateWeek(DateTime.Now);
+        games = await gameService.GetGamesByWeek(season, week);
+        game = games.Where(g => g.ScoreID == ScoreId).FirstOrDefault();
+    }
+}
