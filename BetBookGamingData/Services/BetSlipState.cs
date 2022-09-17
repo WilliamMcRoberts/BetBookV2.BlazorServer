@@ -23,7 +23,6 @@ public class BetSlipState
     public readonly IMongoParleyBetSlipData _parleyBetSlipData;
     public readonly IMongoSingleBetData _singleBetData;
 
-
     public BetSlipState(IGameService gameService, IMongoParleyBetSlipData parleyBetSlipData, IMongoSingleBetData singleBetData)
     {
         _gameService = gameService;
@@ -297,6 +296,7 @@ public class BetSlipState
             GetWinnerSummaryForOverUnder(createBetModel)
                 : createBetModel.Winner;
     }
+
     public string GetWinnerSummaryForOverUnder(CreateBetModel createBetModel)
     {
         return createBetModel.Winner[0] == 'O' ? $"Over {createBetModel.Game.OverUnder}"
@@ -309,5 +309,4 @@ public class BetSlipState
             $"{createBetModel.Winner} {Convert.ToDecimal(createBetModel.Game.PointSpread).ToString("-#.#;+#.#;+0")}"
             : $"{createBetModel.Winner} {Convert.ToDecimal(createBetModel.Game.PointSpread * -1).ToString("-#.#;+#.#;+0")}";
     }
-
 }
