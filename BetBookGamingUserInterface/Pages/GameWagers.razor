@@ -1,9 +1,9 @@
 ﻿@page "/GameWagers/{ScoreId:int}"
-@attribute [Authorize]
 @inject IGameService gameService
 @inject AuthenticationStateProvider authProvider
 @inject IMongoUserData userData
 @inject BetSlipState betSlip
+@inject NavigationManager navManager
 
 <PageTitle>GameWagers</PageTitle>
 
