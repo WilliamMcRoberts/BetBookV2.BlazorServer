@@ -214,13 +214,13 @@ a, .btn-link {
     display: flex;
     flex-direction: column;
     font-size: 10px;
-    margin: 0 1em;
+    margin: 0 .25em;
 }
 
 .winner-moneyline-container {
     display: flex;
     flex-direction: column;
-    margin: 0 1em;
+    margin: 0 .25em;
 }
 
 .winner-moneyline {
@@ -229,13 +229,12 @@ a, .btn-link {
 }
 
 .bet-amount-input-container {
-    width: 30%;
     display:flex;
 }
 
 .bet-amount-input {
     border: 2px solid black;
-    width:60%;
+    width:auto;
 }
 
 .bet-amount-input-disabled {
@@ -538,6 +537,8 @@ ul {
     }
 }
 
+
+
 @media (min-width: 660px) {
 
     .data-grid-container-mini {
@@ -637,13 +638,9 @@ ul {
 
 @media(max-width: 400px) {
 
-    .winner-moneyline {
-        font-size: 8.5px;
-    }
 
-    .game-bet-type {
-        font-size: 8.5px;
-    }
+
+    
 }
 
 

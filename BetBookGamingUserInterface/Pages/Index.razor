@@ -8,128 +8,117 @@
 @inject IGameService gameService
 @inject IMongoHouseAccountData houseData
 <PageTitle>Home</PageTitle>
-@if (preBets.Count > 0)
-    {
-        <div class="accordion-container">
-            <SfAccordion ID="AccordionElement" @ref="@Accordion">
-                <AccordionEvents Created="OnAccordionCreate"></AccordionEvents>
-                <AccordionItems>
-                    <AccordionItem Id="AccordionItem" Disabled=@GetDisableSinglesBetSlip() @bind-Expanded="@ExpandSinglesBetSlip">
-                        <HeaderTemplate>Singles Bet Slip</HeaderTemplate>
-                        <ContentTemplate>
-                            <div style="padding:10px">
-                                @foreach (CreateBetModel createBetModel in preBets)
-                                {
-                                    <div class="create-bet-model-container">
-                                        <button @onclick="(() => RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
-                                        <div class="bet-info-container">
-                                            <div class="game-bet-type">
-                                                <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
-                                                <strong>@createBetModel.BetType</strong>
-                                            </div>
-                                            <div class="winner-moneyline-container">
-                                                <strong class="winner-moneyline">@GetWinnerSummary(createBetModel)</strong>
-                                                <strong class="winner-moneyline">@Convert.ToDecimal(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("-#.#;+#.#;+0")</strong>
-                                            </div>
-                                            <div class="bet-amount-input-container">
-                                                <strong style="margin:.25em .25em">$</strong>
-                                                <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
-                                            </div>
-                                        </div>
+<div class="accordion-container">
+    <SfAccordion ID="AccordionElement" @ref="@Accordion">
+        <AccordionEvents Created="OnAccordionCreate"></AccordionEvents>
+        <AccordionItems>
+            <AccordionItem Id="AccordionItem" Disabled=@GetDisableSinglesBetSlip() @bind-Expanded="@ExpandSinglesBetSlip">
+                <HeaderTemplate>
+                            <strong>Singles Bet Slip || Balance - $@loggedInUser?.AccountBalance.ToString("#,##0.00")</strong>
+                </HeaderTemplate>
+                <ContentTemplate>
+                    <div style="padding:10px">
+                        @foreach (CreateBetModel createBetModel in preBets)
+                        {
+                            <div class="create-bet-model-container">
+                                <button @onclick="(() => RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                <div class="bet-info-container">
+                                    <div class="game-bet-type">
+                                        <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
+                                        <strong>@createBetModel.BetType</strong>
                                     </div>
-                                }
-                                <div style="text-align:center;margin:1em 1em;">
-                                    <strong>Total Singles Payout</strong>
-                                    <strong>$@GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
-                                </div>
-                                @if (gameHasStarted)
-                                {
-                                    <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:0 auto;">* @startedGameDescription has already started *</h6>
-                                }
-                                @if (userStatusBad)
-                                {
-                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
-                                }
-                                @if (betAmountForSinglesBad)
-                                {
-                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
-                                }
-                                <div style="text-align: center">
-                                    <SfButton CssClass="e-custom" @onclick="@OnSubmitBetsFromSinglesBetSlip">Submit Singles Bet</SfButton>
+                                    <div class="winner-moneyline-container">
+                                        <strong class="winner-moneyline">@GetWinnerSummary(createBetModel)</strong>
+                                        <strong class="winner-moneyline">@Convert.ToDecimal(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("-#.#;+#.#;+0")</strong>
+                                    </div>
+                                    <div class="bet-amount-input-container">
+                                        <strong style="margin:.25em .25em">$</strong>
+                                        <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
+                                    </div>
                                 </div>
                             </div>
-                        </ContentTemplate>
-                    </AccordionItem>
-                    <AccordionItem Id="AccordionItem" Disabled=@GetDisableParleyBetSlip() @bind-Expanded="@ExpandParleyBetSlip">
-                        <HeaderTemplate>Parley Bet Slip</HeaderTemplate>
-                        <ContentTemplate>
-                            <div style="padding:10px">
-                                @foreach (CreateBetModel createBetModel in preBets)
-                                {
-                                    <div class="create-bet-model-container">
-                                        <button @onclick="(() => RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
-                                        <div class="bet-info-container">
-                                            <div class="game-bet-type">
-                                                <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
-                                                <strong>@createBetModel.BetType</strong>
-                                            </div>
-                                            <div class="winner-moneyline-container">
-                                                <strong class="winner-moneyline">@GetWinnerSummary(createBetModel)</strong>
-                                                <strong class="winner-moneyline">@Convert.ToDecimal(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("-#.#;+#.#;+0")</strong>
-                                            </div>
-                                            <div class="bet-amount-input-container">
-                                                <strong style="margin:.25em .25em">$</strong>
-                                                <input class="bet-amount-input-disabled" disabled type="number" placeholder="0" />
-                                            </div>
-                                        </div>
+                        }
+                        <div style="text-align:center;margin:1em 1em;">
+                            <strong>Total Singles Payout</strong>
+                            <strong>$@GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
+                        </div>
+                        @if (gameHasStarted)
+                        {
+                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:0 auto;">* @startedGameDescription has already started *</h6>
+                        }
+                        @if (userStatusBad)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
+                        }
+                        @if (betAmountForSinglesBad)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
+                        }
+                        <div style="text-align: center">
+                            <SfButton CssClass="e-custom" @onclick="@OnSubmitBetsFromSinglesBetSlip">Submit Singles Bet</SfButton>
+                        </div>
+                    </div>
+                </ContentTemplate>
+            </AccordionItem>
+            <AccordionItem Id="AccordionItem" Disabled=@GetDisableParleyBetSlip() @bind-Expanded="@ExpandParleyBetSlip">
+                <HeaderTemplate>
+                    <strong>Parley Bet Slip || Balance - $@loggedInUser?.AccountBalance.ToString("#,##0.00")</strong>
+                </HeaderTemplate>
+                <ContentTemplate>
+                    <div style="padding:10px">
+                        @foreach (CreateBetModel createBetModel in preBets)
+                        {
+                            <div class="create-bet-model-container">
+                                <button @onclick="(() => RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                <div class="bet-info-container">
+                                    <div class="game-bet-type">
+                                        <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
+                                        <strong>@createBetModel.BetType</strong>
                                     </div>
-                                }
-                                <div style="display:flex;flex-direction:column;">
-
-                                    <div style="display:flex;flex-direction:column;width:35%;margin:.5em auto;text-align:center;">
-                                        <strong style="text-align:center;">Wager Amount</strong>
-                                        <div style="display:flex;justify-content:center;">
-                                            <strong style="margin:.25em .25em">$</strong>
-                                            <input type="number" @bind-value="@totalWagerForParley" @bind-value:event="oninput" />
-                                        </div>
+                                    <div class="winner-moneyline-container">
+                                        <strong class="winner-moneyline">@GetWinnerSummary(createBetModel)</strong>
+                                        <strong class="winner-moneyline">@Convert.ToDecimal(GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("-#.#;+#.#;+0")</strong>
                                     </div>
-
-                                    <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
-                                        <strong>Total Parley Payout</strong>
-                                        <strong>$@GetPayoutForTotalBetsParley().ToString("#,##0.00")</strong>
-                                    </div>
-
                                 </div>
-                                @if (userStatusBad)
-                                {
-                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
-                                }
-                                @if (parleyBetAmountBad && totalWagerForParley <= 0)
-                                {
-                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Must Have A Wager Amount *</h6>
-                                }
-                                @if (conflictingBetsForParley)
-                                {
-                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
-                                }
-                                <div style="text-align: center;margin:.5em auto;">
-                                    <SfButton CssClass="e-custom" @onclick="@OnSubmitBetsFromParleyBetSlip">Submit Parley Bet</SfButton>
-                                </div>
-
                             </div>
-                        </ContentTemplate>
-                    </AccordionItem>
-                </AccordionItems>
-            </SfAccordion>
-        </div>
-                
-    }
-<div class="user-info-bar">
+                        }
+                        <div style="display:flex;flex-direction:column;">
 
-    <div style="">
-        <label style="margin:.35em auto;">$@loggedInUser?.AccountBalance.ToString("#,##0.00")</label>
-    </div>
+                            <div style="display:flex;flex-direction:column;width:35%;margin:.5em auto;text-align:center;">
+                                <strong style="text-align:center;">Wager Amount</strong>
+                                <div style="display:flex;justify-content:center;">
+                                    <strong style="margin:.25em .25em">$</strong>
+                                    <input type="number" @bind-value="@totalWagerForParley" @bind-value:event="oninput" />
+                                </div>
+                            </div>
 
+                            <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
+                                <strong>Total Parley Payout</strong>
+                                <strong>$@GetPayoutForTotalBetsParley().ToString("#,##0.00")</strong>
+                            </div>
+
+                        </div>
+                        @if (userStatusBad)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
+                        }
+                        @if (parleyBetAmountBad && totalWagerForParley <= 0)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Must Have A Wager Amount *</h6>
+                        }
+                        @if (conflictingBetsForParley)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
+                        }
+                        <div style="text-align: center;margin:.5em auto;">
+                            <SfButton CssClass="e-custom" @onclick="@OnSubmitBetsFromParleyBetSlip">Submit Parley Bet</SfButton>
+                        </div>
+
+                    </div>
+                </ContentTemplate>
+            </AccordionItem>
+        </AccordionItems>
+    </SfAccordion>
 </div>
 
 <div class="bar">
@@ -172,74 +161,74 @@
                         var game = (context as GameDto);
                         if (game?.HasStarted == false)
                         {
-                                                        <td class="@GetCellClass(game!)" style="text-align:center;">
-                                                            <div style="padding: .5em .5em;">
-                                                                <strong>@game?.Date.ToString("M-d")</strong>
-                                                            </div>
-                                                            <div style="padding:.5em .5em;">
-                                                                <strong>@game?.Date.ToString("h:mm")</strong>
-                                                            </div>
-                                                        </td>
-                                                        <td @onclick="(() => GoToGameWagers(game.ScoreID))" class="@GetCellClass(game!)" style="text-align:center;">
-                                                            <div class="teams">
-                                                                <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                                                    <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                                            <td class="@GetCellClass(game!)" style="text-align:center;">
+                                                                <div style="padding: .5em .5em;">
+                                                                    <strong>@game?.Date.ToString("M-d")</strong>
                                                                 </div>
                                                                 <div style="padding:.5em .5em;">
-                                                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                                                    <strong>@game?.Date.ToString("h:mm")</strong>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="@GetCellClass(game!)">
+                                                            </td>
+                                                            <td @onclick="(() => GoToGameWagers(game.ScoreID))" class="@GetCellClass(game!)" style="text-align:center;">
+                                                                <div class="teams">
+                                                                    <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                                                        <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                                                    </div>
+                                                                    <div style="padding:.5em .5em;">
+                                                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="@GetCellClass(game!)">
 
-                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
+                                                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)">
-                                                                <div style="display:flex;justify-content:space-evenly;">
-                                        <strong style="margin-right:.5em;">@Convert.ToDecimal(game.PointSpread * -1).ToString("-#.#;+#.#;+0")</strong>
-                                        <strong>@Convert.ToDecimal(game?.PointSpreadAwayTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                                                    <div style="display:flex;justify-content:space-evenly;">
+                                            <strong style="margin-right:.5em;">@Convert.ToDecimal(game.PointSpread * -1).ToString("-#.#;+#.#;+0")</strong>
+                                            <strong>@Convert.ToDecimal(game?.PointSpreadAwayTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))"
+                                                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))"
                                             class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)">
-                                                                <div style="display:flex;justify-content:space-evenly;">
-                                                                    <strong style="margin-right:.5em;">@Convert.ToDecimal(game.PointSpread).ToString("-#.#;+#.#;+0")</strong>
-                                        <strong>@Convert.ToDecimal(game?.PointSpreadHomeTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                                        <strong style="margin-right:.5em;">@Convert.ToDecimal(game.PointSpread).ToString("-#.#;+#.#;+0")</strong>
+                                            <strong>@Convert.ToDecimal(game?.PointSpreadHomeTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                        </td>
-                                                        <td class="@GetCellClass(game!)" style="text-align:center;">
+                                                            </td>
+                                                            <td class="@GetCellClass(game!)" style="text-align:center;">
 
-                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))"
+                                                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))"
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)">
-                                    <strong>@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
-                                                            </div>
+                                        <strong>@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                                                </div>
 
-                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))"
+                                                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))"
                                     class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE)">
-                                    <strong>@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
-                                                            </div>
+                                        <strong>@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                                                </div>
 
-                                                        </td>
-                                                        <td class="@GetCellClass(game!)">
+                                                            </td>
+                                                            <td class="@GetCellClass(game!)">
 
-                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
+                                                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
                                     class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
-                                                                <div style="display:flex;justify-content:space-evenly;">
-                                                                    <strong>Over @game?.OverUnder</strong>
-                                                                    <strong>@Convert.ToDecimal(game?.OverPayout).ToString("-#.#;+#.#;+0")</strong>
+                                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                                        <strong>Over @game?.OverUnder</strong>
+                                                                        <strong>@Convert.ToDecimal(game?.OverPayout).ToString("-#.#;+#.#;+0")</strong>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                            <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
+                                                                <div @onclick="(() => SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
                                     class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
-                                                                <div style="display:flex;justify-content:space-evenly;">
-                                                                    <strong>Under @game?.OverUnder</strong>
-                                                                    <strong>@Convert.ToDecimal(game?.UnderPayout).ToString("-#.#;+#.#;+0")</strong>
+                                                                    <div style="display:flex;justify-content:space-evenly;">
+                                                                        <strong>Under @game?.OverUnder</strong>
+                                                                        <strong>@Convert.ToDecimal(game?.UnderPayout).ToString("-#.#;+#.#;+0")</strong>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                        </td>
+                                                            </td>
                         }
                     }
                 </RowTemplate>
@@ -267,31 +256,31 @@
                         var game = (context as GameDto);
                         if (game?.HasStarted == false)
                         {
-                                                        <td class="@GetCellClass(game!)" style="text-align:center;">
-                                                            <div style="padding: .5em .5em;">
-                                                                <strong>@game?.Date.ToString("M-d")</strong>
-                                                            </div>
-                                                            <div style="padding:.5em .5em;">
-                                                                <strong>@game?.Date.ToString("h:mm")</strong>
-                                                            </div>
-                                                        </td>
-                                                        <td class="@GetCellClass(game!)" style="text-align:center;">
-                                                            <div class="teams">
-                                                                <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                                                    <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                                            <td class="@GetCellClass(game!)" style="text-align:center;">
+                                                                <div style="padding: .5em .5em;">
+                                                                    <strong>@game?.Date.ToString("M-d")</strong>
                                                                 </div>
                                                                 <div style="padding:.5em .5em;">
-                                                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                                                    <strong>@game?.Date.ToString("h:mm")</strong>
                                                                 </div>
-                                                            </div>
-                                                        </td>
-                                                        <td class="@GetCellClass(game!)">
+                                                            </td>
+                                                            <td class="@GetCellClass(game!)" style="text-align:center;">
+                                                                <div class="teams">
+                                                                    <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                                                        <img class="team-icon-top-row" src="@string.Concat($"images/{game?.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                                                    </div>
+                                                                    <div style="padding:.5em .5em;">
+                                                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{game?.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                                                    </div>
+                                                                </div>
+                                                            </td>
+                                                            <td class="@GetCellClass(game!)">
 
-                                                            <div class="clickable-cell" @onclick="(() => GoToGameWagers(game.ScoreID))">
-                                                                    <strong>Make Wager</strong>
-                                                            </div>
+                                                                <div class="clickable-cell" @onclick="(() => GoToGameWagers(game.ScoreID))">
+                                                                        <strong>Make Wager</strong>
+                                                                </div>
 
-                                                        </td>
+                                                            </td>
                         }
                     }
                 </RowTemplate>
@@ -660,7 +649,7 @@
 
     public void OnAccordionCreate()
     {
-        ExpandSinglesBetSlip = true;
+        ExpandSinglesBetSlip = false;
         ExpandParleyBetSlip = false;
         DisableParleyBetSlip = true;
     }
