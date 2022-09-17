@@ -351,7 +351,7 @@
 
     private async Task SubmitSinglesBetSlip()
     {
-        if (loggedInUser.AccountBalance == 0)
+        if (loggedInUser is null)
         {
             userStatusBad = true;
             return;
@@ -364,7 +364,7 @@
 
     private async Task SubmitParleyBetSlip()
     {
-        if (loggedInUser.AccountBalance == 0)
+        if (loggedInUser is null)
         {
             userStatusBad = true;
             return;
