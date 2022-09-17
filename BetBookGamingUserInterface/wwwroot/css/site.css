@@ -217,12 +217,20 @@ a, .btn-link {
     flex-direction: column;
     font-size: 12px;
     margin: 0 .25em;
+    border-bottom:1px dashed black;
 }
 
 .winner-moneyline-container {
     display: flex;
     flex-direction: column;
     margin: 0 .25em;
+}
+
+.winner-moneyline-container-parley {
+    display: flex;
+    flex-direction: column;
+    margin: 0 .25em;
+    border-bottom: 1px dashed black;
 }
 
 .game-bet-type {

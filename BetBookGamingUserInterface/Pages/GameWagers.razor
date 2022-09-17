@@ -102,7 +102,7 @@
                                                     <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
                                                     <strong>@createBetModel.BetType</strong>
                                                 </div>
-                                                <div class="winner-moneyline-container">
+                                                <div class="winner-moneyline-container-parley">
                                                     <strong class="winner-moneyline-parley">@betSlip.GetWinnerSummary(createBetModel)</strong>
                                                     <strong class="winner-moneyline-parley">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("-#.#;+#.#;+0")</strong>
                                                 </div>
