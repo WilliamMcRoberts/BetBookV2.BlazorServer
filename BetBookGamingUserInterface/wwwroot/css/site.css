@@ -210,10 +210,12 @@ a, .btn-link {
     margin: .25em auto;
 }
 
-.game-bet-type {
+
+
+.game-bet-type-parley {
     display: flex;
     flex-direction: column;
-    font-size: 10px;
+    font-size: 12px;
     margin: 0 .25em;
 }
 
@@ -223,8 +225,20 @@ a, .btn-link {
     margin: 0 .25em;
 }
 
+.game-bet-type {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    margin: 0 .25em;
+}
+
 .winner-moneyline {
-    font-size: 10px;
+    font-size: 12px;
+    text-align: center;
+}
+
+.winner-moneyline-parley {
+    font-size: 12px;
     text-align: center;
 }
 
@@ -246,6 +260,8 @@ a, .btn-link {
     margin:.5em auto;
     position:center;
 }
+
+
 
 .data-grid-container {
     width: 70%;
@@ -636,9 +652,15 @@ ul {
     }
 }
 
-@media(max-width: 400px) {
+@media(max-width: 480px) {
 
+    .game-bet-type {
+        font-size: 10px;
+    }
 
+    .winner-moneyline {
+        font-size: 10px;
+    }
 
     
 }
