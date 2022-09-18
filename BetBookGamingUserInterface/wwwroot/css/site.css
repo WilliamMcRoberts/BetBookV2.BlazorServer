@@ -210,8 +210,6 @@ a, .btn-link {
     margin: .25em auto;
 }
 
-
-
 .game-bet-type-parley {
     display: flex;
     flex-direction: column;
@@ -269,8 +267,6 @@ a, .btn-link {
     position:center;
 }
 
-
-
 .data-grid-container {
     width: 70%;
     margin: 0 auto;
@@ -288,8 +284,6 @@ a, .btn-link {
     margin: 0 auto;
     border: 2px solid darkblue;
 }
-
-
 
 /***********************************
         Accordion
@@ -497,7 +491,6 @@ ul {
         color: darkblue;
     }
 
-
 .headernew {
     display: flex;
     justify-content: space-between;
@@ -512,7 +505,6 @@ ul {
     backdrop-filter: blur(10px);
     border-bottom: 2px solid darkblue;
 }
-
 
 @media (max-width: 950px) {
 
@@ -628,13 +620,11 @@ ul {
     }
 }
 
-
 @media (min-width: 550px) {
 
     .data-grid-container-mini {
         display:none;
     }
-
 }
 
 @media (max-width: 800px) {
@@ -728,8 +718,6 @@ ul {
     .winner-moneyline {
         font-size: 10px;
     }
-
-    
 }
 
 
