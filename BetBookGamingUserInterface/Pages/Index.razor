@@ -32,7 +32,7 @@
                                     </div>
                                     <div class="winner-moneyline-container">
                                         <strong class="winner-moneyline">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                        <strong class="winner-moneyline">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("-#.#;+#.#;+0")</strong>
+                                        <strong class="winner-moneyline">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("+#;-#;")</strong>
                                     </div>
                                     <div class="bet-amount-input-container">
                                         <strong style="margin:.25em .25em">$</strong>
@@ -80,7 +80,7 @@
                                     </div>
                                     <div class="winner-moneyline-container-parley">
                                         <strong class="winner-moneyline-parley">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                        <strong class="winner-moneyline-parley">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("-#.#;+#.#;+0")</strong>
+                                        <strong class="winner-moneyline-parley">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("+#;-#;")</strong>
                                     </div>
                                 </div>
                             </div>
@@ -182,16 +182,16 @@
                             <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
                                 class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)">
                                 <div style="display:flex;justify-content:space-evenly;">
-                                    <strong style="margin-right:.5em;">@Convert.ToDecimal(game.PointSpread * -1).ToString("-#.#;+#.#;+0")</strong>
-                                    <strong>@Convert.ToDecimal(game?.PointSpreadAwayTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                    <strong style="margin-right:.5em;">@Convert.ToDecimal(game.PointSpread).ToString("-#.0;+#.0;")</strong>
+                                    <strong>@Convert.ToDecimal(game?.PointSpreadAwayTeamMoneyLine).ToString("+#;-#;")</strong>
                                 </div>
                             </div>
 
                             <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))"
                                     class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)">
                                     <div style="display:flex;justify-content:space-evenly;">
-                                        <strong style="margin-right:.5em;">@Convert.ToDecimal(game.PointSpread).ToString("-#.#;+#.#;+0")</strong>
-                                        <strong>@Convert.ToDecimal(game?.PointSpreadHomeTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                    <strong style="margin-right:.5em;">@Convert.ToDecimal(game.PointSpread).ToString("+#.0;-#.0;")</strong>
+                                        <strong>@Convert.ToDecimal(game?.PointSpreadHomeTeamMoneyLine).ToString("+#;-#;")</strong>
                                     </div>
                             </div>
 
@@ -200,12 +200,12 @@
 
                             <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))"
                                 class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)">
-                                <strong>@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                <strong>@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("+#;-#;")</strong>
                             </div>
 
                             <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))"
                                 class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE)">
-                                <strong>@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#.#;+#.#;+0")</strong>
+                                <strong>@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("+#;-#;")</strong>
                             </div>
 
                         </td>
@@ -215,7 +215,7 @@
                                 class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
                                 <div style="display:flex;justify-content:space-evenly;">
                                     <strong>Over @game?.OverUnder</strong>
-                                    <strong>@Convert.ToDecimal(game?.OverPayout).ToString("-#.#;+#.#;+0")</strong>
+                                    <strong>@Convert.ToDecimal(game?.OverPayout).ToString("+#;-#;")</strong>
                                 </div>
                             </div>
 
@@ -223,7 +223,7 @@
                                 class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)">
                                 <div style="display:flex;justify-content:space-evenly;">
                                     <strong>Under @game?.OverUnder</strong>
-                                    <strong>@Convert.ToDecimal(game?.UnderPayout).ToString("-#.#;+#.#;+0")</strong>
+                                    <strong>@Convert.ToDecimal(game?.UnderPayout).ToString("+#;-#;")</strong>
                                 </div>
                             </div>
                         </td>
@@ -337,6 +337,7 @@
 
     private GameDto[] games;
     private List<GameDto> gameList = new();
+    private List<CreateBetModel> betList = new();
     private UserModel loggedInUser;
     private SfToast ToastObj;
     private int week;
@@ -401,10 +402,10 @@
 
     private bool GetDisableSinglesBetSlip() => ExpandParleyBetSlip ? true : false;
 
-    private string GetCellClass(string winner, GameDto game, BetType betType) =>
-         betSlip.preBets.Contains(betSlip.preBets.Where(b => 
-             b.Winner == winner && b.Game == game && b.BetType == betType)
-             .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
+    public string GetCellClass(string winner, GameDto game, BetType betType) =>
+        betSlip.preBets.Contains(betSlip.preBets.Where(b =>
+            b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
+            .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
 
     private string GetCellClass(GameDto game) =>
          gameList.IndexOf(game) == gameList.Count - 1 ? "bottom-row-cell" : "cell";

@@ -33,12 +33,11 @@ public class BetSlipState
 
     public void SelectOrRemoveWinnerAndGameForBet(string winner, GameDto game, BetType betType)
     {
-        if (preBets.Contains(
-            preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
+        if (preBets.Contains(preBets.Where(b => b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
                    .FirstOrDefault()!))
         {
             preBets.Remove(
-            preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
+            preBets.Where(b => b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
                    .FirstOrDefault()!);
 
             conflictingBetsForParley = CheckForConflictingBets();
@@ -276,6 +275,6 @@ public class BetSlipState
 
     public string GetWinnerSummaryForPointSpread(CreateBetModel createBetModel) =>
          createBetModel.Winner == createBetModel.Game.HomeTeam ?
-         $"{createBetModel.Winner} {Convert.ToDecimal(createBetModel.Game.PointSpread):-#.#;+#.#;+0}"
-         : $"{createBetModel.Winner} {Convert.ToDecimal(createBetModel.Game.PointSpread * -1):-#.#;+#.#;+0}";
+         $"{createBetModel.Winner} {Convert.ToDecimal(createBetModel.Game.PointSpread):+#.0;-#.0}"
+         : $"{createBetModel.Winner} {Convert.ToDecimal(createBetModel.Game.PointSpread):-#.0;+#.0;}";
 }

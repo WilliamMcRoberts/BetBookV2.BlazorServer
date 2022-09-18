@@ -56,7 +56,7 @@
                                                 </div>
                                                 <div class="winner-moneyline-container">
                                                     <strong class="winner-moneyline">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                                    <strong class="winner-moneyline">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("-#.#;+#.#;+0")</strong>
+                                                    <strong class="winner-moneyline">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("+#;-#;")</strong>
                                                 </div>
                                                 <div class="bet-amount-input-container">
                                                     <strong style="margin:.25em .25em">$</strong>
@@ -104,7 +104,7 @@
                                                 </div>
                                                 <div class="winner-moneyline-container-parley">
                                                     <strong class="winner-moneyline-parley">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                                    <strong class="winner-moneyline-parley">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("-#.#;+#.#;+0")</strong>
+                                                    <strong class="winner-moneyline-parley">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("+#;-#;")</strong>
                                                 </div>
                                             </div>
                                         </div>
@@ -156,13 +156,13 @@
                     <div style="background:white;">
                         <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)" style="display:flex;justify-content:space-evenly">
                             <strong style="margin:.25em .25em">@game?.AwayTeam</strong>
-                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread * -1).ToString("-#.#;+#.#;+0.#")</strong>
-                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#;+#;+0")</strong>
+                        <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread).ToString("-#.0;+#.0;")</strong>
+                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpreadAwayTeamMoneyLine).ToString("+#;-#;")</strong>
                         </div>
                         <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)" style="display:flex;justify-content:space-evenly;">
                             <strong style="margin:.25em .25em">@game?.HomeTeam</strong>
-                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread).ToString("-#.#;+#.#;+0.#")</strong>
-                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#;+#;+0")</strong>
+                        <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpread).ToString("+#.0;-#.0;")</strong>
+                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.PointSpreadHomeTeamMoneyLine).ToString("+#;-#;")</strong>
                         </div>
                     </div>
                 </div>
@@ -174,11 +174,11 @@
                     <div style="background:white;">
                         <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)" style="display:flex;justify-content:space-evenly">
                             <strong style="margin:.25em .25em">@game?.AwayTeam</strong>
-                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("-#;+#;+0")</strong>
+                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("+#;-#;")</strong>
                         </div>
                         <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE)" style="display:flex;justify-content:space-evenly">
                             <strong style="margin:.25em .25em">@game?.HomeTeam</strong>
-                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("-#;+#;+0")</strong>
+                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("+#;-#;")</strong>
                         </div>
                     </div>
                 </div>
@@ -190,11 +190,11 @@
                     <div style="background:white;">
                             <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)" style="display:flex;justify-content:space-evenly">
                             <strong style="margin:.25em .25em">Over @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
-                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.OverPayout).ToString("-#;+#;+0")</strong>
+                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.OverPayout).ToString("+#;-#;")</strong>
                         </div>
                             <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)" style="display:flex;justify-content:space-evenly">
                             <strong style="margin:.25em .25em">Under @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
-                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.UnderPayout).ToString("-#;+#;+0")</strong>
+                            <strong style="margin:.25em .25em">@Convert.ToDecimal(game?.UnderPayout).ToString("+#;-#;")</strong>
                         </div>
                     </div>
                 </div>
@@ -382,7 +382,7 @@
 
     private string GetCellClass(string winner, GameDto game, BetType betType) =>
          betSlip.preBets.Contains(betSlip.preBets.Where(
-             b => b.Winner == winner && b.Game == game && b.BetType == betType)
+             b => b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
              .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
 
     public void OnAccordionCreate()
