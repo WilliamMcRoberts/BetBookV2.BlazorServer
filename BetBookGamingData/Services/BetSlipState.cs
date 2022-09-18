@@ -41,7 +41,6 @@ public class BetSlipState
                    .FirstOrDefault()!);
 
             conflictingBetsForParley = CheckForConflictingBets();
-
             return;
         }
 
