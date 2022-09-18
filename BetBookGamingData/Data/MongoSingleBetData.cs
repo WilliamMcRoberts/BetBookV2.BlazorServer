@@ -29,7 +29,7 @@ public class MongoSingleBetData : IMongoSingleBetData
         _config = config;
     }
 
-    public async Task CreateSingleBet(SingleBetModel singleBet)
+    public async Task<bool> CreateSingleBet(SingleBetModel singleBet)
     {
         _logger.LogInformation("Calling Create Single Bet / MongoSingleBetData");
 
@@ -64,15 +64,15 @@ public class MongoSingleBetData : IMongoSingleBetData
             await _singleBets.InsertOneAsync(singleBet);
 
             await session.CommitTransactionAsync();
-
+            return true;
         }
         catch (Exception ex)
         {
             _logger.LogInformation(ex, "Failed To Insert Single Bet...Transaction Aborted / SingleBetData");
 
             await session.AbortTransactionAsync();
+            return false;
         }
-
     }
 
     public async Task<List<SingleBetModel>> GetBettorSingleBets(string userId)

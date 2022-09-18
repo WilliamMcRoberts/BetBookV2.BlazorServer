@@ -370,10 +370,11 @@
             return;
         }
 
-        showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
+        showToastSingle = 
+            await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
+
         if (showToastSingle)
             await this.ToastObj.ShowAsync();
-        showToastSingle = false;
     }
 
     private async Task SubmitParleyBetSlip()
@@ -384,15 +385,35 @@
             return;
         }
 
-        showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
+        showToastParley = 
+            await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
+
         if (showToastParley)
             await this.ToastObj.ShowAsync();
-        showToastParley = false;
     }
 
-    private void GoToGameWagers(int scoreId)
-    {
+    private void GoToGameWagers(int scoreId) => 
         navManager.NavigateTo($"/GameWagers/{scoreId}");
+
+    private bool GetDisableParleyBetSlip() =>
+            ExpandSinglesBetSlip || betSlip?.preBets.Count < 2 && !ExpandParleyBetSlip ?
+                true : false;
+
+    private bool GetDisableSinglesBetSlip() => ExpandParleyBetSlip ? true : false;
+
+    private string GetCellClass(string winner, GameDto game, BetType betType) =>
+         betSlip.preBets.Contains(betSlip.preBets.Where(b => 
+             b.Winner == winner && b.Game == game && b.BetType == betType)
+             .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
+
+    private string GetCellClass(GameDto game) =>
+         gameList.IndexOf(game) == gameList.Count - 1 ? "bottom-row-cell" : "cell";
+
+    private void OnAccordionCreate()
+    {
+        ExpandSinglesBetSlip = false;
+        ExpandParleyBetSlip = false;
+        DisableParleyBetSlip = true;
     }
 
     private async Task LoadAndVerifyUser()
@@ -454,37 +475,6 @@
         }
     }
 
-    private void OnAccordionCreate()
-    {
-        ExpandSinglesBetSlip = false;
-        ExpandParleyBetSlip = false;
-        DisableParleyBetSlip = true;
-    }
-
-    private bool GetDisableParleyBetSlip()
-    {
-        return
-            ExpandSinglesBetSlip || betSlip?.preBets.Count < 2 && !ExpandParleyBetSlip ? true
-                : false;
-    }
-
-    private bool GetDisableSinglesBetSlip()
-    {
-        return ExpandParleyBetSlip ? true : false;
-    }
-
-    private string GetCellClass(string winner, GameDto game, BetType betType)
-    {
-        return betSlip.preBets.Contains(
-               betSlip.preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
-                       .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
-    }
-
-    private string GetCellClass(GameDto game)
-    {
-        return gameList.IndexOf(game) == gameList.Count - 1 ? "bottom-row-cell"
-                : "cell";
-    }
 }
 
 

@@ -203,8 +203,6 @@
     </div>
 }
 
-
-
 <SfToast @ref="ToastObj" Timeout="0" ShowCloseButton="true" Title="Good Luck On Your New Wager!" Content="@Content">
     <ToastPosition X="Right" Y="Bottom"></ToastPosition>
     <ToastAnimationSettings>
@@ -212,7 +210,6 @@
         <ToastHideAnimationSettings Effect="@HideAnimation"></ToastHideAnimationSettings>
     </ToastAnimationSettings>
 </SfToast>
-
 
 <style>
 
@@ -358,6 +355,7 @@
         }
 
         showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
+
         if (showToastSingle)
             await this.ToastObj.ShowAsync();
     }
@@ -371,33 +369,26 @@
         }
 
         showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
+
         if (showToastParley)
             await this.ToastObj.ShowAsync();
     }
+
+    private bool GetDisableParleyBetSlip() =>
+            ExpandSinglesBetSlip || betSlip.preBets.Count < 2 && !ExpandParleyBetSlip ? 
+                true : false;
+
+    private bool GetDisableSinglesBetSlip() => ExpandParleyBetSlip ? true : false;
+
+    private string GetCellClass(string winner, GameDto game, BetType betType) =>
+         betSlip.preBets.Contains(betSlip.preBets.Where(
+             b => b.Winner == winner && b.Game == game && b.BetType == betType)
+             .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
 
     public void OnAccordionCreate()
     {
         ExpandSinglesBetSlip = false;
         ExpandParleyBetSlip = false;
         DisableParleyBetSlip = true;
-    }
-
-    private bool GetDisableParleyBetSlip()
-    {
-        return
-            ExpandSinglesBetSlip || betSlip.preBets.Count < 2 && !ExpandParleyBetSlip ? true
-                : false;
-    }
-
-    private bool GetDisableSinglesBetSlip()
-    {
-        return ExpandParleyBetSlip ? true : false;
-    }
-
-    private string GetCellClass(string winner, GameDto game, BetType betType)
-    {
-        return betSlip.preBets.Contains(
-               betSlip.preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
-                       .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
     }
 }

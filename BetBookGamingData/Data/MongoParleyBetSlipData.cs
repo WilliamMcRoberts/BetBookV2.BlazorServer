@@ -29,7 +29,7 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
         _houseData = houseData;
     }
 
-    public async Task CreateParleyBetSlip(ParleyBetSlipModel parleyBetSlip)
+    public async Task<bool> CreateParleyBetSlip(ParleyBetSlipModel parleyBetSlip)
     {
         _logger.LogInformation("Calling Create Parley Bet Slip / MongoParleyBetSlipData");
 
@@ -64,12 +64,14 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
             await _parleyBetSlips.InsertOneAsync(parleyBetSlip);
 
             await session.CommitTransactionAsync();
+            return true;
         }
         catch (Exception ex)
         {
             _logger.LogInformation(ex, "Failed To Insert Parley Bet...Transaction Aborted / ParleyBetSlipData");
 
             await session.AbortTransactionAsync();
+            return false;
         }
     }
 
