@@ -574,10 +574,6 @@ ul {
     .data-grid-container-profile-mini {
         display: none;
     }
-
-    .bet-title-mini {
-        display: none;
-    }
 }
 
 @media (max-width: 580px) {
