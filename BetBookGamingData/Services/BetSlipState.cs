@@ -63,7 +63,7 @@ public class BetSlipState
     {
         foreach (CreateBetModel cb in preBets)
         {
-            if (preBets.Where(b => b.Game == cb.Game && b.BetType == cb.BetType).Count() > 1)
+            if (preBets.Where(b => b.Game.ScoreID == cb.Game.ScoreID && b.BetType == cb.BetType).Count() > 1)
                 return true;
         }
 
