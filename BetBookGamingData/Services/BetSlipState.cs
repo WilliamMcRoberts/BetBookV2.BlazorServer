@@ -33,7 +33,7 @@ public class BetSlipState
 
     public void SelectOrRemoveWinnerAndGameForBet(string winner, GameDto game, BetType betType)
     {
-        if (preBets.Contains(preBets.Where(b => b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
+        if (preBets.Contains(preBets.Where(b => b.Winner == winner && b.Game == game && b.BetType == betType)
                    .FirstOrDefault()!))
         {
             preBets.Remove(

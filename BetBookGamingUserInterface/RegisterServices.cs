@@ -15,13 +15,13 @@ public static class RegisterServices
 
     public static void ConfigureServices(this WebApplicationBuilder builder)
     {
-        builder.Host.UseSerilog();
+        /******************* Microsoft Authentication ***********************/
 
-        // Microsoft authentication
         builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAdB2C"));
 
-        // Admin authorization
+        /********************** Admin Authorization ***************************/
+
         builder.Services.AddAuthorization(options =>
         {
             options.AddPolicy("Admin", policy =>
@@ -30,10 +30,9 @@ public static class RegisterServices
             });
         });
 
-        builder.Services.AddHostedService<UpdateSingleBetsTimer>();
-        builder.Services.AddHostedService<UpdateParleyBetsTimer>();
-        builder.Services.AddSingleton<BetSlipState>();
+        /************************** Add / Use *********************************/
 
+        builder.Host.UseSerilog();
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor().AddMicrosoftIdentityConsentHandler();
         builder.Services.AddMemoryCache();
@@ -41,18 +40,27 @@ public static class RegisterServices
         builder.Services.AddSyncfusionBlazor();
         builder.Services.AddMemoryCache();
 
-        /********************** Services *****************************/
+        /************************ Hosted Services *****************************/
+
+        builder.Services.AddHostedService<UpdateSingleBetsTimer>();
+        builder.Services.AddHostedService<UpdateParleyBetsTimer>();
+
+        /********************** Application State *****************************/
+
+        builder.Services.AddSingleton<BetSlipState>();
+
+        /*************************** Services *********************************/
 
         builder.Services.AddSingleton<IGameService, GameService>();
 
-        /***************** Http Client Factory **********************/
+        /*********************** Http Client Factory **************************/
 
         builder.Services.AddHttpClient("sportsdata", client =>
         {
             client.BaseAddress = new Uri("https://api.sportsdata.io/v3/nfl/");
         });
 
-        /*********************** Data access *************************/
+        /*************************** Data access ******************************/
 
         builder.Services.AddSingleton<IMongoDbConnection, MongoDbConnection>();
         builder.Services.AddTransient<IMongoUserData, MongoUserData>();

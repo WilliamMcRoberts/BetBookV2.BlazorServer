@@ -44,7 +44,9 @@
                             <strong>Singles Bet Slip || Balance - $@loggedInUser?.AccountBalance.ToString("#,##0.00")</strong>
                         </HeaderTemplate>
                         <ContentTemplate>
+
                             <div style="padding:10px">
+
                                 @foreach (CreateBetModel createBetModel in betSlip.preBets)
                                 {
                                         <div class="create-bet-model-container">
@@ -65,10 +67,12 @@
                                             </div>
                                         </div>
                                 }
+
                                 <div style="text-align:center;margin:1em 1em;">
                                     <strong>Total Singles Payout</strong>
                                     <strong>$@betSlip.GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
                                 </div>
+
                                 @if (betSlip.gameHasStarted)
                                 {
                                          <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:0 auto;">* @betSlip.startedGameDescription has already started *</h6>
@@ -81,9 +85,11 @@
                                 {
                                         <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
                                 }
+
                                  <div style="text-align: center">
                                      <SfButton CssClass="e-custom" @onclick="SubmitSinglesBetSlip">Submit Singles Bet</SfButton>
                                  </div>
+
                             </div>
                         </ContentTemplate>
                     </AccordionItem>
@@ -93,6 +99,7 @@
                         </HeaderTemplate>
                         <ContentTemplate>
                             <div style="padding:10px">
+
                                 @foreach (CreateBetModel createBetModel in betSlip.preBets)
                                 {
                                          <div class="create-bet-model-container">
@@ -109,6 +116,7 @@
                                             </div>
                                         </div>
                                 }
+
                                 <div style="display:flex;flex-direction:column;">
 
                                     <div style="display:flex;flex-direction:column;width:35%;margin:.5em auto;text-align:center;">
@@ -125,6 +133,7 @@
                                     </div>
 
                                 </div>
+
                                 @if (userStatusBad)
                                 {
                                         <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
@@ -137,6 +146,7 @@
                                 {
                                         <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
                                 }
+
                                 <div style="text-align: center;margin:.5em auto;">
                                     <SfButton CssClass="e-custom" @onclick="SubmitParleyBetSlip">Submit Parley Bet</SfButton>
                                 </div>

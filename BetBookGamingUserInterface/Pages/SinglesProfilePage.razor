@@ -51,60 +51,60 @@
                 @{
                     var bet = (context as SingleBetModel);
 
-                                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                                            <div style="padding: .5em .5em;">
-                                                <strong>@bet?.GameSnapshot.Date.ToString("M-d")</strong>
-                                            </div>
-                                            <div style="padding:.5em .5em;">
-                                                <strong>@bet?.GameSnapshot.Date.ToString("h:mm")</strong>
-                                            </div>
+                        <div style="padding: .5em .5em;">
+                            <strong>@bet?.GameSnapshot.Date.ToString("M-d")</strong>
+                        </div>
+                        <div style="padding:.5em .5em;">
+                            <strong>@bet?.GameSnapshot.Date.ToString("h:mm")</strong>
+                        </div>
                                             
-                                        </td>
-                                        <td class="@GetCellClass(bet!)" style="text-align:center;">
-                                            <div class="teams">
-                                                <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                                    <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
-                                                </div>
-                                                <div style="padding:.5em .5em;">
-                                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@bet?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.HomeTeam</strong>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+                    </td>
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+                        <div class="teams">
+                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
+                            </div>
+                            <div style="padding:.5em .5em;">
+                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@bet?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.HomeTeam</strong>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                                            <div>
-                                                <strong>@bet?.BetType</strong>
-                                            </div>
+                        <div>
+                            <strong>@bet?.BetType</strong>
+                        </div>
 
-                                        </td>
-                                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+                    </td>
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                                            <div>
-                                                <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
-                                            </div>
+                        <div>
+                            <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
+                        </div>
 
-                                        </td>
-                                        <td class="@GetCellClass(bet!)" style="text-align:center;">
-                                            @if(bet?.BetType == BetType.POINTSPREAD)
+                    </td>
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+                        @if(bet?.BetType == BetType.POINTSPREAD)
                         {
-                                                <div>
-                                                <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
-                                                </div>
+                            <div>
+                            <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
+                            </div>
                         }
                         else if(bet?.BetType == BetType.OVERUNDER)
                         {
-                                                <div>
-                                                    <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
-                                                </div>
+                            <div>
+                                <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
+                            </div>
                         }
                         else 
                         {
-                                                <div>
-                                                    <strong>@bet?.WinnerChosen</strong>
-                                                </div>
+                            <div>
+                                <strong>@bet?.WinnerChosen</strong>
+                            </div>
                         }
-                                        </td>
+                    </td>
                 }
             </RowTemplate>
         </GridTemplates>
@@ -132,50 +132,50 @@
                 @{
                     var bet = (context as SingleBetModel);
 
-                                    <td class="@GetCellClass(bet!)" style="text-align:center;">
-                                        <div class="teams">
-                                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                                <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
-                                            </div>
-                                            <div style="padding:.5em .5em;">
-                                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@bet?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.HomeTeam</strong>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+                        <div class="teams">
+                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
+                            </div>
+                            <div style="padding:.5em .5em;">
+                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@bet?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.HomeTeam</strong>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                                        <div>
-                                            <strong>@bet?.BetType</strong>
-                                        </div>
+                        <div>
+                            <strong>@bet?.BetType</strong>
+                        </div>
 
-                                    </td>
-                                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+                    </td>
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                                        <div>
-                                            <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
-                                        </div>
+                        <div>
+                            <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
+                        </div>
 
-                                    </td>
-                                    <td class="@GetCellClass(bet!)" style="text-align:center;">
-                                        @if (bet?.BetType == BetType.POINTSPREAD)
+                    </td>
+                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+                        @if (bet?.BetType == BetType.POINTSPREAD)
                         {
-                                            <div>
-                                                <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
-                                            </div>
+                            <div>
+                                <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
+                            </div>
                         }
                         else if (bet?.BetType == BetType.OVERUNDER)
                         {
-                                            <div>
-                                                <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
-                                            </div>
+                            <div>
+                                <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
+                            </div>
                         }
                         else
                         {
-                                            <div>
-                                                <strong>@bet?.WinnerChosen</strong>
-                                            </div>
+                            <div>
+                                <strong>@bet?.WinnerChosen</strong>
+                            </div>
                         }
-                                    </td>
+                    </td>
                 }
             </RowTemplate>
         </GridTemplates>
@@ -194,7 +194,6 @@
     bool singleInProgressGrid;
     bool singlePushGrid;
     bool singleLosersGrid;
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -219,60 +218,26 @@
                 pb.SingleBetStatus == SingleBetStatus.LOSER).ToList();
     }
 
-    private string GetPointsAfterSpreadForDisplay(decimal pointsAfterSpread)
-    {
-        return pointsAfterSpread < 0 ? $"- {pointsAfterSpread.ToString().Trim('-')}" 
-        : $"+ {pointsAfterSpread}";
-    }
+    private string GetPointsAfterSpreadForDisplay(decimal pointsAfterSpread) =>
+        pointsAfterSpread < 0 ? $"- {pointsAfterSpread.ToString().Trim('-')}" 
+            : $"+ {pointsAfterSpread}";
 
-    private void SetSingleDataGrid(SingleBetStatus singleBetStatus)
-    {
-        if (singleBetStatus == SingleBetStatus.IN_PROGRESS)
-        {
-            singleInProgressGrid = true;
-            singleWinnersGrid = false;
-            singlePushGrid = false;
-            singleLosersGrid = false;
-        }
+    private void SetSingleDataGrid(SingleBetStatus singleBetStatus) =>
+        (singleInProgressGrid, singleWinnersGrid, singlePushGrid, singleLosersGrid) =
+            singleBetStatus == SingleBetStatus.LOSER ? (false, false, false, true) :
+            singleBetStatus == SingleBetStatus.WINNER ? (false, true, false, false) :
+            singleBetStatus == SingleBetStatus.PUSH ? (false, false, true, false)
+            : (true, false, false, false);
 
-        else if (singleBetStatus == SingleBetStatus.WINNER)
-        {
-            singleWinnersGrid = true;
-            singleInProgressGrid = false;
-            singlePushGrid = false;
-            singleLosersGrid = false;
-        }
+    private List<SingleBetModel> GetSingleBetList() =>
+        singleLosersGrid ? bettorSingleBetsLosers 
+            : singleWinnersGrid ? bettorSingleBetsWinners 
+            : singlePushGrid ? bettorSingleBetsPush 
+            : bettorSingleBetsInProgress;
 
-        else if (singleBetStatus == SingleBetStatus.PUSH)
-        {
-            singlePushGrid = true;
-            singleInProgressGrid = false;
-            singleWinnersGrid = false;
-            singleLosersGrid = false;
-        }
-
-        else if (singleBetStatus == SingleBetStatus.LOSER)
-        {
-            singleLosersGrid = true;
-            singleInProgressGrid = false;
-            singleWinnersGrid = false;
-            singlePushGrid = false;
-        }
-    }
-
-    private List<SingleBetModel> GetSingleBetList()
-    {
-        return singleLosersGrid ? bettorSingleBetsLosers 
-                : singleWinnersGrid ? bettorSingleBetsWinners 
-                : singlePushGrid ? bettorSingleBetsPush 
-                : bettorSingleBetsInProgress;
-    }
-
-    private string GetCellClass(SingleBetModel singleBet)
-    {
-        return singleLosersGrid ? (bettorSingleBetsLosers.IndexOf(singleBet) == bettorSingleBetsLosers.Count - 1 ? "bottom-row-cell" : "cell")
-                : singleWinnersGrid ? (bettorSingleBetsWinners.IndexOf(singleBet) == bettorSingleBetsWinners.Count - 1 ? "bottom-row-cell" : "cell")
-                : singlePushGrid ? (bettorSingleBetsPush.IndexOf(singleBet) == bettorSingleBetsPush.Count - 1 ? "bottom-row-cell" : "cell")
-                : bettorSingleBetsInProgress.IndexOf(singleBet) == bettorSingleBetsInProgress.Count - 1 ? "bottom-row-cell" : "cell";
-    }
+    private string GetCellClass(SingleBetModel singleBet) =>
+        singleLosersGrid ? (bettorSingleBetsLosers.IndexOf(singleBet) == bettorSingleBetsLosers.Count - 1 ? "bottom-row-cell" : "cell")
+            : singleWinnersGrid ? (bettorSingleBetsWinners.IndexOf(singleBet) == bettorSingleBetsWinners.Count - 1 ? "bottom-row-cell" : "cell")
+            : singlePushGrid ? (bettorSingleBetsPush.IndexOf(singleBet) == bettorSingleBetsPush.Count - 1 ? "bottom-row-cell" : "cell")
+            : bettorSingleBetsInProgress.IndexOf(singleBet) == bettorSingleBetsInProgress.Count - 1 ? "bottom-row-cell" : "cell";
 }

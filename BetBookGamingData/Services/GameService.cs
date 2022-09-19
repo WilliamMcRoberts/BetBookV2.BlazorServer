@@ -23,7 +23,6 @@ public class GameService : IGameService
     private readonly ILogger<GameService> _logger;
     private readonly IConfiguration _config;
 
-
     public GameService(
                        IConfiguration config,
                        IHttpClientFactory httpClientFactory,
@@ -40,16 +39,15 @@ public class GameService : IGameService
 
         try
         {
+            _logger.LogInformation("Calling Get Game By Team / Http Get");
             var client = _httpClientFactory.CreateClient("sportsdata");
 
             game = await client.GetFromJsonAsync<GameByTeamDto>(
-                    $"odds/json/TeamTrends/{team.Symbol}?key={_config.GetSection("SportsDataIO").GetSection("Key4").Value}");
-
+                    $"odds/json/TeamTrends/{team.Symbol}?key={_config.GetSection("SportsDataIO:Key4").Value}");
         }
         catch (Exception ex)
         {
-
-            Console.WriteLine(ex.Message);
+            _logger.LogInformation(ex, "Failed To Get Game By Team / Http Get GameService");
         }
 
         return game!;
@@ -61,16 +59,16 @@ public class GameService : IGameService
 
         try
         {
+            _logger.LogInformation("Calling Get Game By Score Id / Http Get");
             var client = _httpClientFactory.CreateClient("sportsdata");
 
             game = await client.GetFromJsonAsync<GameByScoreIdDto>(
-                    $"stats/json/BoxScoreByScoreIDV3/{scoreId}?key={_config.GetSection("SportsDataIO").GetSection("Key4").Value}");
+                    $"stats/json/BoxScoreByScoreIDV3/{scoreId}?key={_config.GetSection("SportsDataIO:Key4").Value}");
         }
 
         catch (Exception ex)
         {
-
-            Console.WriteLine(ex.Message);
+            _logger.LogInformation(ex, "Failed To Get Game By ScoreId / Http Get GameService");
         }
 
         return game!;
@@ -78,21 +76,20 @@ public class GameService : IGameService
 
     public async Task<GameDto[]> GetGamesByWeek(SeasonType currentSeason, int week)
     {
-
         GameDto[]? games = new GameDto[16];
 
         try
         {
-            _logger.LogInformation("Calling Get Games By Week...");
+            _logger.LogInformation("Calling Get Games By Week / Http Get");
             var client = _httpClientFactory.CreateClient("sportsdata");
 
             games = await client.GetFromJsonAsync<GameDto[]>(
-                    $"scores/json/ScoresByWeek/2022{currentSeason}/{week}?key={_config.GetSection("SportsDataIO").GetSection("Key4").Value}");
+                    $"scores/json/ScoresByWeek/2022{currentSeason}/{week}?key={_config.GetSection("SportsDataIO:Key4").Value}");
         }
 
         catch (Exception ex)
         {
-            _logger.LogInformation(ex, "Exception On Get Games By Week");
+            _logger.LogInformation(ex, "Failed To Get Games By Week / Http Get GameService");
         }
 
         return games!;
