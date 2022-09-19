@@ -47,7 +47,7 @@
                         </div>
                         @if (betSlip.gameHasStarted)
                         {
-                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:0 auto;">* @betSlip.startedGameDescription has already started *</h6>
+                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @betSlip.startedGameDescription has already started *</h6>
                         }
                         @if (userStatusBad)
                         {
@@ -112,6 +112,10 @@
                         @if (betSlip.conflictingBetsForParley)
                         {
                             <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
+                        }
+                        @if (betSlip.gameHasStarted)
+                        {
+                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @betSlip.startedGameDescription has already started *</h6>
                         }
                         <div style="text-align: center;margin:.5em auto;">
                             <SfButton CssClass="e-custom" @onclick="SubmitParleyBetSlip">Submit Parley Bet</SfButton>

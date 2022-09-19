@@ -127,10 +127,7 @@ public class BetSlipState
 
     public async Task<bool> OnSubmitBetsFromParleyBetSlip(UserModel loggedInUser)
     {
-        if (preBets.Count < 1) 
-            return false;
-
-        if (conflictingBetsForParley)
+        if (preBets.Count < 1 || conflictingBetsForParley) 
             return false;
 
         if (totalWagerForParley <= 0)
@@ -155,6 +152,7 @@ public class BetSlipState
             if (game.HasStarted)
             {
                 gameHasStarted = true;
+                startedGameDescription = $"{game.AwayTeam} at {game.HomeTeam}";
                 return false;
             }
 
@@ -172,7 +170,6 @@ public class BetSlipState
                 SingleBetForParleyStatus = SingleBetForParleyStatus.IN_PROGRESS,
                 GameSnapshot = CreateGameSnapshot(createBetModel.Game)
             });
-
         }
 
         parleyBetSlip.BettorId = loggedInUser.UserId;
