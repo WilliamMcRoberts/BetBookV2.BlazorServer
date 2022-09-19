@@ -5,7 +5,7 @@
 - Location: https://betbookgaming.com
 - Support: support@betbookgaming.com
 
-Version 2 of Bet Book NFL is updated with more betting styles and professional wagers.
+Version 2 of Bet Book NFL is updated with a better user experience, more betting styles, and professional wagers. A $10,000 paper account is provided upon account creation. Enjoy!
 
 WAGER SELECTION
 ![HomePage](https://user-images.githubusercontent.com/95720340/191072722-9293f083-8b3e-4ff1-9b70-d8f27a31567f.png)
