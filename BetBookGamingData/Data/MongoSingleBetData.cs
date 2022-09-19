@@ -75,9 +75,9 @@ public class MongoSingleBetData : IMongoSingleBetData
         }
     }
 
-    public async Task<List<SingleBetModel>> GetBettorSingleBets(string userId)
+    public async Task<List<SingleBetModel>> GetBettorSingleBets(string bettorId)
     {
-        var results = await _singleBets.FindAsync(b => b.BettorId == userId);
+        var results = await _singleBets.FindAsync(b => b.BettorId == bettorId);
 
         return results.ToList();
     }
