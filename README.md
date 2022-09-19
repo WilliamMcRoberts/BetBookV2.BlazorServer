@@ -6,7 +6,7 @@ Location: https://betbookgaming.com
 Support: support@betbookgaming.com
 
 WAGER SELECTION
-![WagerPage](https://user-images.githubusercontent.com/95720340/190487269-ebb5cb10-ee48-4f43-8309-60fc2718c4e2.png)
+![HomePage](https://user-images.githubusercontent.com/95720340/191072722-9293f083-8b3e-4ff1-9b70-d8f27a31567f.png)
 
 BET SLIP CREATION
 ![Home](https://user-images.githubusercontent.com/95720340/191072246-74ff01cb-6c71-40f9-ae30-006f430063a1.png)
