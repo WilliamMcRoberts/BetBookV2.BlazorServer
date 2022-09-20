@@ -11,7 +11,7 @@ namespace BetBookGamingData.Services;
 
 public class UpdateSingleBetsTimer : BackgroundService
 {
-    private readonly PeriodicTimer _timer = new(TimeSpan.FromHours(3));
+    private readonly PeriodicTimer _timer = new(TimeSpan.FromHours(1));
     private readonly ILogger<UpdateSingleBetsTimer> _logger;
     private readonly IGameService _gameService;
     private readonly IMongoSingleBetData _singleBetData;

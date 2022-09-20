@@ -10,7 +10,7 @@ namespace BetBookGamingData.Services;
 
 public class UpdateParleyBetsTimer : BackgroundService
 {
-    private readonly PeriodicTimer _timer = new(TimeSpan.FromHours(3));
+    private readonly PeriodicTimer _timer = new(TimeSpan.FromHours(1));
     private readonly ILogger<UpdateParleyBetsTimer> _logger;
     private readonly IGameService _gameService;
     private readonly IMongoParleyBetSlipData _parleyBetData;

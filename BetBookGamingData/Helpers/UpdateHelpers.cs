@@ -93,11 +93,14 @@ public static class UpdateHelpers
 
     public static async Task UpdateFinishedParleyBets(this IMongoParleyBetSlipData parleyBetData, int week, SeasonType season, IGameService gameService)
     {
-        List<ParleyBetSlipModel> parleyBetSlipsInProgress = await parleyBetData.GetAllParleyBetSlipsInProgress();
+        List<ParleyBetSlipModel> parleyBetSlipsInProgress = 
+            await parleyBetData.GetAllParleyBetSlipsInProgress();
 
-        GameDto[] games = await gameService.GetGamesByWeek(season, week);
+        GameDto[] games = 
+            await gameService.GetGamesByWeek(season, week);
 
-        List<GameDto> finishedGames = games.Where(g => g.IsOver).ToList();
+        List<GameDto> finishedGames = 
+            games.Where(g => g.IsOver).ToList();
 
         foreach (ParleyBetSlipModel parleyBet in parleyBetSlipsInProgress)
         {
@@ -106,6 +109,9 @@ public static class UpdateHelpers
                 GameDto game =
                     games.Where(g => g.ScoreID == singleBetForParley.GameSnapshot.ScoreID)
                          .FirstOrDefault();
+
+                if (game is null)
+                    continue;
 
                 if (game.IsOver)
                 {
@@ -208,7 +214,6 @@ public static class UpdateHelpers
                 singleBetForParley.WinnerChosen == winningTeam ? SingleBetForParleyStatus.WINNER
                 : winningTeam == string.Empty ? SingleBetForParleyStatus.PUSH
                 : SingleBetForParleyStatus.LOSER;
-
         }
 
         else if (singleBetForParley.BetType == BetType.OVERUNDER)
@@ -223,9 +228,9 @@ public static class UpdateHelpers
             }
 
             return
-                    totalScore < singleBetForParley.GameSnapshot.OverUnder ? SingleBetForParleyStatus.WINNER
-                    : totalScore > singleBetForParley.GameSnapshot.OverUnder ? SingleBetForParleyStatus.LOSER
-                    : SingleBetForParleyStatus.PUSH;
+                totalScore < singleBetForParley.GameSnapshot.OverUnder ? SingleBetForParleyStatus.WINNER
+                : totalScore > singleBetForParley.GameSnapshot.OverUnder ? SingleBetForParleyStatus.LOSER
+                : SingleBetForParleyStatus.PUSH;
 
         }
 
