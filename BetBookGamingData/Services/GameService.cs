@@ -11,7 +11,6 @@ namespace BetBookGamingData.Services;
 public interface IGameService
 {
     Task<GameByScoreIdDto> GetGameByScoreId(int scoreId);
-    Task<GameByTeamDto> GetGameByTeam(TeamModel team);
     Task<GameDto[]> GetGamesByWeek(SeasonType currentSeason, int week);
 }
 
@@ -33,25 +32,6 @@ public class GameService : IGameService
         _logger = logger;
     }
 
-    public async Task<GameByTeamDto> GetGameByTeam(TeamModel team)
-    {
-        GameByTeamDto? game = new();
-
-        try
-        {
-            _logger.LogInformation("Calling Get Game By Team / Http Get");
-            var client = _httpClientFactory.CreateClient("sportsdata");
-
-            game = await client.GetFromJsonAsync<GameByTeamDto>(
-                    $"odds/json/TeamTrends/{team.Symbol}?key={_config.GetSection("SportsDataIO:Key4").Value}");
-        }
-        catch (Exception ex)
-        {
-            _logger.LogInformation(ex, "Failed To Get Game By Team / Http Get GameService");
-        }
-
-        return game!;
-    }
 
     public async Task<GameByScoreIdDto> GetGameByScoreId(int scoreId)
     {
