@@ -1,6 +1,7 @@
 ﻿using BetBookGamingData.Data;
 using BetBookGamingData.Dto;
 using BetBookGamingData.Helpers;
+using Microsoft.Extensions.Logging;
 
 namespace BetBookGamingData.Services;
 
@@ -15,20 +16,24 @@ public class BetSlipState
     public bool gameHasStarted;
     public bool betAmountForSinglesBad;
     public bool betAmountForParleyBad;
+    public bool isSubmitting;
     public SeasonType season;
     public int week;
     public string startedGameDescription;
     public readonly IGameService _gameService;
     public readonly IMongoParleyBetSlipData _parleyBetSlipData;
     public readonly IMongoSingleBetData _singleBetData;
+    private readonly ILogger<BetSlipState> _logger;
 
     public BetSlipState(IGameService gameService, 
                         IMongoParleyBetSlipData parleyBetSlipData, 
-                        IMongoSingleBetData singleBetData)
+                        IMongoSingleBetData singleBetData,
+                        ILogger<BetSlipState> logger)
     {
         _gameService = gameService;
         _parleyBetSlipData = parleyBetSlipData;
         _singleBetData = singleBetData;
+        _logger = logger;
     }
 
     public void SelectOrRemoveWinnerAndGameForBet(string winner, GameDto game, BetType betType)
@@ -72,15 +77,39 @@ public class BetSlipState
 
     public async Task<bool> OnSubmitBetsFromSinglesBetSlip(UserModel loggedInUser)
     {
-        if(preBets.Count < 1) return false;
+        if(isSubmitting || preBets.Count < 1) 
+            return false;
 
+        isSubmitting = true;
+        bool isSuccessful = false;
+        try
+        {
+            isSuccessful = await SubmitSingleBetsInBetsList(preBets, loggedInUser);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogInformation(ex, "Failed Single Bet Creation / BetSlipState");
+            return false;
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+
+        preBets.Clear();
+        return isSuccessful;
+    }
+
+    private async Task<bool> SubmitSingleBetsInBetsList(
+        List<CreateBetModel> singleBetsList, UserModel loggedInUser)
+    {
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
 
         GameDto[] gameCheckArray =
             await _gameService.GetGamesByWeek(season, week);
 
-        foreach (CreateBetModel createBetModel in preBets)
+        foreach (CreateBetModel createBetModel in singleBetsList)
         {
             if (createBetModel.BetAmount <= 0)
             {
@@ -104,7 +133,7 @@ public class BetSlipState
                                (createBetModel.Winner[0] == 'O' ? "Over" : "Under")
                                 : createBetModel.Winner,
 
-                BetPayout = 
+                BetPayout =
                     Math.Round(CalculateSingleBetPayout(
                         createBetModel.BetAmount, createBetModel.MoneylinePayout), 2),
 
@@ -120,15 +149,15 @@ public class BetSlipState
 
             await _singleBetData.CreateSingleBet(singleBet);
         }
-
-        preBets.Clear();
         return true;
     }
 
     public async Task<bool> OnSubmitBetsFromParleyBetSlip(UserModel loggedInUser)
     {
-        if (preBets.Count < 1 || conflictingBetsForParley) 
+        if (isSubmitting || preBets.Count < 1 || conflictingBetsForParley) 
             return false;
+
+        isSubmitting = true;
 
         if (totalWagerForParley <= 0)
         {
@@ -178,9 +207,21 @@ public class BetSlipState
         parleyBetSlip.ParleyBetSlipStatus = ParleyBetSlipStatus.IN_PROGRESS;
         parleyBetSlip.ParleyBetSlipPayoutStatus = ParleyBetSlipPayoutStatus.UNPAID;
 
-        bool parleyBetGood =
-            await _parleyBetSlipData.CreateParleyBetSlip(parleyBetSlip);
+        bool parleyBetGood = false;
 
+        try
+        {
+            parleyBetGood = await _parleyBetSlipData.CreateParleyBetSlip(parleyBetSlip);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation(ex, "Failed Parley Bet Creation / BetSlipState");
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+        
         preBets.Clear();
         totalWagerForParley = 0;
         totalPayoutForParley = 0;
