@@ -51,7 +51,6 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
             var user = await _userData.GetCurrentUserByUserId(parleyBetSlip.BettorId);
             var house = await _houseData.GetHouseAccount();
 
-
             user.AccountBalance -= parleyBetSlip.ParleyBetAmount;
             house.HouseAccountBalance += parleyBetSlip.ParleyBetAmount;
 

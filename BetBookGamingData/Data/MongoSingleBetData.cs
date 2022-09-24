@@ -1,7 +1,5 @@
 ﻿
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using System.Data;
 
 namespace BetBookGamingData.Data;
 
@@ -86,7 +84,8 @@ public class MongoSingleBetData : IMongoSingleBetData
     {
         var results =
             await _singleBets.FindAsync(
-                b => b.GameSnapshot.ScoreID == scoreIdOfGame && b.SingleBetStatus == SingleBetStatus.IN_PROGRESS);
+                b => b.GameSnapshot.ScoreID == scoreIdOfGame 
+                && b.SingleBetStatus == SingleBetStatus.IN_PROGRESS);
 
         return results.ToList();
     }
