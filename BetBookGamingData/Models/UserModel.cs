@@ -1,6 +1,8 @@
 ﻿
 
 
+using BetBookGamingData.Services;
+
 namespace BetBookGamingData.Models;
 
 
@@ -22,5 +24,7 @@ public class UserModel
     public string DisplayName { get; set; }
 
     public decimal AccountBalance { get; set; }
+
+    public BetSlipState BetSlip {get;set;}
 }
 

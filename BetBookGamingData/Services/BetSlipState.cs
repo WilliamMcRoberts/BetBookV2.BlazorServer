@@ -103,6 +103,8 @@ public class BetSlipState
     private async Task<bool> SubmitSingleBetsInBetsList(
         List<CreateBetModel> singleBetsList, UserModel loggedInUser)
     {
+        gameHasStarted = false;
+        betAmountForSinglesBad = false;
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
 
@@ -157,6 +159,8 @@ public class BetSlipState
         if (isSubmitting || preBets.Count < 1 || conflictingBetsForParley) 
             return false;
 
+        betAmountForParleyBad = false;
+        gameHasStarted = false;
         isSubmitting = true;
 
         if (totalWagerForParley <= 0)

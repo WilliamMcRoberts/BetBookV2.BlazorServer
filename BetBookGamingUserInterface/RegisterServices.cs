@@ -47,7 +47,7 @@ public static class RegisterServices
 
         /********************** Application State *****************************/
 
-        builder.Services.AddSingleton<BetSlipState>();
+        builder.Services.AddScoped<BetSlipState>();
 
         /*************************** Services *********************************/
 
