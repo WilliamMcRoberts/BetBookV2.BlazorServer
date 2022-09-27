@@ -15,7 +15,7 @@
         <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.WINNER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Winners</button>
     </div>
     <div >
-        <label class="bet-title grad-title" style="margin:.35em auto;text-decoration:underline">Single Bets</label>
+        <label class="bet-title grad-title" style="margin:.35em auto;text-decoration:underline;">Single Bets</label>
     </div>
     <div >
         <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.PUSH))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Push</button>
@@ -51,60 +51,60 @@
                 @{
                     var bet = (context as SingleBetModel);
 
-                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+                        <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                        <div style="padding: .5em .5em;">
-                            <strong>@bet?.GameSnapshot.Date.ToString("M-d")</strong>
-                        </div>
-                        <div style="padding:.5em .5em;">
-                            <strong>@bet?.GameSnapshot.Date.ToString("h:mm")</strong>
-                        </div>
-                                            
-                    </td>
-                    <td class="@GetCellClass(bet!)" style="text-align:center;">
-                        <div class="teams">
-                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
+                            <div style="padding: .5em .5em;">
+                                <strong>@bet?.GameSnapshot.Date.ToString("M-d")</strong>
                             </div>
                             <div style="padding:.5em .5em;">
-                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@bet?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.HomeTeam</strong>
+                                <strong>@bet?.GameSnapshot.Date.ToString("h:mm")</strong>
                             </div>
-                        </div>
-                    </td>
-                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+                                                
+                        </td>
+                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+                            <div class="teams">
+                                <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                    <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
+                                </div>
+                                <div style="padding:.5em .5em;">
+                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@bet?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.HomeTeam</strong>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                        <div>
-                            <strong>@bet?.BetType</strong>
-                        </div>
-
-                    </td>
-                    <td class="@GetCellClass(bet!)" style="text-align:center;">
-
-                        <div>
-                            <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
-                        </div>
-
-                    </td>
-                    <td class="@GetCellClass(bet!)" style="text-align:center;">
-                        @if(bet?.BetType == BetType.POINTSPREAD)
-                        {
                             <div>
-                            <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
+                                <strong>@bet?.BetType</strong>
                             </div>
+
+                        </td>
+                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+
+                            <div>
+                                <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
+                            </div>
+
+                        </td>
+                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+                            @if(bet?.BetType == BetType.POINTSPREAD)
+                        {
+                                <div>
+                                <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
+                                </div>
                         }
                         else if(bet?.BetType == BetType.OVERUNDER)
                         {
-                            <div>
-                                <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
-                            </div>
+                                <div>
+                                    <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
+                                </div>
                         }
                         else 
                         {
-                            <div>
-                                <strong>@bet?.WinnerChosen</strong>
-                            </div>
+                                <div>
+                                    <strong>@bet?.WinnerChosen</strong>
+                                </div>
                         }
-                    </td>
+                        </td>
                 }
             </RowTemplate>
         </GridTemplates>
@@ -132,50 +132,50 @@
                 @{
                     var bet = (context as SingleBetModel);
 
-                    <td class="@GetCellClass(bet!)" style="text-align:center;">
-                        <div class="teams">
-                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
+                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+                            <div class="teams">
+                                <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                    <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
+                                </div>
+                                <div style="padding:.5em .5em;">
+                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@bet?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.HomeTeam</strong>
+                                </div>
                             </div>
-                            <div style="padding:.5em .5em;">
-                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{@bet?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.HomeTeam</strong>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="@GetCellClass(bet!)" style="text-align:center;">
+                        </td>
+                        <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                        <div>
-                            <strong>@bet?.BetType</strong>
-                        </div>
-
-                    </td>
-                    <td class="@GetCellClass(bet!)" style="text-align:center;">
-
-                        <div>
-                            <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
-                        </div>
-
-                    </td>
-                    <td class="@GetCellClass(bet!)" style="text-align:center;">
-                        @if (bet?.BetType == BetType.POINTSPREAD)
-                        {
                             <div>
-                                <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
+                                <strong>@bet?.BetType</strong>
                             </div>
+
+                        </td>
+                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+
+                            <div>
+                                <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
+                            </div>
+
+                        </td>
+                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+                            @if (bet?.BetType == BetType.POINTSPREAD)
+                        {
+                                <div>
+                                    <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
+                                </div>
                         }
                         else if (bet?.BetType == BetType.OVERUNDER)
                         {
-                            <div>
-                                <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
-                            </div>
+                                <div>
+                                    <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
+                                </div>
                         }
                         else
                         {
-                            <div>
-                                <strong>@bet?.WinnerChosen</strong>
-                            </div>
+                                <div>
+                                    <strong>@bet?.WinnerChosen</strong>
+                                </div>
                         }
-                    </td>
+                        </td>
                 }
             </RowTemplate>
         </GridTemplates>
