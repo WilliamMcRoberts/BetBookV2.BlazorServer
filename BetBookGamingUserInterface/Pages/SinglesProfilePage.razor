@@ -8,19 +8,19 @@
 <PageTitle>SinglesProfilePage</PageTitle>
 
 <div class="bar">
-    <div style="">
+    <div >
         <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.IN_PROGRESS))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">In Progress</button>
     </div>
-    <div style="">
+    <div >
         <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.WINNER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Winners</button>
     </div>
-    <div class="bet-title">
-        <label style="margin:.35em auto;text-decoration:underline">Single Bets</label>
+    <div >
+        <label class="grad-title" style="margin:.35em auto;text-decoration:underline">Single Bets</label>
     </div>
-    <div style="">
+    <div >
         <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.PUSH))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Push</button>
     </div>
-    <div style="">
+    <div >
         <button @onclick="(() => SetSingleDataGrid(SingleBetStatus.LOSER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Losers</button>
     </div>
 </div>

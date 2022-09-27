@@ -332,9 +332,30 @@ a, .btn-link {
         Shared
 **********************************/
 
+h3 {
+    font-size: 3rem;
+    letter-spacing: 0.9px;
+    background: linear-gradient( 90deg, rgb(0,0,139,1) 0%, rgba(250, 250, 250, 1) 100% );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    width: fit-content;
+}
+
+.grad-title {
+    letter-spacing: 0.9px;
+    background: linear-gradient( 90deg, rgb(0,0,139,1) 0%, rgba(250, 250, 250, 1) 100% );
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    width: fit-content;
+    font-weight:700;
+}
+
 label {
     font-weight: 700;
     font-size: 20px;
+    
 }
 
 a:hover {
