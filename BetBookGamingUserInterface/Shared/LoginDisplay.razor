@@ -16,24 +16,24 @@
         <Authorized>
             <div class="login-display">
 
-            <SfDropDownButton CssClass="e-caret-hide" Content="About">
+            <SfDropDownButton CssClass="e-caret-hide ddown" Content="About" @ref="aboutbtn">
                 <DropDownMenuItems>
                     <DropDownMenuItem Url="About" Text="Bet Book V2"></DropDownMenuItem>
                 </DropDownMenuItems>
             </SfDropDownButton>
-            <SfDropDownButton CssClass="e-caret-hide" Content="Place Wager">
+            <SfDropDownButton CssClass="e-caret-hide" Content="Place Wager" @ref="wagersbtn" >
                 <DropDownMenuItems>
                     <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
                 </DropDownMenuItems>
             </SfDropDownButton>
-            <SfDropDownButton CssClass="e-caret-hide" Content="Profile">
+            <SfDropDownButton CssClass="e-caret-hide" Content="Profile" @ref="profilebtn">
                 <DropDownMenuItems>
                     <DropDownMenuItem Url="SinglesProfilePage" Text="My Single Bets"></DropDownMenuItem>
                     <DropDownMenuItem Url="ParleyProfilePage" Text="My Parley Bets"></DropDownMenuItem>
 
                 </DropDownMenuItems>
             </SfDropDownButton>
-            <SfDropDownButton CssClass="e-caret-hide" Content="Account">
+            <SfDropDownButton CssClass="e-caret-hide" Content="Account" @ref="accountbtn">
                 <DropDownMenuItems>
                     <DropDownMenuItem Url="MicrosoftIdentity/Account/SignOut" Text="Sign Out"></DropDownMenuItem>
                 </DropDownMenuItems>
@@ -45,19 +45,20 @@
         </Authorized>
 
         <NotAuthorized>
-            <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up">
+        <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up" @ref="signinbtn">
                 <DropDownMenuItems>
                     <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign In"></DropDownMenuItem>
                     <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign Up"></DropDownMenuItem>
                 </DropDownMenuItems>
             </SfDropDownButton>
         </NotAuthorized>
+
     </AuthorizeView>
 
     <AuthorizeView>
         <Authorized>
             <div class="login-display-mini">
-                <SfDropDownButton CssClass="e-caret-hide" Content="">
+            <SfDropDownButton @ref="iconbtn" CssClass="e-caret-hide" @onmouseout="(() => mousehover(this.iconbtn))" @onmouseover="(() => mousehover(this.iconbtn))">
                     <DropDownMenuItems>
                         <DropDownMenuItem Url="About" Text="About"></DropDownMenuItem>
                         <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
@@ -71,14 +72,21 @@
     </AuthorizeView>
 
 @code {
+    private SfDropDownButton aboutbtn;
+    private SfDropDownButton iconbtn;
+    private SfDropDownButton wagersbtn;
+    private SfDropDownButton profilebtn;
+    private SfDropDownButton accountbtn;
+    private SfDropDownButton signinbtn;
+
+    private void mousehover(SfDropDownButton btn)
+    {
+        btn.Toggle();
+    }
 
 }
-<style>
 
-    DropDownMenuItem {
-/*        font-size: 3rem;
-*/        
-    }
+<style>
 
     .e-btn {
         color: white;
@@ -106,6 +114,7 @@
         .e-dropdown-btn:hover {
            color:darkblue;
         }
+
     
     .e-dropdown-popup {/******PopUP********/
         border: 1px solid darkblue;
@@ -130,7 +139,6 @@
 
     .login-display-mini {
         background-image: url(../images/togglebutton.png);
-        
     }
 
     .login-display {
