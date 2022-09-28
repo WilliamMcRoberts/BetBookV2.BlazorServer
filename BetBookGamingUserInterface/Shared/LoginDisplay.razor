@@ -16,42 +16,46 @@
         <Authorized>
             <div class="login-display">
 
-            <SfDropDownButton CssClass="e-caret-hide ddown" Content="About" @ref="aboutbtn">
-                <DropDownMenuItems>
-                    <DropDownMenuItem Url="About" Text="Bet Book V2"></DropDownMenuItem>
-                </DropDownMenuItems>
-            </SfDropDownButton>
-            <SfDropDownButton CssClass="e-caret-hide" Content="Place Wager" @ref="wagersbtn" >
-                <DropDownMenuItems>
-                    <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
-                </DropDownMenuItems>
-            </SfDropDownButton>
-            <SfDropDownButton CssClass="e-caret-hide" Content="Profile" @ref="profilebtn">
-                <DropDownMenuItems>
-                    <DropDownMenuItem Url="SinglesProfilePage" Text="My Single Bets"></DropDownMenuItem>
-                    <DropDownMenuItem Url="ParleyProfilePage" Text="My Parley Bets"></DropDownMenuItem>
+                <SfDropDownButton CssClass="e-caret-hide ddown" Content="About" @ref="aboutbtn">
+                    <DropDownMenuItems>
+                        <DropDownMenuItem Url="About" Text="Bet Book V2"></DropDownMenuItem>
+                    </DropDownMenuItems>
+                </SfDropDownButton>
+                <SfDropDownButton CssClass="e-caret-hide" Content="Place Wager" @ref="wagersbtn" >
+                    <DropDownMenuItems>
+                        <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
+                    </DropDownMenuItems>
+                </SfDropDownButton>
+                <SfDropDownButton CssClass="e-caret-hide" Content="Profile" @ref="profilebtn">
+                    <DropDownMenuItems>
+                        <DropDownMenuItem Url="SinglesProfilePage" Text="My Single Bets"></DropDownMenuItem>
+                        <DropDownMenuItem Url="ParleyProfilePage" Text="My Parley Bets"></DropDownMenuItem>
 
-                </DropDownMenuItems>
-            </SfDropDownButton>
-            <SfDropDownButton CssClass="e-caret-hide" Content="Account" @ref="accountbtn">
-                <DropDownMenuItems>
-                    <DropDownMenuItem Url="MicrosoftIdentity/Account/SignOut" Text="Sign Out"></DropDownMenuItem>
-                </DropDownMenuItems>
-            </SfDropDownButton>
+                    </DropDownMenuItems>
+                </SfDropDownButton>
+                <SfDropDownButton CssClass="e-caret-hide" Content="Account" @ref="accountbtn">
+                    <DropDownMenuItems>
+                        <DropDownMenuItem Url="MicrosoftIdentity/Account/SignOut" Text="Sign Out"></DropDownMenuItem>
+                    </DropDownMenuItems>
+                </SfDropDownButton>
         </div>
+
 
             
 
         </Authorized>
+            <NotAuthorized>
+                <div class="login-display-sign-in">
+                    <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up" @ref="signinbtn">
+                        <DropDownMenuItems>
+                            <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign In"></DropDownMenuItem>
+                            <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign Up"></DropDownMenuItem>
+                        </DropDownMenuItems>
+                    </SfDropDownButton>
+                </div>
+                
+            </NotAuthorized>
 
-        <NotAuthorized>
-        <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up" @ref="signinbtn">
-                <DropDownMenuItems>
-                    <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign In"></DropDownMenuItem>
-                    <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign Up"></DropDownMenuItem>
-                </DropDownMenuItems>
-            </SfDropDownButton>
-        </NotAuthorized>
 
     </AuthorizeView>
 
@@ -142,6 +146,15 @@
     }
 
     .login-display {
+        letter-spacing: 0.9px;
+        background: linear-gradient( 90deg, rgb(0,0,139,1) 0%, rgba(250, 250, 250, 1) 100% );
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        width: fit-content;
+    }
+
+    .login-display-sign-in {
         letter-spacing: 0.9px;
         background: linear-gradient( 90deg, rgb(0,0,139,1) 0%, rgba(250, 250, 250, 1) 100% );
         background-clip: text;
