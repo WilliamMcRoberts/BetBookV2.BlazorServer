@@ -319,8 +319,8 @@ a, .btn-link {
 *********************************/
 
 .about-about {
-    background-color: rgb(0,0,0); /*Fallback color */
-    background-color: rgba(0,0,0, 0.5); /*Black w/opacity*/
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.5); 
     backdrop-filter: blur(10px);
     color: white;
     border: 2px solid darkblue;
@@ -332,6 +332,19 @@ a, .btn-link {
 /**********************************
         Shared
 **********************************/
+
+img#doge {
+    position: fixed;
+    bottom: -75px;
+    margin: 0;
+    transition-property: bottom;
+    transition-duration: .5s;
+    transition-timing-function: ease-out;
+}
+
+    img#doge:hover {
+        bottom: 0px;
+    }
 
 h3 {
     font-size: 3rem;
@@ -622,6 +635,10 @@ ul {
         text-align: center;
         border: 1px solid lightgrey;
         background-color: rgb(135,206,250);
+    }
+
+    img#doge {
+        display: none;
     }
 }
 

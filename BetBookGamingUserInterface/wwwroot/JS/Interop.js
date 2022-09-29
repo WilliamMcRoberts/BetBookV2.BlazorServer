@@ -13,5 +13,3 @@ window.onscroll = function () {
     document.getElementById("header").style.top = "0";
     prevScrollPos = currentScrollPos;
 }
-
-

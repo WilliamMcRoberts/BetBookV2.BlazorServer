@@ -62,17 +62,14 @@
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
 
                             @foreach (SingleBetForParleyModel singleBetForParley in bet!.SingleBetsForParleyList)
-                        {
-                                <div style="">
-                                    <div style="padding: .75em .5em;">
-                                        <strong>@singleBetForParley.GameSnapshot.Date.ToString("M-d")</strong>
-                                    </div>
-                                    <div style="padding:.75em .5em;">
-                                        <strong>@singleBetForParley.GameSnapshot.Date.ToString("h:mm")</strong>
-                                    </div>
+                            {
+                                <div style="padding: .75em .5em;">
+                                    <strong>@singleBetForParley.GameSnapshot.Date.ToString("M-d")</strong>
                                 </div>
-                            
-                        }
+                                <div style="padding:.75em .5em;">
+                                    <strong>@singleBetForParley.GameSnapshot.Date.ToString("h:mm")</strong>
+                                </div>
+                            }
 
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
@@ -242,6 +239,10 @@
         </GridTemplates>
     </SfGrid>
 </div>
+
+<a href="javascript:void(0);">
+    <img id="doge" src="images/doge.png" alt="doge.png">
+</a>
 
 @code {
 
