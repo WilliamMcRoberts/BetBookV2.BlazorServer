@@ -7,9 +7,9 @@ public static class SingleBetsApi
 {
     public static void ConfigureSingleBetsApi(this WebApplication app)
     {
-        app.MapGet("/SingleBets/{bettorId}", GetBettorSingleBets)
+        app.MapGet("/SingleBets/BettorId/{bettorId}", GetBettorSingleBets)
             .WithName("GetBettorSingleBets");
-        app.MapGet("/SingleBets/{scoreIdOfGame}", GetAllSingleBetsOnGameInProgress)
+        app.MapGet("/SingleBets/ScoreIdOfGame/{scoreIdOfGame}", GetAllSingleBetsOnGameInProgress)
             .WithName("GetAllSingleBetsOnGameInProgress");
         app.MapPost("/SingleBets", CreateSingleBet)
             .WithName("CreateSingleBet");
