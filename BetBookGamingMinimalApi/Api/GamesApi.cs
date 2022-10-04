@@ -8,7 +8,7 @@ public static class GamesApi
     public static void ConfigureGamesApi(this WebApplication app)
     {
         app.MapGet("/Games/{season}/{week}", GetGamesByWeekAndSeason)
-            .WithName("GetGames");
+            .WithName("GetGames").RequireAuthorization();
     }
 
     private static async Task<IResult> GetGamesByWeekAndSeason(

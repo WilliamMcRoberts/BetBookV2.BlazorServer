@@ -1,6 +1,8 @@
 ﻿using BetBookGamingData.Data;
 using BetBookGamingData.DbAccess;
 using BetBookGamingData.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
 using Serilog;
 
 
@@ -13,6 +15,15 @@ public static class RegisterServices
         builder.Host.UseSerilog();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                        .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"))
+                        .EnableTokenAcquisitionToCallDownstreamApi()
+                        .AddMicrosoftGraph(builder.Configuration.GetSection("MicrosoftGraph"))
+                        .AddInMemoryTokenCaches()
+                        .AddDownstreamWebApi("DownstreamApi", builder.Configuration.GetSection("DownstreamApi"))
+                        .AddInMemoryTokenCaches();
+        builder.Services.AddAuthorization();
 
         /*************************** Services *********************************/
 

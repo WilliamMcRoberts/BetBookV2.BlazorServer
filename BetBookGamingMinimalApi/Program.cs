@@ -38,6 +38,9 @@ try
     app.ConfigureSingleBetsApi();
     app.ConfigureParleyBetSlipsApi();
 
+    app.UseAuthentication();
+    app.UseAuthorization();
+
     app.Run();
 }
 catch (Exception ex)
