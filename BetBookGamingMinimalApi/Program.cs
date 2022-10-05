@@ -1,5 +1,6 @@
 using BetBookGamingMinimalApi;
 using BetBookGamingMinimalApi.Api;
+using BetBookGamingMinimalApi.MiddleWare;
 using Serilog;
 
 var configuration = new ConfigurationBuilder()
@@ -38,8 +39,7 @@ try
     app.ConfigureSingleBetsApi();
     app.ConfigureParleyBetSlipsApi();
 
-    app.UseAuthentication();
-    app.UseAuthorization();
+    app.UseMiddleware<ApiKeyMiddleWare>();
 
     app.Run();
 }
