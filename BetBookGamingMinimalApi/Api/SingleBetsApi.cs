@@ -22,8 +22,7 @@ public static class SingleBetsApi
     {
         try
         {
-            return Results.Ok(
-                await singleBetData.GetBettorSingleBets(bettorId));
+            return Results.Ok(await singleBetData.GetBettorSingleBets(bettorId));
         }
         catch (Exception ex)
         {
@@ -36,8 +35,7 @@ public static class SingleBetsApi
     {
         try
         {
-            return Results.Ok(
-                await singleBetData.GetAllSingleBetsOnGameInProgress(scoreIdOfGame));
+            return Results.Ok(await singleBetData.GetAllSingleBetsOnGameInProgress(scoreIdOfGame));
         }
         catch (Exception ex)
         {

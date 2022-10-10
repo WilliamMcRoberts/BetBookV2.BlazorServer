@@ -710,6 +710,14 @@ ul {
     }
 }
 
+@media(max-width: 460px) {
+    
+    .fb-icon {
+        display:none;
+    }
+
+}
+
 
 
 
