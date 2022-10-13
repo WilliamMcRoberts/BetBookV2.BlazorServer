@@ -43,7 +43,7 @@ public class GameService : IGameService
             var client = _httpClientFactory.CreateClient("sportsdata");
 
             game = await client.GetFromJsonAsync<GameByScoreIdDto>(
-                    $"stats/json/BoxScoreByScoreIDV3/{scoreId}?key={_config.GetSection("SportsDataIO:Key5").Value}");
+                    $"stats/json/BoxScoreByScoreIDV3/{scoreId}?key={_config.GetSection("SportsDataIO:Key6").Value}");
         }
 
         catch (Exception ex)
@@ -64,7 +64,7 @@ public class GameService : IGameService
             var client = _httpClientFactory.CreateClient("sportsdata");
 
             games = await client.GetFromJsonAsync<GameDto[]>(
-                    $"scores/json/ScoresByWeek/2022{currentSeason}/{week}?key={_config.GetSection("SportsDataIO:Key5").Value}");
+                    $"scores/json/ScoresByWeek/2022{currentSeason}/{week}?key={_config.GetSection("SportsDataIO:Key6").Value}");
         }
 
         catch (Exception ex)
