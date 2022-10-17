@@ -1,7 +1,7 @@
 # Bet Book V2
 - .NET 6 Blazor Server
 - SportsData.IO API
-- WebApi
+- WebApi - Secured with API Key Middlware
 - MongoDB Driver
 - MongoDB Database
 - Location: https://betbookgaming.com
