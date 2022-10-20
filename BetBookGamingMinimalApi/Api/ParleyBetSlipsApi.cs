@@ -7,7 +7,7 @@ public static class ParleyBetSlipsApi
 {
     public static void ConfigureParleyBetSlipsApi(this WebApplication app)
     {
-        app.MapGet("/ParleyBetSlips/BettorId={bettorId}", GetBettorParleyBetSlips)
+        app.MapGet("/ParleyBetSlips/BettorId/{bettorId}", GetBettorParleyBetSlips)
             .WithName("GetBettorParleyBetSlips");
         app.MapGet("/ParleyBetSlips/InProgress", GetAllParleyBetSlipsInProgress)
             .WithName("GetAllParleyBetSlipsInProgress");
