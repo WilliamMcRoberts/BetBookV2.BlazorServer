@@ -15,12 +15,12 @@ public static class RegisterServices
 
     public static void ConfigureServices(this WebApplicationBuilder builder)
     {
-        /******************* Microsoft Authentication ***********************/
+        /******************* Authentication ***********************/
 
         builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
             .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAdB2C"));
 
-        /********************** Admin Authorization ***************************/
+        /********************** Authorization ***************************/
 
         builder.Services.AddAuthorization(options =>
         {
@@ -30,8 +30,6 @@ public static class RegisterServices
             });
         });
 
-        /************************** Add / Use *********************************/
-
         builder.Host.UseSerilog();
         builder.Services.AddRazorPages();
         builder.Services.AddServerSideBlazor().AddMicrosoftIdentityConsentHandler();
@@ -40,27 +38,21 @@ public static class RegisterServices
         builder.Services.AddSyncfusionBlazor();
         builder.Services.AddMemoryCache();
 
-        /************************ Hosted Services *****************************/
-
         builder.Services.AddHostedService<UpdateSingleBetsTimer>();
         builder.Services.AddHostedService<UpdateParleyBetsTimer>();
 
-        /********************** Application State *****************************/
 
         builder.Services.AddScoped<BetSlipState>();
 
-        /*************************** Services *********************************/
 
         builder.Services.AddSingleton<IGameService, GameService>();
 
-        /*********************** Http Client Factory **************************/
 
         builder.Services.AddHttpClient("sportsdata", client =>
         {
             client.BaseAddress = new Uri("https://api.sportsdata.io/v3/nfl/");
         });
 
-        /*************************** Data access ******************************/
 
         builder.Services.AddSingleton<IMongoDbConnection, MongoDbConnection>();
         builder.Services.AddTransient<IMongoUserData, MongoUserData>();
