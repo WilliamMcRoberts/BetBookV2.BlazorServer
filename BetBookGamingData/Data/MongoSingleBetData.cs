@@ -82,8 +82,7 @@ public class MongoSingleBetData : IMongoSingleBetData
 
     public async Task<List<SingleBetModel>> GetAllSingleBetsOnGameInProgress(int scoreIdOfGame)
     {
-        var results =
-            await _singleBets.FindAsync(
+        var results = await _singleBets.FindAsync(
                 b => b.GameSnapshot.ScoreID == scoreIdOfGame 
                 && b.SingleBetStatus == SingleBetStatus.IN_PROGRESS);
 

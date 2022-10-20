@@ -315,9 +315,7 @@
          Title="Good Luck On Your New Wager!" 
          Content="@Content">
 
-    <ToastPosition 
-        X="Right" 
-        Y="Bottom"/>
+    <ToastPosition X="Right" Y="Bottom"/>
 
     <ToastAnimationSettings>
 
@@ -412,11 +410,9 @@
             return;
         }
 
-        showToastSingle = 
-            await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
+        showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
 
-        if (showToastSingle)
-            await this.ToastObj.ShowAsync();
+        if (showToastSingle) await this.ToastObj.ShowAsync();
     }
 
     private async Task SubmitParleyBetSlip()
@@ -427,19 +423,15 @@
             return;
         }
 
-        showToastParley = 
-            await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
+        showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
 
-        if (showToastParley)
-            await this.ToastObj.ShowAsync();
+        if (showToastParley) await this.ToastObj.ShowAsync();
     }
 
-    private void GoToGameWagers(int scoreId) => 
-        navManager.NavigateTo($"/GameWagers/{scoreId}");
+    private void GoToGameWagers(int scoreId) => navManager.NavigateTo($"/GameWagers/{scoreId}");
 
-    private bool GetDisableParleyBetSlip() =>
-            ExpandSinglesBetSlip || betSlip?.preBets.Count < 2 && !ExpandParleyBetSlip ?
-                true : false;
+    private bool GetDisableParleyBetSlip() => ExpandSinglesBetSlip || betSlip?.preBets.Count < 2 
+        && !ExpandParleyBetSlip ? true : false;
 
     private bool GetDisableSinglesBetSlip() => ExpandParleyBetSlip ? true : false;
 
@@ -464,56 +456,56 @@
         string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
         loggedInUser = await userData.GetCurrentUserFromAuthentication(objectId) ?? new();
 
-        if (string.IsNullOrWhiteSpace(objectId) == false)
+        if (string.IsNullOrWhiteSpace(objectId)) return;
+
+        string firstName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("givenname"))?.Value;
+        string lastName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("surname"))?.Value;
+        string displayName = authState.User.Claims.FirstOrDefault(c => c.Type.Equals("name"))?.Value;
+        string emailAddress = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("email"))?.Value;
+
+        bool isDirty = false;
+
+        if (!objectId.Equals(loggedInUser.ObjectIdentifier))
         {
-            string firstName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("givenname"))?.Value;
-            string lastName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("surname"))?.Value;
-            string displayName = authState.User.Claims.FirstOrDefault(c => c.Type.Equals("name"))?.Value;
-            string emailAddress = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("email"))?.Value;
-            bool isDirty = false;
-            if (objectId.Equals(loggedInUser.ObjectIdentifier) == false)
+            isDirty = true;
+            loggedInUser.ObjectIdentifier = objectId;
+        }
+
+        if (!firstName.Equals(loggedInUser.FirstName))
+        {
+            isDirty = true;
+            loggedInUser.FirstName = firstName;
+        }
+
+        if (!lastName.Equals(loggedInUser.LastName))
+        {
+            isDirty = true;
+            loggedInUser.LastName = lastName;
+        }
+
+        if (!displayName.Equals(loggedInUser.DisplayName))
+        {
+            isDirty = true;
+            loggedInUser.DisplayName = displayName;
+        }
+
+        if (!emailAddress.Equals(loggedInUser.EmailAddress))
+        {
+            isDirty = true;
+            loggedInUser.EmailAddress = emailAddress;
+        }
+
+        if (isDirty)
+        {
+            if (string.IsNullOrWhiteSpace(loggedInUser.UserId))
             {
-                isDirty = true;
-                loggedInUser.ObjectIdentifier = objectId;
+                loggedInUser.AccountBalance = 10000;
+
+                await userData.CreateUser(loggedInUser);
+                return;
             }
 
-            if (firstName.Equals(loggedInUser.FirstName) == false)
-            {
-                isDirty = true;
-                loggedInUser.FirstName = firstName;
-            }
-
-            if (lastName.Equals(loggedInUser.LastName) == false)
-            {
-                isDirty = true;
-                loggedInUser.LastName = lastName;
-            }
-
-            if (displayName.Equals(loggedInUser.DisplayName) == false)
-            {
-                isDirty = true;
-                loggedInUser.DisplayName = displayName;
-            }
-
-            if (emailAddress.Equals(loggedInUser.EmailAddress) == false)
-            {
-                isDirty = true;
-                loggedInUser.EmailAddress = emailAddress;
-            }
-
-            if (isDirty)
-            {
-                if (string.IsNullOrWhiteSpace(loggedInUser.UserId))
-                {
-                    loggedInUser.AccountBalance = 10000;
-
-                    await userData.CreateUser(loggedInUser);
-                }
-                else
-                {
-                    await userData.UpdateUser(loggedInUser);
-                }
-            }
+            await userData.UpdateUser(loggedInUser);
         }
     }
 }

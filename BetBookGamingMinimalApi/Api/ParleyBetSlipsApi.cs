@@ -22,8 +22,7 @@ public static class ParleyBetSlipsApi
     {
         try
         {
-            return Results.Ok(
-                await parleyBetSlipData.GetBettorParleyBetSlips(bettorId));
+            return Results.Ok(await parleyBetSlipData.GetBettorParleyBetSlips(bettorId));
         }
         catch (Exception ex)
         {
@@ -36,8 +35,7 @@ public static class ParleyBetSlipsApi
     {
         try
         {
-            return Results.Ok(
-                await parleyBetSlipData.GetAllParleyBetSlipsInProgress());
+            return Results.Ok(await parleyBetSlipData.GetAllParleyBetSlipsInProgress());
         }
         catch (Exception ex)
         {

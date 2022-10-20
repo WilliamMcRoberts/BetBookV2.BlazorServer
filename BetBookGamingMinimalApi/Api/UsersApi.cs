@@ -24,8 +24,7 @@ public static class UsersApi
     {
         try
         {
-            return Results.Ok(
-                await userData.GetCurrentUserByUserId(userId));
+            return Results.Ok(await userData.GetCurrentUserByUserId(userId));
         }
         catch (Exception ex)
         {
@@ -38,8 +37,7 @@ public static class UsersApi
     {
         try
         {
-            return Results.Ok(
-                await userData.GetCurrentUserFromAuthentication(objectId));
+            return Results.Ok(await userData.GetCurrentUserFromAuthentication(objectId));
         }
         catch (Exception ex)
         {
