@@ -488,6 +488,7 @@ h3 {
 
     .fb-icon {
         height: 35px;
+        margin-right:.25em;
     }
 
     .footer-nav-container {
@@ -690,6 +691,13 @@ h3 {
 
         .about-about {
             width: 95%;
+        }
+    }
+
+    @media(max-width: 515px) {
+
+        .grad-title {
+            display:none;
         }
     }
 
