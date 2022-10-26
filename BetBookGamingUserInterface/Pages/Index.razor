@@ -8,12 +8,15 @@
 @inject IGameService gameService
 @inject IMongoHouseAccountData houseData
 @inject BetSlipState betSlip
+@inject IJSRuntime JSRuntime
 
 <PageTitle>Home</PageTitle>
 
 @if(isBusy)
 {
-    <div class="spinner"></div>
+    <div class="ring">Loading
+      <span id="span"></span>
+    </div>
 }
 
 else 
@@ -376,6 +379,14 @@ else
             background-color: #fff;
             color: rgb(255,99,71, .8);
         }
+
+    canvas {
+        display: block;
+        left: 50%;
+        margin: -125px 0 0 -125px;
+        position: absolute;
+        top: 50%;
+    }
     
 </style>
 
