@@ -16,22 +16,22 @@
 else
 {
     <div class="bar">
-    <div style="">
-        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.IN_PROGRESS))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Active</button>
+        <div style="">
+            <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.IN_PROGRESS))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Active</button>
+        </div>
+        <div style="">
+            <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.WINNER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Winners</button>
+        </div>
+        <div class="grad-title">
+            <label class="grad-title" style="margin-top:.75em">Parley Bets</label>
+        </div>
+        <div style="">
+            <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.PUSH))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Push</button>
+        </div>
+        <div style="">
+            <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.LOSER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Losers</button>
+        </div>
     </div>
-    <div style="">
-        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.WINNER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Winners</button>
-    </div>
-    <div class="grad-title">
-        <label class="grad-title" style="margin-top:.75em">Parley Bets</label>
-    </div>
-    <div style="">
-        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.PUSH))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Push</button>
-    </div>
-    <div style="">
-        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.LOSER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Losers</button>
-    </div>
-</div>
 
 <div class="data-grid-container-profile-parley">
     <SfGrid DataSource="@GetParleyBetList()">
