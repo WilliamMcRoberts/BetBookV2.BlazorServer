@@ -72,6 +72,7 @@ a, .btn-link {
 ***********************************************************************/
 
 
+
 /*********************************************
         Home And Profile Pages
 *********************************************/
@@ -86,9 +87,9 @@ a, .btn-link {
     height: 200px;
     border-radius: 100px;
     border: 4px solid rgba(255, 255, 255, 0.9);
-    -webkit-mask: linear-gradient(rgba(0, 0, 0, 0.8), #00008b 99%);
+    -webkit-mask: linear-gradient(rgba(0, 0, 0, 0.8), #00008b 50%);
     transform-origin: 50% 60%;
-    transform: perspective(100px) rotateX(1deg);
+    transform: perspective(100px);
     animation: spinner-wiggle .5s infinite;
 }
 
