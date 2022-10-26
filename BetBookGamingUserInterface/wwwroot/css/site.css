@@ -137,26 +137,6 @@ a, .btn-link {
         box-shadow: 0 0 20px darkblue;
     }
 
-@keyframes animateC {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes animateD {
-    0% {
-        transform: rotate(45deg);
-    }
-
-    100% {
-        transform: rotate(405deg);
-    }
-}
-
 .clickable-cell {
     padding: .65em .65em;
     border: 1px solid lightgrey;
@@ -448,6 +428,19 @@ h3 {
 }
 
 .grad-title {
+    line-height: 0.70em;
+    outline: none;
+    animation: animate2 30s linear infinite;
+    color: darkblue;
+    position: relative;
+    background: none;
+    border: none;
+    letter-spacing: 0.9px;
+    width: fit-content;
+    font-weight: 900;
+}
+
+.grad-title-week {
     line-height: 0.70em;
     outline: none;
     animation: animate2 30s linear infinite;
@@ -838,6 +831,26 @@ h3 {
     18.1%, 20.1%, 30%, 50%, 60.1%, 65%, 80.1%, 90%, 92.1%, 100% {
         color: #fff;
         text-shadow: 0 0 10px #00008b, 0 0 20px #00008b, 0 0 40px #00008b, 0 0 80px #00008b, 0 0 160px #00008b;
+    }
+}
+
+@keyframes animateC {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes animateD {
+    0% {
+        transform: rotate(45deg);
+    }
+
+    100% {
+        transform: rotate(405deg);
     }
 }
 
