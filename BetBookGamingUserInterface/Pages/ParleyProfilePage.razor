@@ -7,7 +7,15 @@
 
 <PageTitle>ParleyProfilePage</PageTitle>
 
-<div class="bar">
+@if (isBusy)
+{
+    <div class="spinner"></div>
+
+}
+
+else
+{
+    <div class="bar">
     <div style="">
         <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.IN_PROGRESS))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Active</button>
     </div>
@@ -239,6 +247,8 @@
         </GridTemplates>
     </SfGrid>
 </div>
+}
+
 
 <a href="javascript:void(0);">
     <img id="doge" src="images/doge.png" alt="doge.png">
@@ -256,9 +266,11 @@
     bool parleyInProgressGrid;
     bool parleyPushGrid;
     bool parleyLosersGrid;
+    bool isBusy;
 
     protected override async Task OnInitializedAsync()
     {
+        isBusy = true;
         loggedInUser = await authProvider.GetUserFromAuth(userData);
 
         bettorParleyBetSlips = await parleyBetSlipData.GetBettorParleyBetSlips(loggedInUser.UserId);
@@ -278,6 +290,8 @@
         bettorParleyBetsLosers =
             bettorParleyBetSlips.Where(pb =>
                 pb.ParleyBetSlipStatus == ParleyBetSlipStatus.LOSER).ToList();
+
+        isBusy = false;
     }
 
     private string GetPointsAfterSpreadForDisplay(decimal pointsAfterSpread) =>

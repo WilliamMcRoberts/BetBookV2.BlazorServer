@@ -11,7 +11,15 @@
 
 <PageTitle>Home</PageTitle>
 
-<div class="accordion-container">
+@if(isBusy)
+{
+    <div class="spinner"></div>
+
+}
+
+else 
+{
+    <div class="accordion-container">
     <SfAccordion ID="AccordionElement" @ref="@Accordion">
         <AccordionEvents Created="OnAccordionCreate"></AccordionEvents>
         <AccordionItems>
@@ -305,6 +313,8 @@
     </SfGrid>
 
 </div>
+}
+
 
 
 <SfToast @ref="ToastObj" 
@@ -390,13 +400,16 @@
     private bool showToastParley;
     private SfAccordion Accordion;
     private string Content => $"Thank you for choosing Bet Book.";
+    private bool isBusy;
 
     protected override async Task OnInitializedAsync()
     {
+        isBusy = true;
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
         games = await gameService.GetGamesByWeek(season, week);
         gameList = games.OrderBy(g => g.DateTime).ToList();
+        isBusy = false;
         await LoadAndVerifyUser();
     }
 
