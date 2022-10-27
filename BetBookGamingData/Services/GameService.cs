@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using System.Net.Http.Json;
 using Microsoft.Extensions.Logging;
 using BetBookGamingData.Data;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace BetBookGamingData.Services;
 
@@ -20,16 +21,20 @@ public class GameService : IGameService
 {
     private readonly IHttpClientFactory _httpClientFactory;
     private readonly ILogger<GameService> _logger;
+    private readonly IMemoryCache _cache;
     private readonly IConfiguration _config;
+    private const string CacheKey = "GameData";
 
-    public GameService(
-                       IConfiguration config,
+
+    public GameService(IConfiguration config,
                        IHttpClientFactory httpClientFactory,
-                       ILogger<GameService> logger)
+                       ILogger<GameService> logger,
+                       IMemoryCache cache)
     {
         _config = config;
         _httpClientFactory = httpClientFactory;
         _logger = logger;
+        _cache = cache;
     }
 
 
@@ -56,22 +61,28 @@ public class GameService : IGameService
 
     public async Task<GameDto[]> GetGamesByWeek(SeasonType currentSeason, int week)
     {
-        GameDto[]? games = new GameDto[16];
+        var games = _cache.Get<GameDto[]>(CacheKey);
+
+        if (games is not null) return games;
 
         try
         {
             _logger.LogInformation("Calling Get Games By Week / Http Get");
             var client = _httpClientFactory.CreateClient("sportsdata");
 
-            games = await client.GetFromJsonAsync<GameDto[]>(
+            var results = await client.GetFromJsonAsync<GameDto[]>(
                     $"scores/json/ScoresByWeek/2022{currentSeason}/{week}?key={_config.GetSection("SportsDataIO:Key6").Value}");
+
+            games = results?.ToArray();
+
+            _cache.Set(CacheKey, games, TimeSpan.FromMinutes(10));
         }
 
         catch (Exception ex)
         {
             _logger.LogInformation(ex, "Failed To Get Games By Week / Http Get GameService");
         }
-
+        
         return games!;
     }
 }
