@@ -4,7 +4,6 @@ window.addEventListener('scroll', () => {
     document.body.style.setProperty('--scroll', window.pageYOffset / (document.body.offsetHeight - window.innerHeight));
 }, false);
 
-
 /* When the user scrolls down, hide the navbar. When the user scrolls up, show the navbar */
 var prevScrollPos = window.pageYOffset;
 

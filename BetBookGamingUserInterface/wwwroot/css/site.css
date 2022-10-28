@@ -427,6 +427,7 @@ h3 {
     font-weight: 900;
 }
 
+
 .grad-title {
     line-height: 0.70em;
     outline: none;
@@ -808,27 +809,17 @@ h3 {
         .fb-icon {
             display: none;
         }
+
     }
 
 @keyframes animate {
     0%,18%,20%,50.1%,60%,65.1%,80%,90.1%,92% {
         color: darkblue;
-        box-shadow: none;
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #fff, 0 0 80px #fff, 0 0 160px #fff;
+        box-shadow:none;
     }
 
     18.1%,20.1%,30%,50%,60.1%,65%,80.1%,90%,92.1%,100% {
-        color: #fff;
-        text-shadow: 0 0 10px #00008b, 0 0 20px #00008b, 0 0 40px #00008b, 0 0 80px #00008b, 0 0 160px #00008b;
-    }
-}
-
-@keyframes animate2 {
-    0% {
-        color: darkblue;
-        box-shadow: none;
-    }
-
-    18.1%, 20.1%, 30%, 50%, 60.1%, 65%, 80.1%, 90%, 92.1%, 100% {
         color: #fff;
         text-shadow: 0 0 10px #00008b, 0 0 20px #00008b, 0 0 40px #00008b, 0 0 80px #00008b, 0 0 160px #00008b;
     }
