@@ -411,7 +411,7 @@ else
         week = season.CalculateWeek(DateTime.Now);
         games = await gameService.GetGamesByWeek(season, week);
         gameList = games.OrderBy(g => g.DateTime).ToList();
-        //isBusy = false;
+        isBusy = false;
         await LoadAndVerifyUser();
     }
 
