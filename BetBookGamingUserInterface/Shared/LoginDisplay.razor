@@ -95,7 +95,7 @@
     .e-btn {
         line-height: 0.70em;
         outline: none;
-        animation: animate2 30s linear infinite;
+        animation: animateLabel 30s linear infinite;
         color: darkblue;
         position: relative;
         background: none;
@@ -125,24 +125,24 @@
         }
 
     
-    .e-dropdown-popup {/******PopUP********/
+    .e-dropdown-popup {
         border: 1px solid darkblue;
         border-radius: 10px;
     }
 
-    .e-dropdown-btn.e-active {/*********Dropdown on active*********/
+    .e-dropdown-btn.e-active {
         border: none;
         color: darkblue;
     }
 
-    .e-dropdown-popup ul .e-item .e-menu-url{/*****Dropdown list items before hover*****/
+    .e-dropdown-popup ul .e-item .e-menu-url{
         background: rgb(135,206,250, .5);
         font-weight: 700;
         display: flex;
         color:darkblue;
     }
 
-     .e-dropdown-popup ul .e-item .e-menu-url:hover {/*****Dropdown list items on hover******/
+     .e-dropdown-popup ul .e-item .e-menu-url:hover {
         color: white;
     }
 
@@ -162,7 +162,8 @@
         width: fit-content;
     }
 
-    @@keyframes animate2 {
+    @@keyframes animateLabel {
+
     0%,10%,15%,20%,25%,30%,35%,40%,45%,50% {
         color: darkblue;
         text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 40px #fff, 0 0 80px #fff, 0 0 160px #fff;
@@ -175,16 +176,19 @@
 }
 
     @@media (max-width: 725px) {
+
         .login-display {
             display: none;
         }
+
     }
 
     @@media (min-width: 725px) {
+
         .login-display-mini {
             display: none;
         }
-    }
 
+    }
 
 </style>
