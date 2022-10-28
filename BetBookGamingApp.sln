@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetBookGamingData", "BetBoo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetBookGamingUserInterface", "BetBookGamingUserInterface\BetBookGamingUserInterface.csproj", "{DDCCBBAF-85BE-42A3-9A18-13BF6AA02C03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetBookGamingMinimalApi", "BetBookGamingMinimalApi\BetBookGamingMinimalApi.csproj", "{E486EF58-5FF8-464F-A7EF-7209385378F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BetBookGamingMinimalApi", "BetBookGamingMinimalApi\BetBookGamingMinimalApi.csproj", "{E486EF58-5FF8-464F-A7EF-7209385378F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
