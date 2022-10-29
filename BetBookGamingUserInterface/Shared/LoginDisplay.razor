@@ -2,20 +2,10 @@
 @inject IMongoUserData userData
 @inject NavigationManager navManager
 
-    <AuthorizeView Policy="Admin">
-        <Authorized>
-            <SfDropDownButton CssClass="e-caret-hide" Content="Admin">
-                <DropDownMenuItems>
-                    <DropDownMenuItem Url="AdminPage" Text="Admin Page"></DropDownMenuItem>
-                </DropDownMenuItems>
-            </SfDropDownButton>
-        </Authorized>
-    </AuthorizeView>
-
     <AuthorizeView>
+
         <Authorized>
             <div class="login-display">
-
                 <SfDropDownButton CssClass="e-caret-hide ddown" Content="About" @ref="aboutbtn">
                     <DropDownMenuItems>
                         <DropDownMenuItem Url="About" Text="Bet Book V2"></DropDownMenuItem>
@@ -30,7 +20,6 @@
                     <DropDownMenuItems>
                         <DropDownMenuItem Url="SinglesProfilePage" Text="My Single Bets"></DropDownMenuItem>
                         <DropDownMenuItem Url="ParleyProfilePage" Text="My Parley Bets"></DropDownMenuItem>
-
                     </DropDownMenuItems>
                 </SfDropDownButton>
                 <SfDropDownButton CssClass="e-caret-hide" Content="Account" @ref="accountbtn">
@@ -38,12 +27,9 @@
                         <DropDownMenuItem Url="MicrosoftIdentity/Account/SignOut" Text="Sign Out"></DropDownMenuItem>
                     </DropDownMenuItems>
                 </SfDropDownButton>
-        </div>
-
-
-            
-
+            </div>
         </Authorized>
+
             <NotAuthorized>
                 <div class="login-display-sign-in">
                     <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up" @ref="signinbtn">
@@ -53,7 +39,6 @@
                         </DropDownMenuItems>
                     </SfDropDownButton>
                 </div>
-                
             </NotAuthorized>
 
 
@@ -62,7 +47,7 @@
     <AuthorizeView>
         <Authorized>
             <div class="login-display-mini">
-            <SfDropDownButton @ref="iconbtn" CssClass="e-caret-hide">
+                <SfDropDownButton @ref="iconbtn" CssClass="e-caret-hide">
                     <DropDownMenuItems>
                         <DropDownMenuItem Url="About" Text="About"></DropDownMenuItem>
                         <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
@@ -76,19 +61,12 @@
     </AuthorizeView>
 
 @code {
-
     private SfDropDownButton aboutbtn;
     private SfDropDownButton iconbtn;
     private SfDropDownButton wagersbtn;
     private SfDropDownButton profilebtn;
     private SfDropDownButton accountbtn;
     private SfDropDownButton signinbtn;
-
-    private void mousehover(SfDropDownButton btn)
-    {
-        btn.Toggle();
-    }
-
 }
 
 <style>

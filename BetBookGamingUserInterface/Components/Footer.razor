@@ -46,29 +46,23 @@
     </div>
     <div style="padding-bottom:2em;" class="footer-nav-container">
 
-        <div style=""  class="nav-title-game-container">
-            <div>
-                <h6 class="nav-title">Profile</h6>
-            </div>
+        <div class="nav-title-game-container">
+
+            <h6 class="nav-title">Profile</h6>
             <div class="footer-link">
-                <a class="game-item-nav" href="/SinglesProfilePage">
-                    <h6 class="footer-game-item">Single Bets</h6>
-                </a>
-                <a class="game-item-nav" href="/ParleyProfilePage">
-                    <h6 class="footer-game-item">Parley Bets</h6>
-                </a>
+                <NavLink href="/SinglesProfilePage" class="game-item-nav footer-game-item">My Single Bets</NavLink>
+                <NavLink href="/ParleyProfilePage" class="game-item-nav footer-game-item">My Parley Bets</NavLink>
             </div>
+
         </div>
 
         <div class="nav-title-game-container">
-            <div>
-                <h6 class="nav-title">About</h6>
-            </div>
+
+            <h6 class="nav-title">About</h6>
             <div class="footer-link">
-                <a class="game-item-nav" href="/About">
-                    <h6 class="footer-game-item">Site Info</h6>
-                </a>
+                <NavLink href="/About" class="game-item-nav footer-game-item">Site Info</NavLink>
             </div>
+
         </div>
     </div>
 </div>
@@ -80,4 +74,6 @@
     string copyright = "\u00a9 Copyright Bet Book Gaming Inc.";
     string lisence = "All Rights Reserved. Digital Millennium Copyright Act.";
     string city = "Cincinnati, OH 45248";
+
+
 }

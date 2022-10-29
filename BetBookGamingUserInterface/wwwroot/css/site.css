@@ -409,6 +409,20 @@ h3 {
     font-weight: 900;
 }
 
+iconify-icon {
+    line-height: 0.70em;
+    outline: none;
+    animation: animateIcon 30s linear infinite;
+    color: darkblue;
+    position: relative;
+    background: none;
+    border: none;
+    letter-spacing: 0.9px;
+    width: fit-content;
+    font-weight: 900;
+    filter: drop-shadow( 0 10px 5px white);
+}
+
 .grad-title-week {
     line-height: 0.70em;
     outline: none;
@@ -572,6 +586,8 @@ ul {
 
 .footer-link {
     margin-top: 1em;
+    display:flex;
+    flex-direction:column;
 }
 
 .footer-game-item {
@@ -779,6 +795,19 @@ ul {
         display: none;
     }
 
+}
+
+@keyframes animateIcon {
+
+    0%,50% {
+        color: darkblue;
+        filter: drop-shadow( 0 5px 5px white);
+    }
+
+    50%,100% {
+        color: #fff;
+        filter: drop-shadow( 0 5px 5px darkblue);
+    }
 }
 
 @keyframes animateLogo {
