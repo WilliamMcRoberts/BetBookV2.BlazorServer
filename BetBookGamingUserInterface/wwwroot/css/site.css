@@ -353,8 +353,8 @@ a, .btn-link {
     color: darkblue;
     letter-spacing: 3px;
     text-transform: uppercase;
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 22.5px darkblue, 0 0 25px darkblue, 0 0 27.5px darkblue, 0 0 30px darkblue, 0 0 32.5px darkblue, 0 0 35px darkblue, 0 0 37.5px darkblue, 0 0 40px darkblue;
-    box-shadow: 0 0 5px darkblue, 0 0 10px darkblue, 0 0 15px darkblue, 0 0 20px darkblue, 0 0 25px darkblue, 0 0 30px #fff, 0 0 35px #fff, 0 0 40px #fff;
+    text-shadow: 0 -1px 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 22.5px darkblue, 0 0 25px darkblue, 0 0 27.5px darkblue, 0 0 30px darkblue, 0 0 32.5px darkblue, 0 0 35px darkblue, 0 0 37.5px darkblue, 0 0 40px darkblue;
+    box-shadow: 0 -1px 5px darkblue, 0 0 10px darkblue, 0 0 15px darkblue, 0 0 20px darkblue, 0 0 25px darkblue, 0 0 30px #fff, 0 0 35px #fff, 0 0 40px #fff;
 }
 
     .ring:before {

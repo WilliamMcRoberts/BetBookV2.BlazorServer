@@ -156,7 +156,7 @@ public class BetSlipState
 
     public async Task<bool> OnSubmitBetsFromParleyBetSlip(UserModel loggedInUser)
     {
-        if (isSubmitting || preBets.Count < 1 || conflictingBetsForParley) 
+        if (isSubmitting || preBets.Count < 1) 
             return false;
 
         betAmountForParleyBad = false;
@@ -216,6 +216,9 @@ public class BetSlipState
         try
         {
             parleyBetGood = await _parleyBetSlipData.CreateParleyBetSlip(parleyBetSlip);
+            preBets.Clear();
+            totalWagerForParley = 0;
+            totalPayoutForParley = 0;
         }
         catch (Exception ex)
         {
@@ -225,10 +228,6 @@ public class BetSlipState
         {
             isSubmitting = false;
         }
-        
-        preBets.Clear();
-        totalWagerForParley = 0;
-        totalPayoutForParley = 0;
 
         return parleyBetGood;
     }
