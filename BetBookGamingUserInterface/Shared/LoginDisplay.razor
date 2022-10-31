@@ -98,12 +98,19 @@
         background: none;
         border: none;
         font-size:17px;
+        background: linear-gradient(white, white);
+        background-size: 0% 5px;
+        background-repeat: no-repeat;
+        background-position: left bottom;
+        transition: 300ms ease;
+        padding-left: .25em;
     }
+
         .e-dropdown-btn:hover {
            color:darkblue;
+            background-size: 90% 5px;
         }
 
-    
     .e-dropdown-popup {
         border: 1px solid darkblue;
         border-radius: 10px;
@@ -123,6 +130,7 @@
 
      .e-dropdown-popup ul .e-item .e-menu-url:hover {
         color: white;
+        text-shadow: 0 0 50px darkblue, 0 0 10px darkblue;
     }
 
     .login-display-mini {

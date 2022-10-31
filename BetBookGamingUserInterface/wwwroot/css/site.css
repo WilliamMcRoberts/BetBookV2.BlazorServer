@@ -333,6 +333,24 @@ a, .btn-link {
     padding: 2em 2em;
 }
 
+.link-support-about {
+    background-image: linear-gradient(90deg, darkblue,white);
+    text-decoration: none;
+    font-weight: 900;
+    background-size: 0% 4px;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    color: darkblue;
+    transition: 300ms ease;
+    text-shadow: 0 0 10px #fff;
+}
+
+.link-support-about:hover {
+
+    background-size: 100% 4px;
+    color:darkblue;
+}
+
 /**********************************
         Shared
 **********************************/

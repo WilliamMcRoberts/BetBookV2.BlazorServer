@@ -1,5 +1,4 @@
 ﻿
-
 namespace BetBookGamingData.DbAccess;
 
 public class MongoDbConnection : IMongoDbConnection
@@ -9,7 +8,6 @@ public class MongoDbConnection : IMongoDbConnection
     private readonly string _connectionId = "MongoDatabase";
 
     public string DatabaseName { get; private set; }
-
     public string UsersCollectionName { get; private set; } = "users";
     public string TeamsCollectionName { get; private set; } = "teams";
     public string SingleBetsCollectionName { get; private set; } = "single-bets";
