@@ -267,7 +267,7 @@ else
 
     <div class="data-grid-container-mini">
 
-        <SfGrid DataSource="@gameList">
+        <SfGrid ID="DataGrid" DataSource="@gameList">
 
             <GridColumns>
                 <GridColumn Width="80"
@@ -367,20 +367,6 @@ else
         .e-toast-container .e-toast .e-toast-message .e-toast-content {
             color: white;
             font-weight: 700;
-        }
-
-    .submit-btn {
-        letter-spacing:.5px;
-        font-weight:700;
-        border:1px solid white;
-        background-color: rgb(255,99,71, .8);
-        color: #fff;
-    }
-
-        .submit-btn:hover {
-            border: 1px solid rgb(255,99,71, .8);
-            background-color: #fff;
-            color: rgb(255,99,71, .8);
         }
 
 </style>

@@ -27,7 +27,7 @@ else
     </div>
 
     <div class="data-grid-container-profile-parley">
-        <SfGrid DataSource="@GetParleyBetList()">
+        <SfGrid ID="DataGrid" DataSource="@GetParleyBetList()">
             <GridColumns>
                 <GridColumn HeaderText="# Wagers"
                             TextAlign="TextAlign.Center">
@@ -143,7 +143,7 @@ else
     </div>
 
     <div class="data-grid-container-profile-parley-mini">
-        <SfGrid DataSource="@GetParleyBetList()">
+        <SfGrid ID="DataGrid" DataSource="@GetParleyBetList()">
             <GridColumns>
                 <GridColumn HeaderText="# Wagers"
                             TextAlign="TextAlign.Center">

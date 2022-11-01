@@ -44,7 +44,7 @@ else if (game is not null)
             <SfAccordion ID="AccordionElement" @ref="@Accordion">
                 <AccordionEvents Created="OnAccordionCreate"></AccordionEvents>
                 <AccordionItems>
-                    <AccordionItem Id="AccordionItem" Disabled=@GetDisableSinglesBetSlip() @bind-Expanded="@ExpandSinglesBetSlip">
+                    <AccordionItem Id="AccordionItem" @bind-Expanded="@ExpandSinglesBetSlip">
                         <HeaderTemplate>
                             <strong>Singles Bet Slip || Balance - $@loggedInUser?.AccountBalance.ToString("#,##0.00")</strong>
                         </HeaderTemplate>
@@ -91,14 +91,14 @@ else if (game is not null)
                                         <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
                                 }
 
-                                    <div style="text-align: center">
-                                        <SfButton CssClass="e-custom" @onclick="SubmitSinglesBetSlip">Submit Singles Bet</SfButton>
-                                    </div>
+                                <div style="text-align: center">
+                                    <button class="submit-btn" @onclick="SubmitParleyBetSlip">Submit Parley Bet</button>
+                                </div>
 
                             </div>
                         </ContentTemplate>
                     </AccordionItem>
-                    <AccordionItem Id="AccordionItem" Disabled=@GetDisableParleyBetSlip() @bind-Expanded="@ExpandParleyBetSlip">
+                    <AccordionItem Id="AccordionItem" @bind-Expanded="@ExpandParleyBetSlip">
                         <HeaderTemplate>
                             <strong>Parley Bet Slip || Balance - $@loggedInUser?.AccountBalance.ToString("#,##0.00")</strong>
                         </HeaderTemplate>
@@ -138,7 +138,10 @@ else if (game is not null)
                                     </div>
 
                                 </div>
-
+                                @if (parleyBetCountBad)
+                                {
+                                    <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Slip Must Have At Least 2 Wagers *</h6>
+                                }
                                 @if (userStatusBad)
                                 {
                                         <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
@@ -153,7 +156,7 @@ else if (game is not null)
                                 }
 
                                 <div style="text-align: center;margin:.5em auto;">
-                                    <SfButton CssClass="e-custom" @onclick="SubmitParleyBetSlip">Submit Parley Bet</SfButton>
+                                    <button class="submit-btn" @onclick="SubmitParleyBetSlip">Submit Parley Bet</button>
                                 </div>
 
                             </div>
@@ -251,16 +254,6 @@ else if (game is not null)
             font-weight: 700;
         }
 
-    .e-custom {
-        background-color: rgb(255,99,71, .8);
-        color: #fff;
-    }
-
-        .e-custom:hover {
-            background-color: #fff;
-            color: rgb(255,99,71, .8);
-        }
-
     .matchup-title {
         margin:0 auto;
         display: flex;
@@ -355,6 +348,7 @@ else if (game is not null)
     private ToastEffect HideAnimation = ToastEffect.FadeOut;
     private string Content => $"Thank you for choosing Bet Book.";
     private bool isBusy;
+    private bool parleyBetCountBad => betSlip.preBets.Count < 2;
 
     protected override async Task OnInitializedAsync()
     {
@@ -395,12 +389,6 @@ else if (game is not null)
             await this.ToastObj.ShowAsync();
     }
 
-    private bool GetDisableParleyBetSlip() =>
-            ExpandSinglesBetSlip || betSlip.preBets.Count < 2 && !ExpandParleyBetSlip ? 
-                true : false;
-
-    private bool GetDisableSinglesBetSlip() => ExpandParleyBetSlip ? true : false;
-
     private string GetCellClass(string winner, GameDto game, BetType betType) =>
          betSlip.preBets.Contains(betSlip.preBets.Where(
              b => b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
@@ -410,6 +398,5 @@ else if (game is not null)
     {
         ExpandSinglesBetSlip = false;
         ExpandParleyBetSlip = false;
-        DisableParleyBetSlip = true;
     }
 }

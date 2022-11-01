@@ -28,7 +28,7 @@ else
     </div>
 
     <div class="data-grid-container-profile">
-        <SfGrid DataSource="@GetSingleBetList()">
+        <SfGrid ID="DataGrid" DataSource="@GetSingleBetList()">
             <GridColumns>
                 <GridColumn 
                             HeaderText="Date"
@@ -112,7 +112,7 @@ else
     </div>
 
     <div class="data-grid-container-profile-mini">
-        <SfGrid DataSource="@GetSingleBetList()">
+        <SfGrid ID="DataGrid" DataSource="@GetSingleBetList()">
             <GridColumns>
                 <GridColumn HeaderText="Game"
                             TextAlign="TextAlign.Center">

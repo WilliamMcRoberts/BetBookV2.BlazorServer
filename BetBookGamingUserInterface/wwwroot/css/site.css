@@ -157,6 +157,20 @@ a, .btn-link {
         font-weight: 900;
     }
 
+.submit-btn {
+    letter-spacing: .5px;
+    font-weight: 700;
+    border: 1px solid white;
+    background-color: rgb(255,99,71, .8);
+    color: #fff;
+}
+
+    .submit-btn:hover {
+        border: 1px solid rgb(255,99,71, .8);
+        background-color: #fff;
+        color: rgb(255,99,71, .8);
+    }
+
 .other-button {
     padding: 1.35em 1.35em;
     border: 1px solid lightgrey;
@@ -300,7 +314,7 @@ a, .btn-link {
 **********************************/
 
 #DataGrid {
-    border-radius: 50px;
+    box-shadow: 7.5px 7.5px 20px black;
 }
 
 /***********************************
