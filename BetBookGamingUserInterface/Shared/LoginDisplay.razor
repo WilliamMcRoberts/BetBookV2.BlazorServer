@@ -1,5 +1,4 @@
 ﻿@inject AuthenticationStateProvider authProvider
-@inject IMongoUserData userData
 @inject NavigationManager navManager
 
     <AuthorizeView>
@@ -30,16 +29,16 @@
             </div>
         </Authorized>
 
-            <NotAuthorized>
-                <div class="login-display-sign-in">
-                    <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up" @ref="signinbtn">
-                        <DropDownMenuItems>
-                            <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign In"></DropDownMenuItem>
-                            <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign Up"></DropDownMenuItem>
-                        </DropDownMenuItems>
-                    </SfDropDownButton>
-                </div>
-            </NotAuthorized>
+        <NotAuthorized>
+            <div class="login-display-sign-in">
+                <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up" @ref="signinbtn">
+                    <DropDownMenuItems>
+                        <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign In"></DropDownMenuItem>
+                        <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign Up"></DropDownMenuItem>
+                    </DropDownMenuItems>
+                </SfDropDownButton>
+            </div>
+        </NotAuthorized>
 
 
     </AuthorizeView>
@@ -58,6 +57,7 @@
                 </SfDropDownButton>
             </div>
         </Authorized>
+
     </AuthorizeView>
 
 @code {
@@ -95,7 +95,6 @@
 
     .e-dropdown-btn, .e-dropdown-btn.e-btn {
         color: white;
-        background: none;
         border: none;
         font-size:17px;
         background: linear-gradient(white, white);
@@ -122,15 +121,17 @@
     }
 
     .e-dropdown-popup ul .e-item .e-menu-url{
-        background: rgb(135,206,250, .5);
+        background-color: darkgray;
+        backdrop-filter: blur(10px);
         font-weight: 700;
         display: flex;
         color:darkblue;
+        text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px #fff;
     }
 
      .e-dropdown-popup ul .e-item .e-menu-url:hover {
         color: white;
-        text-shadow: 0 0 50px darkblue, 0 0 10px darkblue;
+        text-shadow: 0 0 2.5px darkblue, 0 0 5px darkblue, 0 0 7.5px darkblue, 0 0 10px darkblue;
     }
 
     .login-display-mini {
