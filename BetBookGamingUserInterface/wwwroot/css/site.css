@@ -295,6 +295,14 @@ a, .btn-link {
     border: 2px solid darkblue;
 }
 
+/**********************************
+        Data Grid
+**********************************/
+
+#DataGrid {
+    border-radius: 50px;
+}
+
 /***********************************
         Accordion
 ***********************************/
@@ -302,15 +310,15 @@ a, .btn-link {
 #AccordionItem {
     background-color: rgb(255,99,71, .5);
     border-radius: 50px;
-    margin:.5em;
-/*    box-shadow: 0 0 10px white, 0 0 20px white;
-*/}
+    margin: .5em;
+    backdrop-filter: blur(10px);
+
+}
 
 #AccordionElement {
     font-weight: 700;
     background:none;
     border:none;
-    backdrop-filter:blur(10px);
 }
 
 .e-accordion .e-acrdn-item.e-select > .e-acrdn-header {

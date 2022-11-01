@@ -156,7 +156,7 @@ public class BetSlipState
 
     public async Task<bool> OnSubmitBetsFromParleyBetSlip(UserModel loggedInUser)
     {
-        if (isSubmitting || preBets.Count < 1) 
+        if (isSubmitting) 
             return false;
 
         betAmountForParleyBad = false;
