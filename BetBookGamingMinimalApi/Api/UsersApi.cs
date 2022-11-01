@@ -15,6 +15,8 @@ public static class UsersApi
             .WithName("UpdateUser");
         app.MapGet("/Users/ObjectId/{objectId}", GetCurrentUserFromAuthentication)
             .WithName("GetUserFromAuthentication");
+        app.MapGet("/Users/MakeStripePayment", MakeStripePayment)
+            .WithName("MakeStripePayment");
         app.MapGet("/Users/UserId/{userId}", GetCurrentUserByUserId)
             .WithName("GetUserByUserId");
     }
@@ -65,6 +67,20 @@ public static class UsersApi
         try
         {
             await userData.UpdateUser(user);
+            return Results.Ok();
+        }
+        catch (Exception ex)
+        {
+            return Results.Problem(ex.Message);
+        }
+    }
+
+    private static async Task<IResult> MakeStripePayment(IMongoUserData userData,
+        string cardNumber, string expirationMonth, string expirationYear, string cvc, decimal value)
+    {
+        try
+        {
+            await userData.MakeStripePayment(cardNumber, expirationMonth, expirationYear, cvc, value);
             return Results.Ok();
         }
         catch (Exception ex)

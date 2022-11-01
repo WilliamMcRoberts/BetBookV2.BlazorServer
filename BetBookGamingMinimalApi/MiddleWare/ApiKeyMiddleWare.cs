@@ -4,7 +4,6 @@ public class ApiKeyMiddleWare
 {
     private readonly RequestDelegate _next;
     private const string APIKEY = "XApiKey";
-    0
     public ApiKeyMiddleWare(RequestDelegate next)
     {
         _next = next;

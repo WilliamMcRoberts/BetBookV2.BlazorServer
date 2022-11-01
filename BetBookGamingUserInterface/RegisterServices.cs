@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
 using Serilog;
+using Stripe;
 using Syncfusion.Blazor;
 
 namespace BetBookGamingUserInterface;
@@ -36,11 +37,10 @@ public static class RegisterServices
         builder.Services.AddMemoryCache();
         builder.Services.AddControllersWithViews().AddMicrosoftIdentityUI();
         builder.Services.AddSyncfusionBlazor();
-        builder.Services.AddMemoryCache();
 
         builder.Services.AddHostedService<UpdateSingleBetsTimer>();
         builder.Services.AddHostedService<UpdateParleyBetsTimer>();
-
+        StripeConfiguration.ApiKey = builder.Configuration[key: "Stripe:SecretKey"];
 
         builder.Services.AddScoped<BetSlipState>();
 
@@ -61,3 +61,5 @@ public static class RegisterServices
         builder.Services.AddTransient<IMongoHouseAccountData, MongoHouseAccountData>();
     }
 }
+
+

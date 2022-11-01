@@ -3,7 +3,6 @@ using BetBookGamingData.DbAccess;
 using BetBookGamingData.Services;
 using Serilog;
 
-
 namespace BetBookGamingMinimalApi;
 
 public static class RegisterServices
@@ -13,6 +12,7 @@ public static class RegisterServices
         builder.Host.UseSerilog();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddMemoryCache();
 
         /*************************** Services *********************************/
 
