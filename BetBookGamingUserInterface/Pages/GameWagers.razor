@@ -173,12 +173,12 @@ else if (game is not null)
                         <label class="bet-type">Point Spread</label>
                     </div>
                 <div style="background:white;box-shadow: 7.5px 7.5px 20px black;">
-                        <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)" style="display:flex;justify-content:space-evenly">
+                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) wager-cell-top">
                         <strong class="bet-text">@game?.AwayTeam</strong>
                         <strong class="bet-text">@Convert.ToDecimal(game?.PointSpread).ToString("-#.0;+#.0;")</strong>
                         <strong class="bet-text">@Convert.ToDecimal(game?.PointSpreadAwayTeamMoneyLine).ToString("+#;-#;")</strong>
                         </div>
-                        <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD)" style="display:flex;justify-content:space-evenly;">
+                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD) wager-cell-bottom" >
                         <strong class="bet-text">@game?.HomeTeam</strong>
                         <strong class="bet-text">@Convert.ToDecimal(game?.PointSpread).ToString("+#.0;-#.0;")</strong>
                         <strong class="bet-text">@Convert.ToDecimal(game?.PointSpreadHomeTeamMoneyLine).ToString("+#;-#;")</strong>
@@ -191,11 +191,11 @@ else if (game is not null)
                         <label class="bet-type">Moneyline</label>
                     </div>
                 <div style="background:white;box-shadow: 7.5px 7.5px 20px black;">
-                        <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE)" style="display:flex;justify-content:space-evenly">
+                        <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE) wager-cell-top">
                             <strong class="bet-text">@game?.AwayTeam</strong>
                             <strong class="bet-text">@Convert.ToDecimal(game?.AwayTeamMoneyLine).ToString("+#;-#;")</strong>
                         </div>
-                        <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE)" style="display:flex;justify-content:space-evenly">
+                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE) wager-cell-bottom">
                             <strong class="bet-text">@game?.HomeTeam</strong>
                             <strong class="bet-text">@Convert.ToDecimal(game?.HomeTeamMoneyLine).ToString("+#;-#;")</strong>
                         </div>
@@ -207,11 +207,11 @@ else if (game is not null)
                         <label class="bet-type">OverUnder</label>
                     </div>
                 <div style="background:white;box-shadow: 7.5px 7.5px 20px black;">
-                        <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)" style="display:flex;justify-content:space-evenly">
+                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-top">
                             <strong class="bet-text">Over @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
                             <strong class="bet-text">@Convert.ToDecimal(game?.OverPayout).ToString("+#;-#;")</strong>
                         </div>
-                        <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER)" style="display:flex;justify-content:space-evenly">
+                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-bottom" >
                             <strong class="bet-text">Under @Convert.ToDecimal(game?.OverUnder).ToString("#.#")</strong>
                             <strong class="bet-text">@Convert.ToDecimal(game?.UnderPayout).ToString("+#;-#;")</strong>
                         </div>
@@ -234,6 +234,21 @@ else if (game is not null)
 </a>
 
 <style>
+
+    .wager-cell-top {
+        display: flex;
+        justify-content: space-evenly;
+        border-right: 3px solid darkblue;
+        border-left: 3px solid darkblue;
+    }
+
+    .wager-cell-bottom {
+        display: flex;
+        justify-content: space-evenly;
+        border-right: 3px solid darkblue;
+        border-left: 3px solid darkblue;
+        border-bottom: 3px solid darkblue;
+    }
 
     .e-toast-container .e-toast {
         background-color: rgba(0,0,0, .9);
@@ -281,6 +296,7 @@ else if (game is not null)
         border: 2px solid darkblue;
         width:60%;
         border-radius: 50px;
+        box-shadow: 7.5px 7.5px 10px rgb(0,0,0, 0.8);
     }
 
     .bet-type-title-container {
