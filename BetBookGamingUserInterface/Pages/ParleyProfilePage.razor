@@ -242,12 +242,8 @@ else
     </div>
 }
 
-<a href="javascript:void(0);">
-    <img id="doge" src="images/doge.png" alt="doge.png">
-</a>
 
 @code {
-
     List<ParleyBetSlipModel> bettorParleyBetSlips = new();
     List<ParleyBetSlipModel> bettorParleyBetsInProgress = new();
     List<ParleyBetSlipModel> bettorParleyBetsWinners = new();
@@ -292,9 +288,9 @@ else
 
     private void SetParleyDataGrid(ParleyBetSlipStatus parleyBetSlipStatus) =>
         (parleyInProgressGrid, parleyWinnersGrid, parleyPushGrid, parleyLosersGrid) =
-            parleyBetSlipStatus == ParleyBetSlipStatus.LOSER ? (false, false, false, true) :
-            parleyBetSlipStatus == ParleyBetSlipStatus.WINNER ? (false, true, false, false) :
-            parleyBetSlipStatus == ParleyBetSlipStatus.PUSH ? (false, false, true, false)
+            parleyBetSlipStatus == ParleyBetSlipStatus.LOSER ? (false, false, false, true) 
+            : parleyBetSlipStatus == ParleyBetSlipStatus.WINNER ? (false, true, false, false) 
+            : parleyBetSlipStatus == ParleyBetSlipStatus.PUSH ? (false, false, true, false)
             : (true, false, false, false);
 
     private List<ParleyBetSlipModel> GetParleyBetList() =>
