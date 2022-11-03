@@ -54,23 +54,23 @@ else if (game is not null)
 
                                 @foreach (CreateBetModel createBetModel in betSlip.preBets)
                                 {
-                                        <div class="create-bet-model-container">
-                                            <button @onclick="(() => betSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
-                                            <div class="bet-info-container">
-                                                <div class="game-bet-type">
-                                                    <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
-                                                    <strong>@createBetModel.BetType</strong>
-                                                </div>
-                                                <div class="winner-moneyline-container">
-                                                    <strong class="winner-moneyline">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                                    <strong class="winner-moneyline">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("+#;-#;")</strong>
-                                                </div>
-                                                <div class="bet-amount-input-container">
-                                                    <strong style="margin:.25em .25em">$</strong>
-                                                    <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
-                                                </div>
+                                    <div class="create-bet-model-container">
+                                        <button @onclick="(() => betSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                        <div class="bet-info-container">
+                                            <div class="game-bet-type">
+                                                <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
+                                                <strong>@createBetModel.BetType</strong>
+                                            </div>
+                                            <div class="winner-moneyline-container">
+                                                <strong class="winner-moneyline">@betSlip.GetWinnerSummary(createBetModel)</strong>
+                                                <strong class="winner-moneyline">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("+#;-#;")</strong>
+                                            </div>
+                                            <div class="bet-amount-input-container">
+                                                <strong style="margin:.25em .25em">$</strong>
+                                                <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
                                             </div>
                                         </div>
+                                    </div>
                                 }
 
                                 <div style="text-align:center;margin:1em 1em;">
@@ -107,29 +107,29 @@ else if (game is not null)
 
                                 @foreach (CreateBetModel createBetModel in betSlip.preBets)
                                 {
-                                            <div class="create-bet-model-container">
-                                            <button @onclick="(() => betSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
-                                            <div class="bet-info-container">
-                                                <div class="game-bet-type-parley">
-                                                    <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
-                                                    <strong>@createBetModel.BetType</strong>
-                                                </div>
-                                                <div class="winner-moneyline-container-parley">
-                                                    <strong class="winner-moneyline-parley">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                                    <strong class="winner-moneyline-parley">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("+#;-#;")</strong>
-                                                </div>
+                                    <div class="create-bet-model-container">
+                                        <button @onclick="(() => betSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                        <div class="bet-info-container">
+                                            <div class="game-bet-type-parley">
+                                                <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
+                                                <strong>@createBetModel.BetType</strong>
+                                            </div>
+                                            <div class="winner-moneyline-container-parley">
+                                                <strong class="winner-moneyline-parley">@betSlip.GetWinnerSummary(createBetModel)</strong>
+                                                <strong class="winner-moneyline-parley">@Convert.ToDecimal(betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType)).ToString("+#;-#;")</strong>
                                             </div>
                                         </div>
+                                    </div>
                                 }
 
                                 <div style="display:flex;flex-direction:column;">
 
                                     <div style="display:flex;flex-direction:column;width:35%;margin:.5em auto;text-align:center;">
-                                            <strong style="text-align:center;">Wager Amount</strong>
+                                        <strong style="text-align:center;">Wager Amount</strong>
                                         <div style="display:flex;justify-content:center;">
                                             <strong style="margin:.25em .25em">$</strong>
                                             <input type="number" @bind-value="@betSlip.totalWagerForParley" @bind-value:event="oninput" />
-                                            </div>
+                                        </div>
                                     </div>
 
                                     <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
