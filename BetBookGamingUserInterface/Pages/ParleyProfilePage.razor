@@ -9,9 +9,7 @@
 
 @if (isBusy)
 {
-    <div class="ring">Loading
-      <span id="span"></span>
-    </div>
+        <LoadingSpinner/>
 }
 
 else
@@ -79,27 +77,23 @@ else
                             {
                                 if (bet!.SingleBetsForParleyList.IndexOf(singleBetForParley) == bet!.SingleBetsForParleyList.Count - 1)
                                 {
-                                    <div style="text-align:center;">
-                                        <div class="teams">
-                                            <div style="padding: .45em .5em;">
-                                    <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
-                                            </div>
-                                            <div style="padding:.45em .5em;">
-                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
-                                            </div>
+                                    <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="teams-bottom">
+                                        <div style="padding: .45em .5em;">
+                                            <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
+                                        </div>
+                                        <div style="padding:.45em .5em;">
+                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
                                         </div>
                                     </div>
                                 }
                                 else
                                 {
-                                    <div style="text-align:center;border-bottom:1px dotted black">
-                                        <div class="teams">
-                                            <div style="padding: .45em .5em;">
-                                    <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
-                                            </div>
-                                            <div style="padding:.45em .5em;">
-                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
-                                            </div>
+                                    <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="teams">
+                                        <div style="padding: .45em .5em;">
+                                            <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
+                                        </div>
+                                        <div style="padding:.45em .5em;">
+                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
                                         </div>
                                     </div>
                                 }
@@ -179,27 +173,23 @@ else
                             {
                                 if (bet!.SingleBetsForParleyList.IndexOf(singleBetForParley) == bet!.SingleBetsForParleyList.Count - 1)
                                 {
-                                    <div style="text-align:center;">
-                                        <div class="teams">
-                                            <div style="padding: .45em .5em;">
-                                    <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
-                                            </div>
-                                            <div style="padding:.45em .5em;">
-                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
-                                            </div>
+                                    <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="teams-bottom">
+                                        <div style="padding: .45em .5em;">
+                                            <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
+                                        </div>
+                                        <div style="padding:.45em .5em;">
+                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
                                         </div>
                                     </div>
                                 }
                                 else
                                 {
-                                    <div style="text-align:center;border-bottom:1px dotted black">
-                                        <div class="teams">
-                                            <div style="padding: .45em .5em;">
-                                    <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
-                                            </div>
-                                            <div style="padding:.45em .5em;">
-                                    <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
-                                            </div>
+                                    <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="teams">
+                                        <div style="padding: .45em .5em;">
+                                            <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
+                                        </div>
+                                        <div style="padding:.45em .5em;">
+                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
                                         </div>
                                     </div>
                                 }
@@ -244,6 +234,9 @@ else
 
 
 @code {
+    [CascadingParameter]
+    public ModalWrapper ModalWrapper { get; set; }
+
     List<ParleyBetSlipModel> bettorParleyBetSlips = new();
     List<ParleyBetSlipModel> bettorParleyBetsInProgress = new();
     List<ParleyBetSlipModel> bettorParleyBetsWinners = new();
@@ -280,6 +273,19 @@ else
                 pb.ParleyBetSlipStatus == ParleyBetSlipStatus.LOSER).ToList();
 
         isBusy = false;
+    }
+
+    private async Task ShowGameDetailsSingleBetForParleyModal(MouseEventArgs mouseEventArgs, SingleBetForParleyModel wager)
+    {
+        GameByScoreIdDto finishedGame = await gameService.GetGameByScoreId(wager.GameSnapshot.ScoreID);
+
+        var ParameterArguments = new Dictionary<string, object>
+            {
+                ["FinishedGame"] = finishedGame,
+                ["Wager"] = wager
+            };
+
+        ModalWrapper.ShowModal(mouseEventArgs, typeof(FinishedGameDetailsParleyBet), ParameterArguments);
     }
 
     private string GetPointsAfterSpreadForDisplay(decimal pointsAfterSpread) =>

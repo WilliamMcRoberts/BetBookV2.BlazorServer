@@ -1,0 +1,115 @@
+﻿
+@if (FinishedGame is not null)
+{
+    <div style="display:flex;justify-content:space-evenly;">
+        <div>
+            <img style="height: 80px;" src="@($"images/{FinishedGame.Score.AwayTeam.ToLower()}" + ".svg")" />
+            <h2 style="text-align:center;font-weight:900">@FinishedGame.Score.AwayTeam</h2>
+        </div>
+        <strong style="font-size:60px;margin-top:.15em;">@@</strong>
+        <div>
+            <img style="height: 80px;" src="@($"images/{FinishedGame.Score.HomeTeam.ToLower()}" + ".svg")" />
+            <h2 style="text-align:center;font-weight:900">@FinishedGame.Score.HomeTeam</h2>
+        </div>
+    </div>
+    <div class="finished-game-container">
+        <h2 class="wager-detail-date"><span class="wager-detail-date-span">Date: </span>@FinishedGame.Score.Date.ToString("MM-dd h:mm")pm</h2>
+        <h2 class ="wager-detail">@FinishedGame.Score.AwayTeam Score: @FinishedGame.Score.AwayScore</h2>
+        <h2 class="wager-detail">@FinishedGame.Score.HomeTeam Score: @FinishedGame.Score.HomeScore</h2>
+        <h2 class="wager-detail">Amount: @Wager.BetAmount</h2>
+        <h2 class="wager-detail">Payout: @Wager.BetPayout</h2>
+        <h2 class="bet-type">Type: @Wager.BetType.ToString().ToLower()</h2>
+        @if(Wager.BetType == BetType.POINTSPREAD)
+        {
+            if(Wager.WinnerChosen == Wager.GameSnapshot.AwayTeam)
+            {
+                <h2 class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.PointSpread:-#.0;+#.0;+0.0}") @Wager.GameSnapshot.PointSpreadAwayTeamMoneyLine</h2>
+            }
+            else
+            {
+                <h2 class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.PointSpread:+#.0;-#.0;+0.0}") @Wager.GameSnapshot.PointSpreadHomeTeamMoneyLine</h2>
+            }
+        }
+        else if(Wager.BetType == BetType.MONEYLINE)
+        {
+            if(Wager.WinnerChosen == Wager.GameSnapshot.AwayTeam)
+            {
+                <h2 class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.AwayTeamMoneyLine:+#;-#}")</h2>
+            }
+            else 
+            {
+                <h2 class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.HomeTeamMoneyLine:+#;-#}")</h2>
+            }
+        }
+        else if (Wager.BetType == BetType.OVERUNDER)
+        {
+            if (Wager.WinnerChosen[0] == 'O')
+            {
+                <h2 class="wager-detail-chosen-winner">Over @Wager.GameSnapshot.OverUnder</h2>
+            }
+            else
+            {
+                <h2 class="wager-detail-chosen-winner">Under @Wager.GameSnapshot.OverUnder</h2>
+            }
+        }
+        @if(Wager.SingleBetStatus == SingleBetStatus.IN_PROGRESS)
+        {
+            <h2 class="wager-status">Active</h2>
+        }
+        else
+        {
+            <h2 class="wager-status">@Wager.SingleBetStatus.ToString().ToLower()</h2>
+        }
+    </div>
+}
+
+<style>
+
+    .finished-game-container {
+        text-align: center;
+        color: darkblue;
+        text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff;
+    }
+
+    .wager-detail {
+        font-weight: 700;
+    }
+
+    .wager-detail-date {
+        font-weight: 700;
+    }
+
+    .wager-detail-chosen-winner {
+        font-weight: 700;
+    }
+
+    .wager-detail-chosen-winner::before {
+        content: "Wager: ";
+    }
+
+    .wager-status {
+        font-weight: 700;
+        text-transform: capitalize;
+    }
+
+    .wager-status::before {
+        content: "Status: ";
+    }
+
+    .bet-type {
+        text-transform: capitalize;
+        font-weight: 700;
+    }
+
+</style>
+
+@code {
+    [CascadingParameter]
+    public ModalWrapper ModalWrapper { get; set; }
+
+    [Parameter]
+    public GameByScoreIdDto FinishedGame { get; set; }
+
+    [Parameter]
+    public SingleBetModel Wager { get; set; }
+}

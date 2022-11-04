@@ -2,7 +2,6 @@
 @inject NavigationManager navManager
 
     <AuthorizeView>
-
         <Authorized>
             <div class="login-display">
                 <SfDropDownButton CssClass="e-caret-hide ddown" Content="About" @ref="aboutbtn">
@@ -28,7 +27,6 @@
                 </SfDropDownButton>
             </div>
         </Authorized>
-
         <NotAuthorized>
             <div class="login-display-sign-in">
                 <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up" @ref="signinbtn">
@@ -39,10 +37,7 @@
                 </SfDropDownButton>
             </div>
         </NotAuthorized>
-
-
     </AuthorizeView>
-
     <AuthorizeView>
         <Authorized>
             <div class="login-display-mini">
@@ -57,7 +52,6 @@
                 </SfDropDownButton>
             </div>
         </Authorized>
-
     </AuthorizeView>
 
 @code {
@@ -139,7 +133,6 @@
     }
 
     .login-display {
-        
         letter-spacing: 0.9px;
         width: fit-content;
     }

@@ -1,0 +1,77 @@
+﻿@using BetBookGamingUserInterface.Components
+
+<CascadingValue Value="this">
+    <div style="opacity: @(showModal ? "0.5" : "1")">
+        @ChildContent
+    </div>
+    <div class="Modal" id="Modal" style="@("display:" + ( showModal ? $"block; {modalPosition}" : "none;"))">
+        <div class="d-flex justify-content-end">
+            <button class="close-modal-button" @onclick="() => CloseModal()">X</button>
+        </div>
+        <DynamicComponent Type="ComponentType" Parameters="ComponentParameters" />
+    </div>
+</CascadingValue>
+
+<style>
+
+    .Modal  {
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0, 0.5);
+        backdrop-filter: blur(10px);
+        color: darkblue;
+        border: 3px solid darkblue;
+        width: 70%;
+        padding: 1em;
+        border-radius: 50px;
+        box-shadow: 7.5px 7.5px 10px black;
+        text-shadow: 0 0 2.5px white, 0 0 5px white, 0 0 7.5px white;
+    }
+
+    @@media(max-width: 490px) {
+
+        .Modal {
+            width: 90%;
+        }
+    }
+
+    .close-modal-button {
+        color: darkblue;
+        background:none;
+        border:none;
+        font-size: 25px;
+        font-weight:900;
+        text-shadow: 0 0  2.5px white, 0 0 5px white, 0 0 7.5px white;
+    }
+
+    .close-modal-button:hover {
+        color: white;
+        text-shadow: 0 0 2.5px darkblue, 0 0 5px darkblue, 0 0 7.5px darkblue;
+    }
+
+</style>
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private bool showModal;
+    private string modalPosition;
+    private Type ComponentType = typeof(FinishedGameDetailsParleyBet);
+    private Dictionary<string, object> ComponentParameters;
+
+    public void ShowModal(MouseEventArgs mouseEventArgs, Type componentType, Dictionary<string, object> componentParameters)
+    {
+        modalPosition = $"position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);";
+        ComponentType = componentType;
+        ComponentParameters = componentParameters;
+        showModal = true;
+        StateHasChanged();
+    }
+
+    public void CloseModal()
+    {
+        showModal = false;
+        StateHasChanged();
+    }
+}

@@ -1,4 +1,4 @@
-@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
     font-family: 'Montserrat', sans-serif;
@@ -68,12 +68,20 @@ a, .btn-link {
     }
 
 /**********************************************************************
-                                START 
+                                START
 ***********************************************************************/
 
-/*********************************************
+/********************************************
+            Data Grid
+********************************************/
+
+#DataGrid {
+
+}
+
+/********************************************
         Home And Profile Pages
-*********************************************/
+********************************************/
 
 .clickable-cell {
     padding: .65em .65em;
@@ -84,6 +92,7 @@ a, .btn-link {
     .clickable-cell:hover {
         cursor: pointer;
         background-color: rgb(135,206,250, .5);
+        color: darkblue;
     }
 
 .clickable-cell-active {
@@ -191,7 +200,29 @@ a, .btn-link {
         cursor: pointer;
     }
 
+.teams-bottom {
+    text-align:center;
+}
+
+    .teams-bottom:hover {
+        cursor: pointer;
+        color: darkblue;
+        background-color: rgb(211,211,211, .9);
+    }
+
+.teams-single {
+    text-align: center;
+}
+
+    .teams-single:hover {
+        background-color: rgb(211,211,211, .9);
+        cursor: pointer;
+        color: darkblue;
+    }
+
 .teams {
+    border-bottom: 1px dotted black;
+    text-align: center;
 }
 
     .teams:hover {
@@ -320,14 +351,6 @@ a, .btn-link {
     border: 3px solid darkblue;
     border-top: none;
     box-shadow: 7.5px 7.5px 20px black;
-}
-
-/**********************************
-        Data Grid
-**********************************/
-
-#DataGrid {
-    color:darkblue;
 }
 
 /***********************************
@@ -505,8 +528,14 @@ label {
     font-size: 20px;
 }
 
+a {
+    text-decoration:none;
+    color: black;
+}
+
 a:hover {
     cursor: pointer;
+    color:black;
 }
 
 p {

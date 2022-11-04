@@ -9,10 +9,7 @@
 
 @if (isBusy)
 {
-    <div class="ring">
-        Loading
-        <span id="span"></span>
-    </div>
+    <LoadingSpinner />
 }
 
 else
@@ -62,7 +59,7 @@ else
                             </div>
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
-                            <div class="teams">
+                            <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetModal(mouseArgs, bet))" class="teams-single">
                                 <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
                                     <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
                                 </div>
@@ -88,21 +85,15 @@ else
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
                             @if(bet?.BetType == BetType.POINTSPREAD)
                             {
-                                    <div>
-                                        <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
-                                    </div>
+                                <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
                             }
                             else if(bet?.BetType == BetType.OVERUNDER)
                             {
-                                    <div>
-                                        <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
-                                    </div>
+                                <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
                             }
                             else 
                             {
-                                    <div>
-                                        <strong>@bet?.WinnerChosen</strong>
-                                    </div>
+                                <strong>@bet?.WinnerChosen</strong>
                             }
                         </td>
                     }
@@ -133,7 +124,7 @@ else
                         var bet = (context as SingleBetModel);
 
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
-                            <div class="teams">
+                            <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetModal(mouseArgs, bet))" class="teams-single">
                                 <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
                                     <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
                                 </div>
@@ -143,38 +134,24 @@ else
                             </div>
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
-
-                            <div>
-                                <strong>@bet?.BetType</strong>
-                            </div>
-
+                            <strong>@bet?.BetType</strong>
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
-
-                            <div>
-                                <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
-                            </div>
-
+                            <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
                             @if (bet?.BetType == BetType.POINTSPREAD)
-                        {
-                                <div>
-                                    <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
-                                </div>
-                        }
-                        else if (bet?.BetType == BetType.OVERUNDER)
-                        {
-                                <div>
-                                    <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
-                                </div>
-                        }
-                        else
-                        {
-                                <div>
-                                    <strong>@bet?.WinnerChosen</strong>
-                                </div>
-                        }
+                            {
+                                <strong>@bet?.WinnerChosen @GetPointsAfterSpreadForDisplay(bet!.PointsAfterSpread)</strong>
+                            }
+                            else if (bet?.BetType == BetType.OVERUNDER)
+                            {
+                                <strong>@bet?.WinnerChosen @bet?.GameSnapshot.OverUnder</strong>
+                            }
+                            else
+                            {
+                                <strong>@bet?.WinnerChosen</strong>
+                            }
                         </td>
                     }
                 </RowTemplate>
@@ -185,6 +162,9 @@ else
 
 
 @code {
+
+    [CascadingParameter]
+    public ModalWrapper ModalWrapper { get; set; }
 
     List<SingleBetModel> bettorSingleBets = new();
     List<SingleBetModel> bettorSingleBetsInProgress = new();
@@ -222,6 +202,19 @@ else
                 pb.SingleBetStatus == SingleBetStatus.LOSER).ToList();
 
         isBusy = false;
+    }
+
+    private async Task ShowGameDetailsSingleBetModal(MouseEventArgs mouseEventArgs, SingleBetModel wager)
+    {
+        GameByScoreIdDto finishedGame = await gameService.GetGameByScoreId(wager.GameSnapshot.ScoreID);
+
+        var ParameterArguments = new Dictionary<string, object>
+        {
+            ["FinishedGame"] = finishedGame,
+            ["Wager"] = wager
+        };
+
+        ModalWrapper.ShowModal(mouseEventArgs, typeof(FinishedGameDetailsSingleBet), ParameterArguments);
     }
 
     private string GetPointsAfterSpreadForDisplay(decimal pointsAfterSpread) =>
