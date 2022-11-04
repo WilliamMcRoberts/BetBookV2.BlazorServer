@@ -35,10 +35,10 @@ else
                             HeaderText="Game"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
-                <GridColumn HeaderText="BetType"
+                <GridColumn HeaderText="Type"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
-                <GridColumn HeaderText="Bet Payout"
+                <GridColumn HeaderText="Payout"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
                 <GridColumn HeaderText="Winner"
@@ -70,16 +70,12 @@ else
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                            <div>
-                                <strong>@bet?.BetType</strong>
-                            </div>
+                            <strong style="text-transform:capitalize">@bet?.BetType.ToString().ToLower()</strong>
 
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
 
-                            <div>
-                                <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
-                            </div>
+                            <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>
 
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
@@ -108,10 +104,10 @@ else
                 <GridColumn HeaderText="Game"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
-                <GridColumn HeaderText="BetType"
+                <GridColumn HeaderText="Type"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
-                <GridColumn HeaderText="Bet Payout"
+                <GridColumn HeaderText="Payout"
                             TextAlign="TextAlign.Center">
                 </GridColumn>
                 <GridColumn HeaderText="Winner"
@@ -134,7 +130,7 @@ else
                             </div>
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
-                            <strong>@bet?.BetType</strong>
+                            <strong style="text-transform:capitalize;">@bet?.BetType.ToString().ToLower()</strong>
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
                             <strong>$@bet?.BetPayout.ToString("#,##0.00")</strong>

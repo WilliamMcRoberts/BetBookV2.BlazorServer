@@ -235,6 +235,20 @@ a, .btn-link {
     font-size: 10px;
 }
 
+.at-sign {
+    margin-right: .5em;
+    font-size: 11px;
+}
+
+.team-name-index {
+    font-size: 10px;
+}
+
+.at-sign-index {
+    margin-right: .5em;
+    font-size: 11px;
+}
+
 .team-icon-top-row {
     height: 20px;
     margin-right: .5em;
@@ -244,11 +258,6 @@ a, .btn-link {
 .team-icon-bottom-row {
     height: 20px;
     margin-right: .5em;
-}
-
-.at-sign {
-    margin-right: .5em;
-    font-size: 11px;
 }
 
 .e-headercell {
@@ -888,6 +897,31 @@ ul {
         display: none;
     }
 
+}
+
+@media(max-width: 400px) {
+
+    .team-name {
+        font-size: 9px;
+    }
+
+    .at-sign {
+        margin-right: .25em;
+        font-size: 10px;
+    }
+
+}
+
+@media(max-width: 390px) {
+
+    .team-name {
+        font-size: 8px;
+    }
+
+    .at-sign {
+        margin-right: .2em;
+        font-size: 9px;
+    }
 }
 
 @keyframes animateIcon {

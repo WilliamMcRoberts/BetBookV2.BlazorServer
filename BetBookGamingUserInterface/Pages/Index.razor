@@ -286,10 +286,10 @@ else
                                 <a href="@($"/GameWagers/{game.ScoreID}")">
                                     <div class="teams-bottom">
                                         <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                            <img class="team-icon-top-row" src="@($"images/{game?.AwayTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                            <img class="team-icon-top-row" src="@($"images/{game?.AwayTeam.ToLower()}" + ".svg")" /> <strong class="team-name-index">@game?.AwayTeam</strong>
                                         </div>
                                         <div style="padding:.5em .5em;">
-                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@($"images/{game?.HomeTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                            <strong class="at-sign-index">@@</strong><img class="team-icon-bottom-row" src="@($"images/{game?.HomeTeam.ToLower()}" + ".svg")" /> <strong class="team-name-index">@game?.HomeTeam</strong>
                                         </div>
                                     </div>
                                 </a>
