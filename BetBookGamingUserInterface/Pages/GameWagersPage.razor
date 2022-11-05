@@ -229,12 +229,7 @@ else if (game is not null)
     </ToastAnimationSettings>
 </SfToast>
 
-<a href="javascript:void(0);">
-    <img id="doge" src="images/doge.png" alt="doge.png">
-</a>
-
 <style>
-
     .e-toast-container .e-toast {
         background-color: rgba(0,0,0, .9);
         border: 1px solid white;
@@ -255,109 +250,11 @@ else if (game is not null)
             color: white;
             font-weight: 700;
         }
-
-    .wager-cell-top {
-        display: flex;
-        justify-content: space-evenly;
-        border-right: 3px solid darkblue;
-        border-left: 3px solid darkblue;
-    }
-
-    .wager-cell-bottom {
-        display: flex;
-        justify-content: space-evenly;
-        border-right: 3px solid darkblue;
-        border-left: 3px solid darkblue;
-        border-bottom: 3px solid darkblue;
-    }
-
-    .bet-text {
-        margin: .25em .25em;
-        color: darkblue;
-    }
-
-    .bet-type {
-        font-weight: 900;
-        color: darkblue;
-        text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff;
-        margin: .25em auto;
-    }
-
-    .matchup-title {
-        margin:0 auto;
-        display: flex;
-        justify-content: space-evenly;
-        text-shadow: 0 0 2.5px white, 0 0 5px white, 0 0 7.5px white;
-        color:darkblue;
-    }
-
-    .matchup-container {
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0, 0.5); 
-        backdrop-filter: blur(10px);
-        margin:0 auto;
-        border: 2px solid darkblue;
-        width:60%;
-        border-radius: 50px;
-        box-shadow: 7.5px 7.5px 10px rgb(0,0,0, 0.8);
-    }
-
-    .bet-type-title-container {
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0, 0.5);
-        backdrop-filter: blur(10px);
-        margin: 0 auto;
-        border: 3px solid darkblue;
-        border-bottom:none;
-        color:white;
-        width:100%;
-        text-align:center;
-        margin-top:1em;
-        margin-bottom: 0;
-        border-top-right-radius: 50px;
-        border-top-left-radius: 50px;
-    }
-
-    .wager-container {
-        margin: 0 auto;
-        width: 60%;
-    }
-
-    .accordion-container-wager-details {
-        width: 60%;
-        margin: 0 auto;
-        position: center;
-        margin-top:1.5em;
-        background:transparent;
-    }
-
-    .name-of-team {
-        font-size: 40px;
-        font-weight: 700;
-        color: white;
-        margin-left: .25em;
-        text-decoration: underline;
-    }
-
-    @@media (max-width: 575px) {
-        .wager-container {
-            width:95%;
-        }
-
-        .name-of-team {
-            display:none;
-        }
-
-        .accordion-container-wager-details {
-            width:95%;
-        }
-
-        .matchup-container {
-            width: 95%;
-        }
-    }
-
 </style>
+
+<a href="javascript:void(0);">
+    <img id="doge" src="images/doge.png" alt="doge.png">
+</a>
 
 @code {
     [Parameter]

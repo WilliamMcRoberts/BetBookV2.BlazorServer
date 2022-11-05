@@ -1,0 +1,38 @@
+﻿
+
+#wager-link {
+    position: relative;
+}
+
+    #wager-link:hover #tooltipParleyWagerContent {
+        top: 20%;
+        visibility: visible;
+        opacity: 1;
+        transition-delay: .75s;
+    }
+
+#tooltipParleyWagerContent {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(50%);
+    background-color: rgb(0, 0, 0);
+    color: #fff;
+    white-space: nowrap;
+    padding: 7.5px 15px;
+    border-radius: 7px;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+    #tooltipParleyWagerContent::before {
+        content: "";
+        position: absolute;
+        left: -22%;
+        top: 0;
+        transform: translateX(-25%);
+        transform: translateY(7.5%);
+        border: 13px solid;
+        border-color: #0000 #000 #0000 #0000;
+    }

@@ -61,42 +61,29 @@ else
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
 
                             @foreach (SingleBetForParleyModel singleBetForParley in bet!.SingleBetsForParleyList)
-                        {
+                            {
                                 <div style="padding: .75em .5em;">
                                     <strong>@singleBetForParley.GameSnapshot.Date.ToString("M-d")</strong>
                                 </div>
                                 <div style="padding:.75em .5em;">
                                     <strong>@singleBetForParley.GameSnapshot.Date.ToString("h:mm")</strong>
                                 </div>
-                        }
+                            }
 
                         </td>
                         <td class="@GetCellClass(bet!)" style="text-align:center;">
 
                             @foreach (SingleBetForParleyModel singleBetForParley in bet!.SingleBetsForParleyList)
                             {
-                                if (bet!.SingleBetsForParleyList.IndexOf(singleBetForParley) == bet!.SingleBetsForParleyList.Count - 1)
-                                {
-                                    <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="teams-bottom">
-                                        <div style="padding: .45em .5em;">
-                                            <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
-                                        </div>
-                                        <div style="padding:.45em .5em;">
-                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
-                                        </div>
+                                <div id="wager-link" @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="@(bet!.SingleBetsForParleyList.IndexOf(singleBetForParley) == bet!.SingleBetsForParleyList.Count - 1 ? "teams-bottom" : "teams")">
+                                    <span id="tooltipParleyWagerContent">Wager Details</span>
+                                    <div style="padding: .45em .5em;">
+                                        <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
                                     </div>
-                                }
-                                else
-                                {
-                                    <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="teams">
-                                        <div style="padding: .45em .5em;">
-                                            <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
-                                        </div>
-                                        <div style="padding:.45em .5em;">
-                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
-                                        </div>
+                                    <div style="padding:.45em .5em;">
+                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
                                     </div>
-                                }
+                                </div>
                             }
 
                         </td>
@@ -104,29 +91,25 @@ else
 
                             @foreach (SingleBetForParleyModel singleBetForParley in bet!.SingleBetsForParleyList)
                             {
-                                <div style="text-align:center;">
-
-                                    @if (singleBetForParley?.BetType == BetType.POINTSPREAD)
-                                    {
-                                        <div class="cell-parley">
-                                            <strong>@singleBetForParley?.WinnerChosen</strong>
-                                            <strong>@GetPointsAfterSpreadForDisplay(singleBetForParley!.PointsAfterSpread)</strong>
-                                        </div>
-                                    }
-                                    else if (singleBetForParley?.BetType == BetType.OVERUNDER)
-                                    {
-                                        <div class="cell-parley">
-                                            <strong>@singleBetForParley?.WinnerChosen @singleBetForParley?.GameSnapshot.OverUnder</strong>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="cell-parley">
-                                            <strong>@singleBetForParley?.WinnerChosen</strong>
-                                        </div>
-                                    }
-
-                                </div>
+                                @if (singleBetForParley?.BetType == BetType.POINTSPREAD)
+                                {
+                                    <div class="cell-parley">
+                                        <strong>@singleBetForParley?.WinnerChosen</strong>
+                                        <strong>@GetPointsAfterSpreadForDisplay(singleBetForParley!.PointsAfterSpread)</strong>
+                                    </div>
+                                }
+                                else if (singleBetForParley?.BetType == BetType.OVERUNDER)
+                                {
+                                    <div class="cell-parley">
+                                        <strong>@singleBetForParley?.WinnerChosen @singleBetForParley?.GameSnapshot.OverUnder</strong>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="cell-parley">
+                                        <strong>@singleBetForParley?.WinnerChosen</strong>
+                                    </div>
+                                }
                             }
 
                         </td>
@@ -171,28 +154,15 @@ else
 
                             @foreach (SingleBetForParleyModel singleBetForParley in bet!.SingleBetsForParleyList)
                             {
-                                if (bet!.SingleBetsForParleyList.IndexOf(singleBetForParley) == bet!.SingleBetsForParleyList.Count - 1)
-                                {
-                                    <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="teams-bottom">
-                                        <div style="padding: .45em .5em;">
-                                            <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
-                                        </div>
-                                        <div style="padding:.45em .5em;">
-                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
-                                        </div>
+                                <div id="wager-link" @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="@(bet!.SingleBetsForParleyList.IndexOf(singleBetForParley) == bet!.SingleBetsForParleyList.Count - 1 ? "teams-bottom" : "teams")">
+                                    <span id="tooltipParleyWagerContent">Wager Details</span>
+                                    <div style="padding: .45em .5em;">
+                                        <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
                                     </div>
-                                }
-                                else
-                                {
-                                    <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetForParleyModal(mouseArgs, singleBetForParley))" class="teams">
-                                        <div style="padding: .45em .5em;">
-                                            <img class="team-icon-top-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.AwayTeam</strong>
-                                        </div>
-                                        <div style="padding:.45em .5em;">
-                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
-                                        </div>
+                                    <div style="padding:.45em .5em;">
+                                        <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@string.Concat($"images/{singleBetForParley?.GameSnapshot.HomeTeam.ToLower()}", ".svg")" /> <strong class="team-name">@singleBetForParley?.GameSnapshot.HomeTeam</strong>
                                     </div>
-                                }
+                                </div>
                             }
 
                         </td>
@@ -200,28 +170,24 @@ else
 
                             @foreach (SingleBetForParleyModel singleBetForParley in bet!.SingleBetsForParleyList)
                             {
-                                <div style="text-align:center;">
-
-                                    @if (singleBetForParley?.BetType == BetType.POINTSPREAD)
-                                    {
-                                        <div class="cell-parley">
-                                            <strong>@singleBetForParley?.WinnerChosen @GetPointsAfterSpreadForDisplay(singleBetForParley!.PointsAfterSpread)</strong>
-                                        </div>
-                                    }
-                                    else if (singleBetForParley?.BetType == BetType.OVERUNDER)
-                                    {
-                                        <div class="cell-parley">
-                                            <strong>@singleBetForParley?.WinnerChosen @singleBetForParley?.GameSnapshot.OverUnder</strong>
-                                        </div>
-                                    }
-                                    else
-                                    {
-                                        <div class="cell-parley">
-                                            <strong>@singleBetForParley?.WinnerChosen</strong>
-                                        </div>
-                                    }
-
-                                </div>
+                                @if (singleBetForParley?.BetType == BetType.POINTSPREAD)
+                                {
+                                    <div class="cell-parley">
+                                        <strong>@singleBetForParley?.WinnerChosen @GetPointsAfterSpreadForDisplay(singleBetForParley!.PointsAfterSpread)</strong>
+                                    </div>
+                                }
+                                else if (singleBetForParley?.BetType == BetType.OVERUNDER)
+                                {
+                                    <div class="cell-parley">
+                                        <strong>@singleBetForParley?.WinnerChosen @singleBetForParley?.GameSnapshot.OverUnder</strong>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="cell-parley">
+                                        <strong>@singleBetForParley?.WinnerChosen</strong>
+                                    </div>
+                                }
                             }
 
                         </td>
@@ -232,23 +198,29 @@ else
     </div>
 }
 
-
 @code {
+
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
 
+#region Collections
     List<ParleyBetSlipModel> bettorParleyBetSlips = new();
     List<ParleyBetSlipModel> bettorParleyBetsInProgress = new();
     List<ParleyBetSlipModel> bettorParleyBetsWinners = new();
     List<ParleyBetSlipModel> bettorParleyBetsPush = new();
     List<ParleyBetSlipModel> bettorParleyBetsLosers = new();
+#endregion
+
+#region Fields
     UserModel loggedInUser;
     bool parleyWinnersGrid;
     bool parleyInProgressGrid;
     bool parleyPushGrid;
     bool parleyLosersGrid;
     bool isBusy;
+#endregion
 
+#region OnInitialized
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
@@ -274,7 +246,9 @@ else
 
         isBusy = false;
     }
+#endregion
 
+#region OtherMethods
     private async Task ShowGameDetailsSingleBetForParleyModal(MouseEventArgs mouseEventArgs, SingleBetForParleyModel wager)
     {
         GameByScoreIdDto finishedGame = await gameService.GetGameByScoreId(wager.GameSnapshot.ScoreID);
@@ -310,4 +284,7 @@ else
             : parleyWinnersGrid ? (bettorParleyBetsWinners.IndexOf(parleyBetSlip) == bettorParleyBetsWinners.Count - 1 ? "bottom-row-cell" : "cell")
             : parleyPushGrid ? (bettorParleyBetsPush.IndexOf(parleyBetSlip) == bettorParleyBetsPush.Count - 1 ? "bottom-row-cell" : "cell")
             : bettorParleyBetsInProgress.IndexOf(parleyBetSlip) == bettorParleyBetsInProgress.Count - 1 ? "bottom-row-cell" : "cell";
+
+#endregion
+
 }

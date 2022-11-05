@@ -58,7 +58,8 @@ else
                                 <strong>@bet?.GameSnapshot.Date.ToString("h:mm")</strong>
                             </div>
                         </td>
-                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+                        <td id="wager-link" class="@GetCellClass(bet!)" style="text-align:center;">
+                            <span id="tooltipSingleWagerContent">Wager Details</span>
                             <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetModal(mouseArgs, bet))" class="teams-single">
                                 <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
                                     <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
@@ -119,7 +120,8 @@ else
                     @{
                         var bet = (context as SingleBetModel);
 
-                        <td class="@GetCellClass(bet!)" style="text-align:center;">
+                        <td id="wager-link" class="@GetCellClass(bet!)" style="text-align:center;">
+                            <span id="tooltipSingleWagerContent">Wager Details</span>
                             <div @onclick="((mouseArgs) => ShowGameDetailsSingleBetModal(mouseArgs, bet))" class="teams-single">
                                 <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
                                     <img class="team-icon-top-row" src="@string.Concat($"images/{bet?.GameSnapshot.AwayTeam.ToLower()}", ".svg")" /> <strong class="team-name">@bet?.GameSnapshot.AwayTeam</strong>
@@ -156,23 +158,33 @@ else
     </div>
 }
 
-
 @code {
 
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
+
+#region Collections
 
     List<SingleBetModel> bettorSingleBets = new();
     List<SingleBetModel> bettorSingleBetsInProgress = new();
     List<SingleBetModel> bettorSingleBetsWinners = new();
     List<SingleBetModel> bettorSingleBetsPush = new();
     List<SingleBetModel> bettorSingleBetsLosers = new();
+
+#endregion
+
+#region Fields
+
     UserModel loggedInUser;
     bool singleWinnersGrid;
     bool singleInProgressGrid;
     bool singlePushGrid;
     bool singleLosersGrid;
     bool isBusy;
+
+#endregion
+
+#region OnInitialized
 
     protected override async Task OnInitializedAsync()
     {
@@ -199,6 +211,10 @@ else
 
         isBusy = false;
     }
+
+#endregion
+
+#region Other Methods
 
     private async Task ShowGameDetailsSingleBetModal(MouseEventArgs mouseEventArgs, SingleBetModel wager)
     {
@@ -235,4 +251,7 @@ else
             : singleWinnersGrid ? (bettorSingleBetsWinners.IndexOf(singleBet) == bettorSingleBetsWinners.Count - 1 ? "bottom-row-cell" : "cell")
             : singlePushGrid ? (bettorSingleBetsPush.IndexOf(singleBet) == bettorSingleBetsPush.Count - 1 ? "bottom-row-cell" : "cell")
             : bettorSingleBetsInProgress.IndexOf(singleBet) == bettorSingleBetsInProgress.Count - 1 ? "bottom-row-cell" : "cell";
+
+#endregion
+
 }

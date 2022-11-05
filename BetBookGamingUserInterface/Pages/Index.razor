@@ -312,6 +312,7 @@ else
     </div>
 }
 
+@*********************** Toast *************************@
 <SfToast @ref="ToastObj" Timeout="@time" ShowCloseButton="true" Title="Good Luck On Your New Wager!" Content="@Content">
     <ToastPosition X="Right" Y="Bottom"></ToastPosition>
     <ToastAnimationSettings>
@@ -319,46 +320,7 @@ else
         <ToastHideAnimationSettings Effect="@HideAnimation"></ToastHideAnimationSettings>
     </ToastAnimationSettings>
 </SfToast>
-
 <style>
-
-    #game-link {
-        position: relative;
-    }
-
-        #game-link:hover #tooltipGameContent {
-            top: 20%;
-            visibility: visible;
-            opacity: 1;
-            transition-delay: .75s;
-        }
-
-        #tooltipGameContent {
-        position: absolute;
-        left: 45%;
-        top: 0;
-        transform: translateX(45%);
-        background-color: rgb(0, 0, 0);
-        color: #fff;
-        white-space: nowrap;
-        padding: 7.5px 15px;
-        border-radius: 7px;
-        visibility: hidden;
-        opacity: 0;
-        transition: opacity 0.5s ease;
-    }
-
-        #tooltipGameContent::before {
-            content: "";
-            position: absolute;
-            left: -22%;
-            top: 0;
-            transform: translateX(-25%);
-            transform: translateY(7.5%);
-            border: 13px solid;
-            border-color: #0000 #000 #0000 #0000;
-        }
-
     .e-toast-container .e-toast {
         background-color: rgba(0,0,0, .9);
         border: 1px solid white;
@@ -382,25 +344,43 @@ else
 </style>
 
 @code {
+#region Toast
     public SfToast ToastObj;
+    int time = 60000;
     private ToastEffect ShowAnimation = ToastEffect.FadeIn;
     private ToastEffect HideAnimation = ToastEffect.FadeOut;
     private string Content => $"Thank you for choosing Bet Book.";
-    private GameDto[] games;
-    private List<CreateBetModel> betList = new();
-    private UserModel loggedInUser;
-    private int week;
-    private SeasonType season;
+#endregion
+
+#region Properties
+
     private bool ExpandSinglesBetSlip { get; set; }
     private bool ExpandParleyBetSlip { get; set; }
+    private bool parleyBetCountBad => betSlip.preBets.Count < 2;
+
+#endregion
+
+#region Fields
+
+    private SfAccordion Accordion;
     private bool userStatusBad;
     private bool showToastSingle;
     private bool showToastParley;
-    private SfAccordion Accordion;
     private bool isBusy;
-    private bool parleyBetCountBad => betSlip.preBets.Count < 2;
-    int time = 60000;
+    private UserModel loggedInUser;
+    private int week;
+    private SeasonType season;
 
+#endregion
+
+#region Collections
+
+    private GameDto[] games;
+    private List<CreateBetModel> betList = new();
+
+#endregion
+
+#region OnInitialized
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
@@ -410,6 +390,9 @@ else
         isBusy = false;
         await LoadAndVerifyUser();
     }
+#endregion
+
+#region Other Methods
 
     private async Task SubmitSinglesBetSlip()
     {
@@ -428,13 +411,13 @@ else
     {
         if (betSlip.preBets.Count < 2) return;
 
-        if(loggedInUser.AccountBalance == 0)
+        if (loggedInUser.AccountBalance == 0)
         {
             userStatusBad = true;
             return;
         }
 
-        if(betSlip.CheckForConflictingBets())
+        if (betSlip.CheckForConflictingBets())
         {
             await js.InvokeVoidAsync("alert", "You have conflicting bets in your bet slip...cannot submit parley wager.", "OK");
             return;
@@ -516,4 +499,6 @@ else
             await userData.UpdateUser(loggedInUser);
         }
     }
+
+#endregion
 }
