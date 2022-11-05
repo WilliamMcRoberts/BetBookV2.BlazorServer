@@ -4,12 +4,12 @@
     <div style="display:flex;justify-content:space-evenly;">
         <div>
             <img style="height: 80px;" src="@($"images/{FinishedGame.Score.AwayTeam.ToLower()}" + ".svg")" />
-            <h2 style="text-align:center;font-weight:900">@FinishedGame.Score.AwayTeam</h2>
+            <h2 class="team-name-modal">@FinishedGame.Score.AwayTeam</h2>
         </div>
-        <strong style="font-size:60px;margin-top:.15em;">@@</strong>
+        <strong class="at-modal">@@</strong>
         <div>
             <img style="height: 80px;" src="@($"images/{FinishedGame.Score.HomeTeam.ToLower()}" + ".svg")" />
-            <h2 style="text-align:center;font-weight:900">@FinishedGame.Score.HomeTeam</h2>
+            <h2 class="team-name-modal">@FinishedGame.Score.HomeTeam</h2>
         </div>
     </div>
     <div class="finished-game-container">
@@ -63,6 +63,20 @@
 
 <style>
 
+    .at-modal {
+        text-align: center;
+        color: darkblue;
+        text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff;
+        font-size: 60px;
+    }
+
+    .team-name-modal {
+        text-align: center;
+        font-weight: 900;
+        color: darkblue;
+        text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff;
+    }
+
     .finished-game-container {
         text-align: center;
         color: darkblue;
@@ -71,14 +85,20 @@
 
     .wager-detail {
         font-weight: 700;
+        text-shadow: 0 0 2.5px white, 0 0 5px white, 0 0 7.5px white;
+        color: darkblue;
     }
 
     .wager-detail-date {
         font-weight: 700;
+        text-shadow: 0 0 2.5px white, 0 0 5px white, 0 0 7.5px white;
+        color: darkblue;
     }
 
     .wager-detail-chosen-winner {
         font-weight: 700;
+        text-shadow: 0 0 2.5px white, 0 0 5px white, 0 0 7.5px white;
+        color: darkblue;
     }
 
         .wager-detail-chosen-winner::before {
@@ -88,6 +108,8 @@
     .wager-status {
         font-weight: 700;
         text-transform: capitalize;
+        text-shadow: 0 0 2.5px white, 0 0 5px white, 0 0 7.5px white;
+        color: darkblue;
     }
 
         .wager-status::before {
@@ -97,6 +119,8 @@
     .bet-type {
         text-transform: capitalize;
         font-weight: 700;
+        text-shadow: 0 0 2.5px white, 0 0 5px white, 0 0 7.5px white;
+        color: darkblue;
     }
 
 </style>
