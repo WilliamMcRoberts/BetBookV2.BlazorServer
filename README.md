@@ -24,5 +24,8 @@ SINGLE BETS PROFILE
 PARLEY BETS PROFILE
 ![profileparley](https://user-images.githubusercontent.com/95720340/199785086-d5381dbf-85e0-43d3-9d1b-7234b2d2ba58.png)
 
+WAGER HISTORY POPUP MODAL
+![wagerHistoryPopupModal](https://user-images.githubusercontent.com/95720340/200086463-4258bd56-0f45-4a3d-92a6-14b0fd343d4c.png)
+
 ABOUT PAGE
 ![about](https://user-images.githubusercontent.com/95720340/199785127-4dc2a956-e0f7-4493-87a5-010393c7cb7b.png)
