@@ -152,7 +152,7 @@ else
 
     <div class="bar">
         <div style="margin:.5em;">
-                <label class="grad-title-week" style="margin:.35em auto;font-weight: 900;">Week @week</label>
+            <label class="grad-title-week" style="margin:.35em auto;font-weight: 900;">Week @week</label>
         </div>
     </div>
 
@@ -192,18 +192,19 @@ else
                                 </div>
                             </td>
 
-                                <td class="@GetCellClass(game!)" style="text-align:center;">
-                                    <a href="@($"/GameWagers/{game.ScoreID}")">
-                                        <div class="teams-bottom">
-                                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                                <img class="team-icon-top-row" src="@($"images/{game?.AwayTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
-                                            </div>
-                                            <div style="padding:.5em .5em;">
-                                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@($"images/{game?.HomeTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
-                                            </div>
+                            <td id="game-link" class="@GetCellClass(game!)" style="text-align:center;">
+                                <span id="tooltipGameContent">Game Details</span>
+                                <a href="@($"/GameWagers/{game.ScoreID}")">
+                                    <div class="teams-bottom">
+                                        <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                            <img class="team-icon-top-row" src="@($"images/{game?.AwayTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
                                         </div>
-                                    </a>
-                                </td>
+                                        <div style="padding:.5em .5em;">
+                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@($"images/{game?.HomeTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                        </div>
+                                    </div>
+                                </a>
+                            </td>
                             
                             <td class="@GetCellClass(game!)">
                                 <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
@@ -283,7 +284,8 @@ else
                                     <strong>@game?.Date.ToString("h:mm")</strong>
                                 </div>
                             </td>
-                            <td class="@GetCellClass(game!)" style="text-align:center;">
+                            <td id="game-link" class="@GetCellClass(game!)" style="text-align:center;">
+                                <span id="tooltipGameContent">Game Details</span>
                                 <a href="@($"/GameWagers/{game.ScoreID}")">
                                     <div class="teams-bottom">
                                         <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
@@ -319,6 +321,44 @@ else
 </SfToast>
 
 <style>
+
+    #game-link {
+        position: relative;
+    }
+
+        #game-link:hover #tooltipGameContent {
+            top: 20%;
+            visibility: visible;
+            opacity: 1;
+            transition-delay: .75s;
+        }
+
+        #tooltipGameContent {
+        position: absolute;
+        left: 45%;
+        top: 0;
+        transform: translateX(45%);
+        background-color: rgb(0, 0, 0);
+        color: #fff;
+        white-space: nowrap;
+        padding: 7.5px 15px;
+        border-radius: 7px;
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+    }
+
+        #tooltipGameContent::before {
+            content: "";
+            position: absolute;
+            left: -22%;
+            top: 0;
+            transform: translateX(-25%);
+            transform: translateY(7.5%);
+            border: 13px solid;
+            border-color: #0000 #000 #0000 #0000;
+        }
+
     .e-toast-container .e-toast {
         background-color: rgba(0,0,0, .9);
         border: 1px solid white;
