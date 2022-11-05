@@ -3,7 +3,7 @@
 
     <div class="parent-div-left">
 
-        <div class="svg-div">
+        <div id="svg-div-left">
 
             <svg id="my-svg-left" height="100px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path id="path-left" fill="transparent" stroke-width="15" d="M247.5 25.4c-13.5 3.3-26.4 7.2-38.6 11.7C142.9 61.6 96.7 103.6 66 153.6c-18.3 29.8-30.9 62.3-39.2 95.4L264.5 486.6c13.5-3.3 26.4-7.2 38.6-11.7c66-24.5 112.2-66.5 142.9-116.5c18.3-29.8 30.9-62.3 39.1-95.3L247.5 25.4zM495.2 205.3c6.1-56.8 1.4-112.2-7.7-156.4c-2.7-12.9-13-22.9-26.1-25.1c-58.2-9.7-109.9-12-155.6-7.9L495.2 205.3zM206.1 496L16.8 306.7c-6.1 56.8-1.4 112.2 7.7 156.4c2.7 12.9 13 22.9 26.1 25.1c58.2 9.7 109.9 12 155.6 7.9zm54.6-331.3c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-64-64c-6.2-6.2-6.2-16.4 0-22.6zm-48 48c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-64-64c-6.2-6.2-6.2-16.4 0-22.6zm-48 48c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-64-64c-6.2-6.2-6.2-16.4 0-22.6z" />
@@ -15,7 +15,7 @@
 
     <div class="parent-div-right">
 
-        <div class="svg-div">
+        <div id="svg-div-right">
 
             <svg id="my-svg-right" height="100px" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                 <path id="path-right" fill="transparent" stroke-width="15" d="M247.5 25.4c-13.5 3.3-26.4 7.2-38.6 11.7C142.9 61.6 96.7 103.6 66 153.6c-18.3 29.8-30.9 62.3-39.2 95.4L264.5 486.6c13.5-3.3 26.4-7.2 38.6-11.7c66-24.5 112.2-66.5 142.9-116.5c18.3-29.8 30.9-62.3 39.1-95.3L247.5 25.4zM495.2 205.3c6.1-56.8 1.4-112.2-7.7-156.4c-2.7-12.9-13-22.9-26.1-25.1c-58.2-9.7-109.9-12-155.6-7.9L495.2 205.3zM206.1 496L16.8 306.7c-6.1 56.8-1.4 112.2 7.7 156.4c2.7 12.9 13 22.9 26.1 25.1c58.2 9.7 109.9 12 155.6 7.9zm54.6-331.3c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-64-64c-6.2-6.2-6.2-16.4 0-22.6zm-48 48c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-64-64c-6.2-6.2-6.2-16.4 0-22.6zm-48 48c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-64-64c-6.2-6.2-6.2-16.4 0-22.6z" />
@@ -31,32 +31,33 @@
 <style>
 
     #path-right {
-        filter: drop-shadow( 0 5px 5px darkblue);
-        -webkit-box-reflect: below 1px linear-gradient(transparent, #0004);
+        animation: animatePath 30s linear infinite;
     }
 
     #path-left {
-        filter: drop-shadow( 0 5px 5px darkblue);
+        animation: animatePath 30s linear infinite;
+    }
+
+    #svg-div-left {
+        display:none;
+    }
+
+    #svg-div-right {
+        display:none;
     }
 
     #my-svg-left {
         outline:none;
         position:fixed;
-        filter:  drop-shadow( 0 10px 10px white);
-        -webkit-box-reflect: below 75px linear-gradient(white, White 20%);
-        /* animation: rotate 1s linear infinite;
-            animation-play-state: paused;
-            animation-delay: calc(var(--scroll) * -1s); */
+        -webkit-box-reflect: below 75px linear-gradient(White, White 20%);
+        filter: drop-shadow( 0 10px 10px white);
     }
 
     #my-svg-right {
         outline: none;
         position: fixed;
+        -webkit-box-reflect: below 75px linear-gradient(White, White 20%);
         filter: drop-shadow( 0 10px 10px white);
-        -webkit-box-reflect: below 75px linear-gradient(white, White 20%);
-        /*  animation: rotate 1s linear infinite;
-            animation-play-state: paused;
-            animation-delay: calc(var(--scroll) * -1s); */
     }
 
     .svg-container {
@@ -80,18 +81,14 @@
         margin-right: 2em;
     }
 
-    @@keyframes rotate {
+    @@keyframes animatePath {
 
-        to {
-            transform: rotate(360deg);
+        0%, 18%, 20%, 30.1%, 50.1%, 60%, 65.1%, 80.1%, 90.1%, 92% {
+            stroke: #fff;
         }
 
-        0% {
-            stroke:transparent;
-        }
-
-        5%, 100% {
-            stroke: white;
+        18.1%, 20.1%, 30%, 50%, 60.1%, 65%, 80%, 90%, 92.1%, 100% {
+            stroke: darkblue;
         }
 
     }

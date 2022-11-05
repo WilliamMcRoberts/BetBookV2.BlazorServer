@@ -16,6 +16,8 @@ window.onscroll = () => {
 window.addEventListener('scroll', drawleft, false);
 
 function drawleft() {
+    var svg = document.getElementById("svg-div-left");
+    svg.style.display = 'block';
 
     var footballLeft = document.getElementById("path-left");
     var length = footballLeft.getTotalLength();
@@ -36,6 +38,8 @@ function drawleft() {
 window.addEventListener('scroll', drawright, false);
 
 function drawright() {
+    var svg = document.getElementById("svg-div-right");
+    svg.style.display = 'block';
 
     var footballRight = document.getElementById("path-right");
     var length = footballRight.getTotalLength();

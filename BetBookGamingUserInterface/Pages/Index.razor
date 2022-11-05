@@ -6,7 +6,6 @@
 @inject IMongoSingleBetData singleBetData
 @inject IMongoParleyBetSlipData parleyBetSlipData
 @inject IGameService gameService
-@inject IMongoHouseAccountData houseData
 @inject BetSlipState betSlip
 @inject IJSRuntime js
 
@@ -14,7 +13,7 @@
 
 @if(isBusy)
 {
-    <LoadingSpinner/>
+    <LoadingSpinnerFootball />
 }
 
 else 
@@ -192,18 +191,20 @@ else
                                     <strong>@game?.Date.ToString("h:mm")</strong>
                                 </div>
                             </td>
-                            <td class="@GetCellClass(game!)" style="text-align:center;">
-                                <a href="@($"/GameWagers/{game.ScoreID}")">
-                                    <div class="teams-bottom">
-                                        <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
-                                            <img class="team-icon-top-row" src="@($"images/{game?.AwayTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+
+                                <td class="@GetCellClass(game!)" style="text-align:center;">
+                                    <a href="@($"/GameWagers/{game.ScoreID}")">
+                                        <div class="teams-bottom">
+                                            <div style="padding: .5em .5em;border-bottom: 1px solid lightgrey;">
+                                                <img class="team-icon-top-row" src="@($"images/{game?.AwayTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
+                                            </div>
+                                            <div style="padding:.5em .5em;">
+                                                <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@($"images/{game?.HomeTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
+                                            </div>
                                         </div>
-                                        <div style="padding:.5em .5em;">
-                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@($"images/{game?.HomeTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
-                                        </div>
-                                    </div>
-                                </a>
-                            </td>
+                                    </a>
+                                </td>
+                            
                             <td class="@GetCellClass(game!)">
                                 <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD)">
