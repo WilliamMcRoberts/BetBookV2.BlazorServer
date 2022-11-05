@@ -157,7 +157,7 @@ else
     </div>
 
     <div class="data-grid-container">
-        <SfGrid ID="DataGrid" DataSource="@gameList">
+        <SfGrid ID="DataGrid" DataSource="@games?.OrderBy(g => g.DateTime)">
             <GridColumns>
                 <GridColumn Width="80"
                         HeaderText="Date"
@@ -255,7 +255,7 @@ else
     </div>
 
     <div class="data-grid-container-mini">
-        <SfGrid ID="DataGrid" DataSource="@gameList">
+        <SfGrid ID="DataGrid" DataSource="@games?.OrderBy(g => g.DateTime)">
             <GridColumns>
                 <GridColumn Width="80"
                         HeaderText="Date"
@@ -310,26 +310,22 @@ else
     </div>
 }
 
-<SfToast @ref="ToastObj" 
-         Timeout="0" 
-         ShowCloseButton="true" 
-         Title="Good Luck On Your New Wager!" 
-         Content="@Content">
-    <ToastPosition X="Right" Y="Bottom"/>
+<SfToast @ref="ToastObj" Timeout="@time" ShowCloseButton="true" Title="Good Luck On Your New Wager!" Content="@Content">
+    <ToastPosition X="Right" Y="Bottom"></ToastPosition>
     <ToastAnimationSettings>
-        <ToastShowAnimationSettings Effect="@ShowAnimation"/>
-        <ToastHideAnimationSettings Effect="@HideAnimation"/>
+        <ToastShowAnimationSettings Effect="@ShowAnimation"></ToastShowAnimationSettings>
+        <ToastHideAnimationSettings Effect="@HideAnimation"></ToastHideAnimationSettings>
     </ToastAnimationSettings>
 </SfToast>
 
 <style>
-
     .e-toast-container .e-toast {
         background-color: rgba(0,0,0, .9);
         border: 1px solid white;
         border-radius: 10px;
         backdrop-filter: blur(10px);
     }
+
         .e-toast-container .e-toast:hover {
             background-color: rgba(0,0,0, .9);
         }
@@ -343,28 +339,27 @@ else
             color: white;
             font-weight: 700;
         }
-
 </style>
 
 @code {
-    private GameDto[] games;
-    private List<GameDto> gameList = new();
-    private List<CreateBetModel> betList = new();
-    private UserModel loggedInUser;
-    private SfToast ToastObj;
-    private int week;
-    private SeasonType season;
+    public SfToast ToastObj;
     private ToastEffect ShowAnimation = ToastEffect.FadeIn;
     private ToastEffect HideAnimation = ToastEffect.FadeOut;
+    private string Content => $"Thank you for choosing Bet Book.";
+    private GameDto[] games;
+    private List<CreateBetModel> betList = new();
+    private UserModel loggedInUser;
+    private int week;
+    private SeasonType season;
     private bool ExpandSinglesBetSlip { get; set; }
     private bool ExpandParleyBetSlip { get; set; }
     private bool userStatusBad;
     private bool showToastSingle;
     private bool showToastParley;
     private SfAccordion Accordion;
-    private string Content => $"Thank you for choosing Bet Book.";
     private bool isBusy;
     private bool parleyBetCountBad => betSlip.preBets.Count < 2;
+    int time = 60000;
 
     protected override async Task OnInitializedAsync()
     {
@@ -372,7 +367,6 @@ else
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
         games = await gameService.GetGamesByWeek(season, week);
-        gameList = games.OrderBy(g => g.DateTime).ToList();
         isBusy = false;
         await LoadAndVerifyUser();
     }
@@ -387,7 +381,7 @@ else
 
         showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
 
-        if (showToastSingle) await this.ToastObj.ShowAsync();
+        if (showToastSingle) await ToastObj.ShowAsync();
     }
 
     private async Task SubmitParleyBetSlip()
@@ -408,14 +402,14 @@ else
 
         showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
 
-        if (showToastParley) await this.ToastObj.ShowAsync();
+        if (showToastParley) await ToastObj.ShowAsync();
     }
 
     public string GetCellClass(string winner, GameDto game, BetType betType) => betSlip.preBets.Contains(
         betSlip.preBets.Where(b =>b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
             .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
 
-    private string GetCellClass(GameDto game) => gameList.IndexOf(game) == gameList.Count - 1 ? 
+    private string GetCellClass(GameDto game) => games.IndexOf(game) == games.Length - 1 ? 
         "bottom-row-cell" : "cell";
 
     private void OnAccordionCreate()
