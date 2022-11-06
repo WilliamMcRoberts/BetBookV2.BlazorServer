@@ -3,12 +3,12 @@
 {
     <div style="display:flex;justify-content:space-evenly;">
         <div>
-            <img style="height: 70px;" src="@($"images/{FinishedGame.Score.AwayTeam.ToLower()}" + ".svg")" />
+            <img style="height: 60px;" src="@($"images/{FinishedGame.Score.AwayTeam.ToLower()}" + ".svg")" />
             <h4 class="team-name-modal">@FinishedGame.Score.AwayTeam</h4>
         </div>
         <strong class="at-modal">@@</strong>
         <div>
-            <img style="height: 70px;" src="@($"images/{FinishedGame.Score.HomeTeam.ToLower()}" + ".svg")" />
+            <img style="height: 60px;" src="@($"images/{FinishedGame.Score.HomeTeam.ToLower()}" + ".svg")" />
             <h4 class="team-name-modal">@FinishedGame.Score.HomeTeam</h4>
         </div>
     </div>
@@ -70,7 +70,7 @@
         text-align: center;
         color: darkblue;
         text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff;
-        font-size: 40px;
+        font-size: 35px;
     }
 
     .team-name-modal {
@@ -86,7 +86,7 @@
         text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff;
         display: flex;
         flex-direction: column;
-        font-size: 25px;
+        font-size: 20px;
     }
 
     .wager-detail {
