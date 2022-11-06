@@ -28,9 +28,9 @@
     #tooltipSingleWagerContent::before {
         content: "";
         position: absolute;
-        left: -22%;
+        left: -26%;
         top: 0;
-        transform: translateX(-25%);
+        transform: translateX(-26%);
         transform: translateY(7.5%);
         border: 13px solid;
         border-color: #0000 #000 #0000 #0000;

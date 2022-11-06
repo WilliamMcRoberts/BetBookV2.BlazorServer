@@ -173,12 +173,12 @@ else if (game is not null)
                         <label class="bet-type">Point Spread</label>
                     </div>
                 <div style="background:white;box-shadow: 7.5px 7.5px 20px black;">
-                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) wager-cell-top">
+                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) wager-cell-top cell-btn">
                         <strong class="bet-text">@game?.AwayTeam</strong>
                         <strong class="bet-text">@($"{game?.PointSpread:-#.0;+#.0;}")</strong>
                         <strong class="bet-text">@($"{game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</strong>
                         </div>
-                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD) wager-cell-bottom">
+                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD) wager-cell-bottom cell-btn">
                         <strong class="bet-text">@game?.HomeTeam</strong>
                         <strong class="bet-text">@($"{game?.PointSpread:+#.0;-#.0;}")</strong>
                         <strong class="bet-text">@($"{game?.PointSpreadHomeTeamMoneyLine:+#;-#;}")</strong>
@@ -191,11 +191,11 @@ else if (game is not null)
                     <label class="bet-type">Moneyline</label>
                 </div>
             <div style="background:white;box-shadow: 7.5px 7.5px 20px black;">
-                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE) wager-cell-top">
+                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE) wager-cell-top cell-btn">
                         <strong class="bet-text">@game?.AwayTeam</strong>
                     <strong class="bet-text">@($"{game?.AwayTeamMoneyLine:+#;-#;}")</strong>
                     </div>
-                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE) wager-cell-bottom">
+                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE) wager-cell-bottom cell-btn">
                     <strong class="bet-text">@game?.HomeTeam</strong>
                     <strong class="bet-text">@($"{game?.HomeTeamMoneyLine:+#;-#;}")</strong>
                     </div>
@@ -207,11 +207,11 @@ else if (game is not null)
                     <label class="bet-type">OverUnder</label>
                 </div>
             <div style="background:white;box-shadow: 7.5px 7.5px 20px black;">
-                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-top">
+                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-top cell-btn">
                     <strong class="bet-text">Over @($"{game?.OverUnder:#.#}")</strong>
                     <strong class="bet-text">@($"{game?.OverPayout:+#;-#;}")</strong>
                     </div>
-                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-bottom">
+                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-bottom cell-btn">
                     <strong class="bet-text">Under @($"{game?.OverUnder:#.#}")</strong>
                     <strong class="bet-text">@($"{game?.UnderPayout:+#;-#;}")</strong>
                     </div>
@@ -259,26 +259,39 @@ else if (game is not null)
 @code {
     [Parameter]
     public int ScoreId { get; set; }
+
+    #region Toast
     public SfToast ToastObj;
     private ToastEffect ShowAnimation = ToastEffect.FadeIn;
     private ToastEffect HideAnimation = ToastEffect.FadeOut;
     private string Content => $"Thank you for choosing Bet Book.";
-    private UserModel loggedInUser;
-    private GameDto[] games;
-    private List<GameDto> gameList = new();
+    int time = 60000;
+    #endregion
+
+    #region Properties
+    private bool ExpandSinglesBetSlip { get; set; }
+    private bool ExpandParleyBetSlip { get; set; }
+    private bool parleyBetCountBad => betSlip.preBets.Count < 2;
+    #endregion
+
+    #region Fields
     private int week;
     private SeasonType season;
     private GameDto game;
     private SfAccordion Accordion;
-    private bool ExpandSinglesBetSlip { get; set; }
-    private bool ExpandParleyBetSlip { get; set; }
     private bool userStatusBad;
     private bool showToastSingle;
     private bool showToastParley;
     private bool isBusy;
-    private bool parleyBetCountBad => betSlip.preBets.Count < 2;
-    int time = 60000;
+    private UserModel loggedInUser;
+    #endregion
 
+    #region Collections
+    private GameDto[] games;
+    private List<GameDto> gameList = new();
+    #endregion
+
+    #region OnInitialized
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
@@ -289,7 +302,9 @@ else if (game is not null)
         isBusy = false;
         loggedInUser = await authProvider.GetUserFromAuth(userData);
     }
+    #endregion
 
+    #region Other Methods
     private async Task SubmitSinglesBetSlip()
     {
         if (loggedInUser is null)
@@ -328,4 +343,5 @@ else if (game is not null)
         ExpandSinglesBetSlip = false;
         ExpandParleyBetSlip = false;
     }
+    #endregion
 }

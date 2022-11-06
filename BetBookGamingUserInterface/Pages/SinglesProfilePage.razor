@@ -163,7 +163,7 @@ else
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
 
-#region Collections
+    #region Collections
 
     List<SingleBetModel> bettorSingleBets = new();
     List<SingleBetModel> bettorSingleBetsInProgress = new();
@@ -171,9 +171,9 @@ else
     List<SingleBetModel> bettorSingleBetsPush = new();
     List<SingleBetModel> bettorSingleBetsLosers = new();
 
-#endregion
+    #endregion
 
-#region Fields
+    #region Fields
 
     UserModel loggedInUser;
     bool singleWinnersGrid;
@@ -182,9 +182,9 @@ else
     bool singleLosersGrid;
     bool isBusy;
 
-#endregion
+    #endregion
 
-#region OnInitialized
+    #region OnInitialized
 
     protected override async Task OnInitializedAsync()
     {
@@ -212,9 +212,9 @@ else
         isBusy = false;
     }
 
-#endregion
+    #endregion
 
-#region Other Methods
+    #region Other Methods
 
     private async Task ShowGameDetailsSingleBetModal(MouseEventArgs mouseEventArgs, SingleBetModel wager)
     {
@@ -252,6 +252,6 @@ else
             : singlePushGrid ? (bettorSingleBetsPush.IndexOf(singleBet) == bettorSingleBetsPush.Count - 1 ? "bottom-row-cell" : "cell")
             : bettorSingleBetsInProgress.IndexOf(singleBet) == bettorSingleBetsInProgress.Count - 1 ? "bottom-row-cell" : "cell";
 
-#endregion
+    #endregion
 
 }

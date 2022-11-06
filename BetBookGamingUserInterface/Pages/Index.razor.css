@@ -1,6 +1,7 @@
 ﻿
 
 
+
 #game-link {
     position: relative;
 }
@@ -14,9 +15,9 @@
 
 #tooltipGameContent {
     position: absolute;
-    left: 45%;
+    left: -45%;
     top: 0;
-    transform: translateX(45%);
+    transform: translateX(-45%);
     background-color: rgb(0, 0, 0);
     color: #fff;
     white-space: nowrap;
@@ -30,12 +31,12 @@
     #tooltipGameContent::before {
         content: "";
         position: absolute;
-        left: -22%;
+        left: 98%;
         top: 0;
-        transform: translateX(-25%);
+        transform: translateX(98%);
         transform: translateY(7.5%);
         border: 13px solid;
-        border-color: #0000 #000 #0000 #0000;
+        border-color: #0000 #0000 #0000 #000;
     }
 
 .date-cell {

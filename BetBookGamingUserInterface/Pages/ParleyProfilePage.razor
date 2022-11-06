@@ -203,24 +203,24 @@ else
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
 
-#region Collections
+    #region Collections
     List<ParleyBetSlipModel> bettorParleyBetSlips = new();
     List<ParleyBetSlipModel> bettorParleyBetsInProgress = new();
     List<ParleyBetSlipModel> bettorParleyBetsWinners = new();
     List<ParleyBetSlipModel> bettorParleyBetsPush = new();
     List<ParleyBetSlipModel> bettorParleyBetsLosers = new();
-#endregion
+    #endregion
 
-#region Fields
+    #region Fields
     UserModel loggedInUser;
     bool parleyWinnersGrid;
     bool parleyInProgressGrid;
     bool parleyPushGrid;
     bool parleyLosersGrid;
     bool isBusy;
-#endregion
+    #endregion
 
-#region OnInitialized
+    #region OnInitialized
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
@@ -246,9 +246,9 @@ else
 
         isBusy = false;
     }
-#endregion
+    #endregion
 
-#region OtherMethods
+    #region OtherMethods
     private async Task ShowGameDetailsSingleBetForParleyModal(MouseEventArgs mouseEventArgs, SingleBetForParleyModel wager)
     {
         GameByScoreIdDto finishedGame = await gameService.GetGameByScoreId(wager.GameSnapshot.ScoreID);
@@ -285,6 +285,6 @@ else
             : parleyPushGrid ? (bettorParleyBetsPush.IndexOf(parleyBetSlip) == bettorParleyBetsPush.Count - 1 ? "bottom-row-cell" : "cell")
             : bettorParleyBetsInProgress.IndexOf(parleyBetSlip) == bettorParleyBetsInProgress.Count - 1 ? "bottom-row-cell" : "cell";
 
-#endregion
+    #endregion
 
 }
