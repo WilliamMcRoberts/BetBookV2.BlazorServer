@@ -36,4 +36,20 @@
         border-color: #0000 #000 #0000 #0000;
     }
 
+.date-cell {
+    padding: .5em .5em;
+    text-align: center;
+}
+
+.team-cell-top {
+    padding: .5em .5em;
+    border-bottom: 1px solid lightgrey;
+    text-align: center;
+}
+
+.team-cell {
+    text-align: center;
+    padding: .5em .5em;
+}
+
 

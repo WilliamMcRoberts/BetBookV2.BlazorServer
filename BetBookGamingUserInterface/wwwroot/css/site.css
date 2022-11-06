@@ -76,6 +76,9 @@ a, .btn-link {
 ********************************************/
 
 #DataGrid {
+    background: transparent;
+    background-color: rgb(255, 255, 255, .5);
+    backdrop-filter: blur(10px);
 }
 
 /********************************************
