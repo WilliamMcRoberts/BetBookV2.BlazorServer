@@ -1,4 +1,91 @@
-﻿<div class="ring">
+﻿
+<div class="ring">
     Loading
     <span id="span"></span>
 </div>
+
+<style>
+
+    .ring {
+        position: relative;
+        top: 25%;
+        left: 50%;
+        transform: translate(-50%,-25%);
+        width: 180px;
+        height: 180px;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0, 0.3);
+        backdrop-filter: blur(10px);
+        border: 3px solid #00008b;
+        border-radius: 50%;
+        text-align: center;
+        line-height: 180px;
+        font-family: sans-serif;
+        font-size: 22px;
+        font-weight: 900;
+        color: #00008b;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        box-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 17.5px #fff, 0 0 20px #fff, 0 0 22.5px #fff, 0 0 25px #fff, 0 0 27.5px #fff, 0 0 30px #fff, 0 0 32.5px #fff, 0 0 35px #00008b, 0 0 40px #fff;
+        text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px #fff, 0 0 12.5px #fff, 0 0 15px #fff, 0 0 17.5px #fff, 0 0 20px #fff, 0 0 25px #fff, 0 0 30px #fff, 0 0 35px darkblue, 0 0 40px darkblue;
+    }
+
+        .ring:before {
+            background: transparent;
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: -3px;
+            width: 100%;
+            height: 100%;
+            border:5px solid darkblue;
+            border-radius: 50%;
+            box-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 17.5px #fff, 0 0 20px #fff, 0 0 22.5px #fff, 0 0 25px #fff, 0 0 27.5px #00008b, 0 0 30px #00008b, 0 0 32.5px #00008b, 0 0 35px #00008b, 0 0 40px #fff;
+            /*animation:animateC 2s linear infinite;*/
+        }
+
+    #span {
+        display: block;
+        position: absolute;
+        top: calc(50% - 2px);
+        left: 50%;
+        width: 50%;
+        height: 4px;
+        background: transparent;
+        transform-origin: left;
+        animation: animateD 2s linear infinite;
+    }
+
+        #span:before {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #fff;
+            top: -20px;
+            right: -20px;
+            box-shadow: 0 0 2.5px #00008b, 0 0 5px #00008b, 0 0 7.5px #00008b, 0 0 10px #00008b, 0 0 12.5px #00008b, 0 0 15px #00008b, 0 0 17.5px #00008b, 0 0 20px #00008b, 0 0 25px #00008b, 0 0 30px #00008b;
+        }
+
+    @@keyframes animateC {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes animateD {
+        0% {
+            transform: rotate(45deg);
+        }
+
+        100% {
+            transform: rotate(405deg);
+        }
+    }
+
+</style>

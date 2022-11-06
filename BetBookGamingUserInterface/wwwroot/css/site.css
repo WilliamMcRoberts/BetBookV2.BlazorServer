@@ -72,16 +72,6 @@ a, .btn-link {
 ***********************************************************************/
 
 /********************************************
-            Data Grid
-********************************************/
-
-#DataGrid {
-    background: transparent;
-    background-color: rgb(255, 255, 255, .5);
-    backdrop-filter: blur(10px);
-}
-
-/********************************************
         Home And Profile Pages
 ********************************************/
 
@@ -435,40 +425,6 @@ a, .btn-link {
 /**********************************
         Shared
 **********************************/
-
-.ring {
-    position: relative;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    text-align: center;
-    line-height: 150px;
-    font-family: sans-serif;
-    font-size: 20px;
-    font-weight: 900;
-    color: darkblue;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    text-shadow: 0 -1px 5px #fff, 0 0 10px #fff, 0 0 15px #fff, 0 0 20px #fff, 0 0 22.5px darkblue, 0 0 25px darkblue, 0 0 27.5px darkblue, 0 0 30px darkblue, 0 0 32.5px darkblue, 0 0 35px darkblue, 0 0 37.5px darkblue, 0 0 40px darkblue;
-    box-shadow: 0 -1px 5px darkblue, 0 0 10px darkblue, 0 0 15px darkblue, 0 0 20px darkblue, 0 0 25px darkblue, 0 0 30px #fff, 0 0 35px #fff, 0 0 40px #fff;
-}
-
-    .ring:before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        border: 4px solid darkblue;
-        border-right: 4px solid #fff;
-        border-left: 4px solid #fff;
-        border-radius: 50%;
-        animation: animateC .4s linear infinite;
-    }
 
 img#doge {
     position: fixed;
@@ -955,17 +911,9 @@ ul {
 
 }
 
-@keyframes animateC {
-
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-
-}
+/******************************************************
+                   Loading Football Spinner
+*******************************************************/
 
 .spin-svg {
     filter: drop-shadow(0 0 10px white);
