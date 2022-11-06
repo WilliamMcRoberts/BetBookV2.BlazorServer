@@ -3,62 +3,62 @@
 {
     <div style="display:flex;justify-content:space-evenly;">
         <div>
-            <img style="height: 80px;" src="@($"images/{FinishedGame.Score.AwayTeam.ToLower()}" + ".svg")" />
-            <h2 class="team-name-modal">@FinishedGame.Score.AwayTeam</h2>
+            <img style="height: 70px;" src="@($"images/{FinishedGame.Score.AwayTeam.ToLower()}" + ".svg")" />
+            <h4 class="team-name-modal">@FinishedGame.Score.AwayTeam</h4>
         </div>
         <strong class="at-modal">@@</strong>
         <div>
-            <img style="height: 80px;" src="@($"images/{FinishedGame.Score.HomeTeam.ToLower()}" + ".svg")" />
-            <h2 class="team-name-modal">@FinishedGame.Score.HomeTeam</h2>
+            <img style="height: 70px;" src="@($"images/{FinishedGame.Score.HomeTeam.ToLower()}" + ".svg")" />
+            <h4 class="team-name-modal">@FinishedGame.Score.HomeTeam</h4>
         </div>
     </div>
     <div class="finished-game-container">
-        <h2 class="wager-detail-date"><span class="wager-detail-date-span">Date: </span>@FinishedGame.Score.Date.ToString("MM-dd h:mm")pm</h2>
-        <h2 class ="wager-detail">@FinishedGame.Score.AwayTeam Score: @FinishedGame.Score.AwayScore</h2>
-        <h2 class="wager-detail">@FinishedGame.Score.HomeTeam Score: @FinishedGame.Score.HomeScore</h2>
-        <h2 class="wager-detail">Amount: @Wager.BetAmount</h2>
-        <h2 class="wager-detail">Payout: @Wager.BetPayout</h2>
-        <h2 class="bet-type">Type: @Wager.BetType.ToString().ToLower()</h2>
+        <strong class="wager-detail-date"><span class="wager-detail-date-span">Date: </span>@FinishedGame.Score.Date.ToString("MM-dd h:mm")pm</strong>
+        <strong class="wager-detail">@FinishedGame.Score.AwayTeam Score: @FinishedGame.Score.AwayScore</strong>
+        <strong class="wager-detail">@FinishedGame.Score.HomeTeam Score: @FinishedGame.Score.HomeScore</strong>
+        <strong class="wager-detail">Amount: @Wager.BetAmount</strong>
+        <strong class="wager-detail">Payout: @Wager.BetPayout</strong>
+        <strong class="bet-type">Type: @Wager.BetType.ToString().ToLower()</strong>
         @if(Wager.BetType == BetType.POINTSPREAD)
         {
             if(Wager.WinnerChosen == Wager.GameSnapshot.AwayTeam)
             {
-                <h2 class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.PointSpread:-#.0;+#.0;+0.0}") @Wager.GameSnapshot.PointSpreadAwayTeamMoneyLine</h2>
+                <strong class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.PointSpread:-#.0;+#.0;+0.0}") @Wager.GameSnapshot.PointSpreadAwayTeamMoneyLine</strong>
             }
             else
             {
-                <h2 class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.PointSpread:+#.0;-#.0;+0.0}") @Wager.GameSnapshot.PointSpreadHomeTeamMoneyLine</h2>
+                <strong class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.PointSpread:+#.0;-#.0;+0.0}") @Wager.GameSnapshot.PointSpreadHomeTeamMoneyLine</strong>
             }
         }
         else if(Wager.BetType == BetType.MONEYLINE)
         {
             if(Wager.WinnerChosen == Wager.GameSnapshot.AwayTeam)
             {
-                <h2 class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.AwayTeamMoneyLine:+#;-#}")</h2>
+                <strong class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.AwayTeamMoneyLine:+#;-#}")</strong>
             }
             else 
             {
-                <h2 class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.HomeTeamMoneyLine:+#;-#}")</h2>
+                <strong class="wager-detail-chosen-winner">@Wager.WinnerChosen @($"{Wager.GameSnapshot.HomeTeamMoneyLine:+#;-#}")</strong>
             }
         }
         else if (Wager.BetType == BetType.OVERUNDER)
         {
             if (Wager.WinnerChosen[0] == 'O')
             {
-                <h2 class="wager-detail-chosen-winner">Over @Wager.GameSnapshot.OverUnder</h2>
+                <strong class="wager-detail-chosen-winner">Over @Wager.GameSnapshot.OverUnder</strong>
             }
             else
             {
-                <h2 class="wager-detail-chosen-winner">Under @Wager.GameSnapshot.OverUnder</h2>
+                <strong class="wager-detail-chosen-winner">Under @Wager.GameSnapshot.OverUnder</strong>
             }
         }
         @if(Wager.SingleBetStatus == SingleBetStatus.IN_PROGRESS)
         {
-            <h2 class="wager-status">Active</h2>
+            <strong class="wager-status">Active</strong>
         }
         else
         {
-            <h2 class="wager-status">@Wager.SingleBetStatus.ToString().ToLower()</h2>
+            <strong class="wager-status">@Wager.SingleBetStatus.ToString().ToLower()</strong>
         }
     </div>
 }
@@ -66,10 +66,11 @@
 <style>
 
     .at-modal {
+        margin-top: .5em;
         text-align: center;
         color: darkblue;
         text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff;
-        font-size: 60px;
+        font-size: 40px;
     }
 
     .team-name-modal {
@@ -83,6 +84,9 @@
         text-align: center;
         color: darkblue;
         text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff;
+        display: flex;
+        flex-direction: column;
+        font-size: 25px;
     }
 
     .wager-detail {

@@ -91,8 +91,8 @@ else if (game is not null)
                                         <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
                                 }
 
-                                <div style="text-align: center">
-                                    <button class="submit-btn" @onclick="SubmitParleyBetSlip">Submit Parley Bet</button>
+                                <div class="frame">
+                                    <button @onclick="SubmitSinglesBetSlip" class="custom-btn btn-submit-wager"><span>Submit Wager</span></button>
                                 </div>
 
                             </div>
@@ -155,8 +155,8 @@ else if (game is not null)
                                         <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
                                 }
 
-                                <div style="text-align: center;margin:.5em auto;">
-                                    <button class="submit-btn" @onclick="SubmitParleyBetSlip">Submit Parley Bet</button>
+                                <div class="frame">
+                                    <button @onclick="SubmitParleyBetSlip" class="custom-btn btn-submit-wager"><span>Submit Wager</span></button>
                                 </div>
 
                             </div>

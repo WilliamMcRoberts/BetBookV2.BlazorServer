@@ -5,3 +5,80 @@
         <path stroke-width="15" d="M247.5 25.4c-13.5 3.3-26.4 7.2-38.6 11.7C142.9 61.6 96.7 103.6 66 153.6c-18.3 29.8-30.9 62.3-39.2 95.4L264.5 486.6c13.5-3.3 26.4-7.2 38.6-11.7c66-24.5 112.2-66.5 142.9-116.5c18.3-29.8 30.9-62.3 39.1-95.3L247.5 25.4zM495.2 205.3c6.1-56.8 1.4-112.2-7.7-156.4c-2.7-12.9-13-22.9-26.1-25.1c-58.2-9.7-109.9-12-155.6-7.9L495.2 205.3zM206.1 496L16.8 306.7c-6.1 56.8-1.4 112.2 7.7 156.4c2.7 12.9 13 22.9 26.1 25.1c58.2 9.7 109.9 12 155.6 7.9zm54.6-331.3c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-64-64c-6.2-6.2-6.2-16.4 0-22.6zm-48 48c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-64-64c-6.2-6.2-6.2-16.4 0-22.6zm-48 48c6.2-6.2 16.4-6.2 22.6 0l64 64c6.2 6.2 6.2 16.4 0 22.6s-16.4 6.2-22.6 0l-64-64c-6.2-6.2-6.2-16.4 0-22.6z" />
     </svg>
 </div>
+
+<style>
+
+    .spin-svg {
+        filter: drop-shadow(0 0 10px white);
+    }
+
+    .spin-svg path {
+        filter: drop-shadow(0 0 10px darkblue);
+        fill: rgb(3,37,126,.8);
+        stroke: #fff;
+    }
+
+    .spin-svg-container {
+        margin: 20px;
+        width: 100px;
+        height: 100px;
+        -webkit-animation-name: spin;
+        -webkit-animation-duration: .75s;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-timing-function: linear;
+        -moz-animation-name: spin;
+        -moz-animation-duration: .75s;
+        -moz-animation-iteration-count: infinite;
+        -moz-animation-timing-function: linear;
+        -ms-animation-name: spin;
+        -ms-animation-duration: .75s;
+        -ms-animation-iteration-count: infinite;
+        -ms-animation-timing-function: linear;
+        animation-name: spin;
+        animation-duration: .75s;
+        animation-iteration-count: infinite;
+        animation-timing-function: linear;
+        margin: 0 auto;
+        background: transparent;
+    }
+
+    @@-ms-keyframes spin {
+        from {
+            -ms-transform: rotate(0deg);
+        }
+
+        to {
+            -ms-transform: rotate(360deg);
+        }
+    }
+
+    @@-moz-keyframes spin {
+        from {
+            -moz-transform: rotate(0deg);
+        }
+
+        to {
+            -moz-transform: rotate(360deg);
+        }
+    }
+
+    @@-webkit-keyframes spin {
+        from {
+            -webkit-transform: rotate(0deg);
+        }
+
+        to {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>

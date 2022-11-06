@@ -166,18 +166,68 @@ a, .btn-link {
         text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff;
     }
 
-.submit-btn {
-    letter-spacing: .5px;
-    font-weight: 700;
-    border: 1px solid white;
-    background-color: rgb(255,99,71, .8);
-    color: #fff;
+.frame {
+    margin: 0 auto;
+    text-align: center;
 }
 
-    .submit-btn:hover {
-        border: 1px solid rgb(255,99,71, .8);
-        background-color: #fff;
-        color: rgb(255,99,71, .8);
+.custom-btn {
+    width: 130px;
+    height: 40px;
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 25px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 500;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    display: inline-block;
+    box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
+    outline: none;
+}
+
+.btn-submit-wager {
+    width: 130px;
+    height: 40px;
+    line-height: 42px;
+    padding: 0;
+    border: none;
+    background: rgb(255,27,0);
+    background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
+}
+
+    .btn-submit-wager:hover {
+        color: #f0094a;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .btn-submit-wager:before,
+    .btn-submit-wager:after {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        height: 2px;
+        width: 0;
+        background: #f0094a;
+        box-shadow: -1px -1px 5px 0px #fff, 7px 7px 20px 0px #0003, 4px 4px 5px 0px #0002;
+        transition: 400ms ease all;
+    }
+
+    .btn-submit-wager:after {
+        right: inherit;
+        top: inherit;
+        left: 0;
+        bottom: 0;
+    }
+
+    .btn-submit-wager:hover:before,
+    .btn-submit-wager:hover:after {
+        width: 100%;
+        transition: 800ms ease all;
     }
 
 .other-button {
@@ -911,80 +961,3 @@ ul {
 
 }
 
-/******************************************************
-                   Loading Football Spinner
-*******************************************************/
-
-.spin-svg {
-    filter: drop-shadow(0 0 10px white);
-}
-
-    .spin-svg path {
-        filter: drop-shadow(0 0 10px darkblue);
-        fill: rgb(3,37,126,.8);
-        stroke: #fff;
-    }
-
-.spin-svg-container {
-    margin: 20px;
-    width: 100px;
-    height: 100px;
-    -webkit-animation-name: spin;
-    -webkit-animation-duration: .75s;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-timing-function: linear;
-    -moz-animation-name: spin;
-    -moz-animation-duration: .75s;
-    -moz-animation-iteration-count: infinite;
-    -moz-animation-timing-function: linear;
-    -ms-animation-name: spin;
-    -ms-animation-duration: .75s;
-    -ms-animation-iteration-count: infinite;
-    -ms-animation-timing-function: linear;
-    animation-name: spin;
-    animation-duration: .75s;
-    animation-iteration-count: infinite;
-    animation-timing-function: linear;
-    margin: 0 auto;
-    background: transparent;
-}
-
-@-ms-keyframes spin {
-    from {
-        -ms-transform: rotate(0deg);
-    }
-
-    to {
-        -ms-transform: rotate(360deg);
-    }
-}
-
-@-moz-keyframes spin {
-    from {
-        -moz-transform: rotate(0deg);
-    }
-
-    to {
-        -moz-transform: rotate(360deg);
-    }
-}
-
-@-webkit-keyframes spin {
-    from {
-        -webkit-transform: rotate(0deg);
-    }
-
-    to {
-        -webkit-transform: rotate(360deg);
-    }
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-}

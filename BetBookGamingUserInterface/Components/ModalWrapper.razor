@@ -1,7 +1,7 @@
 ﻿@using BetBookGamingUserInterface.Components
 
 <CascadingValue Value="this">
-    <div style="backdrop-filter: @(showModal ? "blur(10px)" : "none");background-color: @(showModal ? "rgba(0,0,0)" : "transparent");opacity: @(showModal ? "0.5" : "1");">
+    <div class="child-content-box">
         @ChildContent
     </div>
     <div class="Modal" id="Modal" style="@("display:" + ( showModal ? $"block; {modalPosition}" : "none;"))">
@@ -20,9 +20,16 @@
         backdrop-filter: blur(10px);
         border: 3px solid darkblue;
         width: 70%;
-        padding: 1em;
+        padding: .5em;
         border-radius: 50px;
         box-shadow: 7.5px 7.5px 10px black;
+        max-height: 75%;
+    }
+
+    .child-content-box {
+        backdrop-filter: @(showModal ? "blur(10px)" : "none");
+        background-color: @(showModal ? "rgba(0,0,0)" : "transparent");
+        opacity: @(showModal ? "0.5" : "1");
     }
 
     @@media(max-width: 490px) {
@@ -30,9 +37,12 @@
         .Modal {
             width: 90%;
         }
+
     }
 
     .close-modal-button {
+        position: absolute;
+        margin: 0 .75em;
         color: darkblue;
         background:none;
         border:none;
@@ -57,7 +67,8 @@
     private Type ComponentType = typeof(FinishedGameDetailsSingleBet);
     private Dictionary<string, object> ComponentParameters;
 
-    public void ShowModal(MouseEventArgs mouseEventArgs, Type componentType, Dictionary<string, object> componentParameters)
+    public void ShowModal(
+        MouseEventArgs mouseEventArgs, Type componentType, Dictionary<string, object> componentParameters)
     {
         modalPosition = $"position: fixed; top: 75%; left: 50%; transform: translate(-50%, -75%);";
         ComponentType = componentType;
