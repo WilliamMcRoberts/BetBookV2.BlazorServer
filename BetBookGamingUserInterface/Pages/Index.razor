@@ -405,7 +405,11 @@ else
 
         showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
 
-        if (showToastSingle) await ToastObj.ShowAsync();
+        if (showToastSingle)
+        {
+            await ToastObj.ShowAsync();
+            loggedInUser = await authProvider.GetUserFromAuth(userData);
+        }
     }
 
     private async Task SubmitParleyBetSlip()
@@ -426,7 +430,11 @@ else
 
         showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
 
-        if (showToastParley) await ToastObj.ShowAsync();
+        if (showToastParley)
+        {
+            await ToastObj.ShowAsync();
+            loggedInUser = await authProvider.GetUserFromAuth(userData);
+        }
     }
 
     public string GetCellClass(string winner, GameDto game, BetType betType) => betSlip.preBets.Contains(

@@ -4,6 +4,7 @@
 @inject IMongoUserData userData
 @inject BetSlipState betSlip
 @inject NavigationManager navManager
+@inject IJSRuntime js
 
 <PageTitle>gameWagers</PageTitle>
 
@@ -307,7 +308,7 @@ else if (game is not null)
     #region Other Methods
     private async Task SubmitSinglesBetSlip()
     {
-        if (loggedInUser is null)
+        if (loggedInUser.AccountBalance == 0)
         {
             userStatusBad = true;
             return;
@@ -316,21 +317,35 @@ else if (game is not null)
         showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(loggedInUser);
 
         if (showToastSingle)
+        {
             await ToastObj.ShowAsync();
+            loggedInUser = await authProvider.GetUserFromAuth(userData);
+        }
     }
 
     private async Task SubmitParleyBetSlip()
     {
-        if (loggedInUser is null)
+        if (betSlip.preBets.Count < 2) return;
+
+        if (loggedInUser.AccountBalance == 0)
         {
             userStatusBad = true;
+            return;
+        }
+
+        if (betSlip.CheckForConflictingBets())
+        {
+            await js.InvokeVoidAsync("alert", "You have conflicting bets in your bet slip...cannot submit parley wager.", "OK");
             return;
         }
 
         showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(loggedInUser);
 
         if (showToastParley)
+        {
             await ToastObj.ShowAsync();
+            loggedInUser = await authProvider.GetUserFromAuth(userData);
+        }
     }
 
     private string GetCellClass(string winner, GameDto game, BetType betType) =>

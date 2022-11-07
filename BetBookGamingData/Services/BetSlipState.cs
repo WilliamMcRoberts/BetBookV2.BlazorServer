@@ -8,7 +8,6 @@ namespace BetBookGamingData.Services;
 public class BetSlipState
 {
     public List<CreateBetModel> preBets = new();
-    public UserModel loggedInUser;
     public bool conflictingBetsForParley;
     public decimal totalWagerForParley;
     public decimal totalPayoutForParley;
@@ -82,6 +81,7 @@ public class BetSlipState
 
         isSubmitting = true;
         bool isSuccessful = false;
+
         try
         {
             isSuccessful = await SubmitSingleBetsInBetsList(preBets, loggedInUser);
