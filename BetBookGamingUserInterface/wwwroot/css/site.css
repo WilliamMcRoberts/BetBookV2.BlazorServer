@@ -167,7 +167,9 @@ html, body {
     .bet-button:hover {
         color: white;
         text-shadow: 0 0 5px 5px darkblue;
-        transition: 400ms ease;
+        transition: 800ms ease;
+        background-color: rgb(255,255,255, .6);
+        backdrop-filter: blur(10px);
     }
 
     .bet-button:focus {
