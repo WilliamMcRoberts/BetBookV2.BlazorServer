@@ -72,7 +72,6 @@ html, body {
     .clickable-cell:hover {
         cursor: pointer;
         background-color: rgb(135,206,250, .7);
-        color: #fff;
         letter-spacing: 1px;
         font-weight: 700;
         transition: .5s ease;
@@ -99,7 +98,6 @@ html, body {
     .clickable-cell-active:hover {
         cursor: pointer;
         background-color: rgb(255,99,71, .7);
-        color: #fff;
         letter-spacing: 1px;
         font-weight: 700;
         transition: .5s ease;
@@ -117,6 +115,7 @@ html, body {
             0 0 5px rgb(3,37,126, .8), 
           0 0 10px rgb(3,37,126, .8);
         border: 1px solid rgb(3,37,126);
+        color: #fff;
     }
 
     .cell-btn:before {

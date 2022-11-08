@@ -168,30 +168,29 @@ else if (game is not null)
         </div>
         <div class="wager-container">
 
-            <div style="display:flex;flex-direction:column;
-">
-                    <div class="bet-type-title-container">
-                        <label class="bet-type">Point Spread</label>
-                    </div>
-                <div style="background:white;box-shadow: 7.5px 7.5px 20px black;">
+            <div class="wager-box">
+                <div class="bet-type-title-container">
+                    <label class="bet-type">Point Spread</label>
+                </div>
+                <div class="wager-button-container">
                     <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) wager-cell-top cell-btn">
                         <strong class="bet-text">@game?.AwayTeam</strong>
                         <strong class="bet-text">@($"{game?.PointSpread:-#.0;+#.0;}")</strong>
                         <strong class="bet-text">@($"{game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</strong>
-                        </div>
+                    </div>
                     <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD) wager-cell-bottom cell-btn">
                         <strong class="bet-text">@game?.HomeTeam</strong>
                         <strong class="bet-text">@($"{game?.PointSpread:+#.0;-#.0;}")</strong>
                         <strong class="bet-text">@($"{game?.PointSpreadHomeTeamMoneyLine:+#;-#;}")</strong>
-                        </div>
                     </div>
+                </div>
             </div>
 
-            <div style="display:flex;flex-direction:column;">
+            <div class="wager-box">
                 <div class="bet-type-title-container">
                     <label class="bet-type">Moneyline</label>
                 </div>
-            <div style="background:white;box-shadow: 7.5px 7.5px 20px black;">
+                <div class="wager-button-container">
                 <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE) wager-cell-top cell-btn">
                         <strong class="bet-text">@game?.AwayTeam</strong>
                     <strong class="bet-text">@($"{game?.AwayTeamMoneyLine:+#;-#;}")</strong>
@@ -203,11 +202,11 @@ else if (game is not null)
                 </div>
             </div>
 
-            <div style="display:flex;flex-direction:column;">
+            <div class="wager-box">
                 <div class="bet-type-title-container">
                     <label class="bet-type">OverUnder</label>
                 </div>
-            <div style="background:white;box-shadow: 7.5px 7.5px 20px black;">
+                <div class="wager-button-container">
                 <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-top cell-btn">
                     <strong class="bet-text">Over @($"{game?.OverUnder:#.#}")</strong>
                     <strong class="bet-text">@($"{game?.OverPayout:+#;-#;}")</strong>

@@ -8,6 +8,8 @@
 @inject IGameService gameService
 @inject BetSlipState betSlip
 @inject IJSRuntime js
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage localStorage
 
 <PageTitle>Home</PageTitle>
 
@@ -210,14 +212,14 @@ else
                             </td>
 
                         <td class="@GetCellClass(game!)">
-                                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
+                                <div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.POINTSPREAD))"
                          class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) cell-btn">
                                     <div style="display: flex;justify-content: space-evenly;">
                                         <strong style="margin-right:.5em;">@($"{game.PointSpread:-#.0;+#.0;+0}")</strong>
                                         <strong>@($"{game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</strong>
                                     </div>
                                     </div>
-                                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))"
+                                <div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.POINTSPREAD))"
                                     class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD) cell-btn">
                                     <div style="display:flex;justify-content:space-evenly;">
                                         <strong style="margin-right:.5em;">@($"{game.PointSpread:+#.0;-#.0;+0}")</strong>
@@ -226,24 +228,24 @@ else
                                 </div>
                             </td>
                             <td class="@GetCellClass(game!)" style="text-align:center;">
-                                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))"
+                                <div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.MONEYLINE))"
                                     class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE) cell-btn">
                                     <strong>@($"{game?.AwayTeamMoneyLine:+#;-#;}")</strong>
                                 </div>
-                                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))"
+                                <div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.MONEYLINE))"
                                     class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE) cell-btn">
                                     <strong>@($"{game?.HomeTeamMoneyLine:+#;-#;}")</strong>
                                 </div>
                             </td>
                             <td class="@GetCellClass(game!)">
-                                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
+                                <div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
                                     class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) cell-btn">
                                     <div style="display:flex;justify-content:space-evenly;">
                                         <strong>Over @game?.OverUnder</strong>
                                         <strong>@($"{game?.OverPayout:+#;-#;}")</strong>
                                     </div>
                                 </div>
-                                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
+                                <div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
                                     class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) cell-btn">
                                     <div style="display:flex;justify-content:space-evenly;">
                                         <strong>Under @game?.OverUnder</strong>
@@ -403,6 +405,12 @@ else
     #endregion
 
     #region Other Methods
+
+    private void ChooseOrRemoveWager(string winner, GameDto game, BetType betType)
+    {
+        betSlip.SelectOrRemoveWinnerAndGameForBet(winner, game, betType);
+        //await localStorage.SetAsync("BetSlip.BetsInPreBets", betSlip.preBets);
+    }
 
     private async Task SubmitSinglesBetSlip()
     {
