@@ -16,7 +16,7 @@ GAME SELECTION
 ![gamedetailstooltip](https://user-images.githubusercontent.com/95720340/200470368-d3e8c643-cffa-469a-b2b0-b8e8fe15babb.png)
 
 BET SLIP CREATION
-![betslip](https://user-images.githubusercontent.com/95720340/200454198-e8c4de4f-3e10-4d19-b7c1-fff952983371.png)
+![bslip](https://user-images.githubusercontent.com/95720340/200470759-cd708c60-fbfe-49f1-8bbf-6489c174ff63.png)
 
 GAME DETAILS
 ![gamedetails](https://user-images.githubusercontent.com/95720340/199785113-17751974-96e3-482d-981e-0284f577f0c7.png)
