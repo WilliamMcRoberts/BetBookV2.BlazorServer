@@ -4,7 +4,10 @@
 
 #game-link {
     position: relative;
+    background-color: rgb(211,211,211, .9);
 }
+
+
 
     #game-link:hover #tooltipGameContent {
         top: 20%;

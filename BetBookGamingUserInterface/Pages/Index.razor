@@ -211,7 +211,7 @@ else
 
                         <td class="@GetCellClass(game!)">
                                 <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))"
-                                    class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) cell-btn">
+                         class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) cell-btn">
                                     <div style="display: flex;justify-content: space-evenly;">
                                         <strong style="margin-right:.5em;">@($"{game.PointSpread:-#.0;+#.0;+0}")</strong>
                                         <strong>@($"{game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</strong>
@@ -396,7 +396,7 @@ else
         isBusy = true;
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
-        games = await gameService.GetGamesByWeek(season, week);
+        games = await gameService.GetGamesByWeek(season, 10);
         isBusy = false;
         await LoadAndVerifyUser();
     }
