@@ -1,4 +1,5 @@
-﻿using BetBookGamingData.Models;
+﻿using BetBookGamingData.Dto;
+using BetBookGamingData.Models;
 
 namespace BetBookGamingData.Helpers;
 
@@ -26,6 +27,12 @@ public static class CalculationHelpers
             : dateTime > new DateTime(2022, 8, 31) && dateTime < new DateTime(2023, 1, 14) ? SeasonType.REG
             : SeasonType.POST;
     }
+
+    public static int GetMoneylinePayoutForBet(this string winner, GameDto game, BetType betType) =>
+        betType == BetType.POINTSPREAD ?
+        (winner == game.AwayTeam ? (int)game.PointSpreadAwayTeamMoneyLine! : (int)game.PointSpreadHomeTeamMoneyLine!)
+        : betType == BetType.OVERUNDER ? (winner[0] == 'O' ? (int)game.OverPayout! : (int)game.UnderPayout!)
+        : (winner == game.AwayTeam ? (int)game.AwayTeamMoneyLine! : (int)game.HomeTeamMoneyLine!);
 }
 
 #nullable restore

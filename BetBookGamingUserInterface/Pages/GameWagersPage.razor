@@ -5,6 +5,7 @@
 @inject BetSlipState betSlip
 @inject NavigationManager navManager
 @inject IJSRuntime js
+@inject ProtectedLocalStorage localStorage
 
 <PageTitle>gameWagers</PageTitle>
 
@@ -64,7 +65,7 @@ else if (game is not null)
                                             </div>
                                             <div class="winner-moneyline-container">
                                                 <strong class="winner-moneyline">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                                <strong class="winner-moneyline">@betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
+                                                <strong class="winner-moneyline">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
                                             </div>
                                             <div class="bet-amount-input-container">
                                                 <strong style="margin:.25em .25em">$</strong>
@@ -117,7 +118,7 @@ else if (game is not null)
                                             </div>
                                             <div class="winner-moneyline-container-parley">
                                                 <strong class="winner-moneyline-parley">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                                <strong class="winner-moneyline-parley">@betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
+                                                <strong class="winner-moneyline-parley">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
                                             </div>
                                         </div>
                                     </div>
@@ -173,12 +174,12 @@ else if (game is not null)
                     <label class="bet-type">Point Spread</label>
                 </div>
                 <div class="wager-button-container">
-                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) wager-cell-top cell-btn">
+                    <div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) wager-cell-top cell-btn">
                         <strong class="bet-text">@game?.AwayTeam</strong>
                         <strong class="bet-text">@($"{game?.PointSpread:-#.0;+#.0;}")</strong>
                         <strong class="bet-text">@($"{game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</strong>
                     </div>
-                    <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD) wager-cell-bottom cell-btn">
+                    <div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD) wager-cell-bottom cell-btn">
                         <strong class="bet-text">@game?.HomeTeam</strong>
                         <strong class="bet-text">@($"{game?.PointSpread:+#.0;-#.0;}")</strong>
                         <strong class="bet-text">@($"{game?.PointSpreadHomeTeamMoneyLine:+#;-#;}")</strong>
@@ -191,11 +192,11 @@ else if (game is not null)
                     <label class="bet-type">Moneyline</label>
                 </div>
                 <div class="wager-button-container">
-                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.AwayTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE) wager-cell-top cell-btn">
+                    <div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE) wager-cell-top cell-btn">
                         <strong class="bet-text">@game?.AwayTeam</strong>
                     <strong class="bet-text">@($"{game?.AwayTeamMoneyLine:+#;-#;}")</strong>
                     </div>
-                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(game!.HomeTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE) wager-cell-bottom cell-btn">
+                    <div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.MONEYLINE))" class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE) wager-cell-bottom cell-btn">
                     <strong class="bet-text">@game?.HomeTeam</strong>
                     <strong class="bet-text">@($"{game?.HomeTeamMoneyLine:+#;-#;}")</strong>
                     </div>
@@ -207,11 +208,11 @@ else if (game is not null)
                     <label class="bet-type">OverUnder</label>
                 </div>
                 <div class="wager-button-container">
-                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-top cell-btn">
+                    <div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-top cell-btn">
                     <strong class="bet-text">Over @($"{game?.OverUnder:#.#}")</strong>
                     <strong class="bet-text">@($"{game?.OverPayout:+#;-#;}")</strong>
                     </div>
-                <div @onclick="(() => betSlip.SelectOrRemoveWinnerAndGameForBet(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-bottom cell-btn">
+                    <div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) wager-cell-bottom cell-btn">
                     <strong class="bet-text">Under @($"{game?.OverUnder:#.#}")</strong>
                     <strong class="bet-text">@($"{game?.UnderPayout:+#;-#;}")</strong>
                     </div>
@@ -292,9 +293,11 @@ else if (game is not null)
     #endregion
 
     #region OnInitialized
+
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
+        await CheckForSavedBetSlip();
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
         games = await gameService.GetGamesByWeek(season, week);
@@ -302,9 +305,27 @@ else if (game is not null)
         isBusy = false;
         loggedInUser = await authProvider.GetUserFromAuth(userData);
     }
+
     #endregion
 
     #region Other Methods
+
+    private async Task ChooseOrRemoveWager(string winner, GameDto game, BetType betType)
+    {
+        betSlip.SelectOrRemoveWinnerAndGameForBet(winner, game, betType);
+        await localStorage.SetAsync("CurrentBetSlip", betSlip.preBets);
+    }
+
+    private async Task CheckForSavedBetSlip()
+    {
+        var result = await localStorage.GetAsync<List<CreateBetModel>>("CurrentBetSlip");
+        if (result.Success)
+        {
+            betSlip.preBets.Clear();
+            betSlip.preBets.AddRange(result.Value);
+        }
+    }
+
     private async Task SubmitSinglesBetSlip()
     {
         if (loggedInUser.AccountBalance == 0)
@@ -357,5 +378,6 @@ else if (game is not null)
         ExpandSinglesBetSlip = false;
         ExpandParleyBetSlip = false;
     }
+
     #endregion
 }

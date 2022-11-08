@@ -8,7 +8,6 @@
 @inject IGameService gameService
 @inject BetSlipState betSlip
 @inject IJSRuntime js
-@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @inject ProtectedLocalStorage localStorage
 
 <PageTitle>Home</PageTitle>
@@ -44,7 +43,7 @@ else
                                         </div>
                                         <div class="winner-moneyline-container">
                                             <strong class="winner-moneyline">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                            <strong class="winner-moneyline">@betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
+                                            <strong class="winner-moneyline">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
                                         </div>
                                         <div class="bet-amount-input-container">
                                             <strong style="margin:.25em .25em">$</strong>
@@ -97,7 +96,7 @@ else
                                         </div>
                                         <div class="winner-moneyline-container-parley">
                                             <strong class="winner-moneyline-parley">@betSlip.GetWinnerSummary(createBetModel)</strong>
-                                            <strong class="winner-moneyline-parley">@betSlip.GetMoneylinePayoutForBet(createBetModel.Winner, createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
+                                            <strong class="winner-moneyline-parley">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
                                         </div>
                                     </div>
                                 </div>
@@ -357,11 +356,13 @@ else
 @code {
 
     #region Toast
+
     public SfToast ToastObj;
     int time = 60000;
     private ToastEffect ShowAnimation = ToastEffect.FadeIn;
     private ToastEffect HideAnimation = ToastEffect.FadeOut;
     private string Content => $"Thank you for choosing Bet Book.";
+
     #endregion
 
     #region Properties
@@ -393,23 +394,36 @@ else
     #endregion
 
     #region OnInitialized
+
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
+        await CheckForSavedBetSlip();
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
         games = await gameService.GetGamesByWeek(season, 10);
         isBusy = false;
         await LoadAndVerifyUser();
     }
+
     #endregion
 
     #region Other Methods
 
-    private void ChooseOrRemoveWager(string winner, GameDto game, BetType betType)
+    private async Task ChooseOrRemoveWager(string winner, GameDto game, BetType betType)
     {
         betSlip.SelectOrRemoveWinnerAndGameForBet(winner, game, betType);
-        //await localStorage.SetAsync("BetSlip.BetsInPreBets", betSlip.preBets);
+        await localStorage.SetAsync("CurrentBetSlip", betSlip.preBets);
+    }
+
+    private async Task CheckForSavedBetSlip()
+    {
+        var result = await localStorage.GetAsync<List<CreateBetModel>>("CurrentBetSlip");
+        if (result.Success)
+        {
+            betSlip.preBets.Clear();
+            betSlip.preBets.AddRange(result.Value);
+        }
     }
 
     private async Task SubmitSinglesBetSlip()

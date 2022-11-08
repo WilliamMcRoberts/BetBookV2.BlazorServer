@@ -53,7 +53,7 @@ public class BetSlipState
             Id = Guid.NewGuid(),
             BetType = betType,
             BetAmount = 0,
-            MoneylinePayout = GetMoneylinePayoutForBet(winner, game, betType),
+            MoneylinePayout = winner.GetMoneylinePayoutForBet(game, betType),
             Game = game,
             Winner = winner,
             PointSpread = Math.Round(Convert.ToDecimal(game.PointSpread), 1),
@@ -298,11 +298,11 @@ public class BetSlipState
         return total;
     }
 
-    public int GetMoneylinePayoutForBet(string winner, GameDto game, BetType betType) =>
-        betType == BetType.POINTSPREAD ? 
-        (winner == game.AwayTeam ? (int)game.PointSpreadAwayTeamMoneyLine! : (int)game.PointSpreadHomeTeamMoneyLine!) 
-        : betType == BetType.OVERUNDER ? (winner[0] == 'O' ? (int)game.OverPayout! : (int)game.UnderPayout!) 
-        : (winner == game.AwayTeam ? (int)game.AwayTeamMoneyLine! : (int)game.HomeTeamMoneyLine!);
+    //public int GetMoneylinePayoutForBet(string winner, GameDto game, BetType betType) =>
+    //    betType == BetType.POINTSPREAD ? 
+    //    (winner == game.AwayTeam ? (int)game.PointSpreadAwayTeamMoneyLine! : (int)game.PointSpreadHomeTeamMoneyLine!) 
+    //    : betType == BetType.OVERUNDER ? (winner[0] == 'O' ? (int)game.OverPayout! : (int)game.UnderPayout!) 
+    //    : (winner == game.AwayTeam ? (int)game.AwayTeamMoneyLine! : (int)game.HomeTeamMoneyLine!);
 
     public string GetWinnerSummary(CreateBetModel createBetModel) => 
         createBetModel.BetType == BetType.POINTSPREAD ? GetWinnerSummaryForPointSpread(createBetModel)
