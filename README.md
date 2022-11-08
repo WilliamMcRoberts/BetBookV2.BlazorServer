@@ -10,7 +10,10 @@
 Version 2 of Bet Book NFL is updated with a better user experience, more betting styles, and professional wagers. A $10,000 paper account is provided upon account creation. Enjoy!
 
 WAGER SELECTION
-![hometooltip](https://user-images.githubusercontent.com/95720340/200454157-0ee89d68-51de-4813-8889-f898b931d544.png)
+![wagers](https://user-images.githubusercontent.com/95720340/200470374-c923c282-c157-45c7-887a-c8b698163b01.png)
+
+GAME SELECTION
+![gamedetailstooltip](https://user-images.githubusercontent.com/95720340/200470368-d3e8c643-cffa-469a-b2b0-b8e8fe15babb.png)
 
 BET SLIP CREATION
 ![betslip](https://user-images.githubusercontent.com/95720340/200454198-e8c4de4f-3e10-4d19-b7c1-fff952983371.png)
@@ -32,4 +35,5 @@ WAGER HISTORY POPUP MODAL FOR PARLEY
 
 ABOUT PAGE
 ![about](https://user-images.githubusercontent.com/95720340/199785127-4dc2a956-e0f7-4493-87a5-010393c7cb7b.png)
+
 
