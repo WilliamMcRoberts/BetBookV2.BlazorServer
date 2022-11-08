@@ -10,22 +10,29 @@
 Version 2 of Bet Book NFL is updated with a better user experience, more betting styles, and professional wagers. A $10,000 paper account is provided upon account creation. Enjoy!
 
 WAGER SELECTION
-![homepage](https://user-images.githubusercontent.com/95720340/199785101-2d515f23-2ffb-43f5-b05d-b55a5d0f4c03.png)
+![wagersn](https://user-images.githubusercontent.com/95720340/200472703-bd7d53ec-0e27-4255-bfd8-97d79443f0ae.png)
+
+GAME SELECTION
+![gametooltip](https://user-images.githubusercontent.com/95720340/200472694-a58d5928-3608-4ec9-945c-d39cf5eba6e6.png)
 
 BET SLIP CREATION
-![createwager](https://user-images.githubusercontent.com/95720340/199785711-d26372fa-7c38-4562-9c88-9b45932eb52f.png)
+![bscreation](https://user-images.githubusercontent.com/95720340/200472709-3b728b99-59d8-4f1e-a4e8-90141fdf21b9.png)
 
 GAME DETAILS
 ![gamedetails](https://user-images.githubusercontent.com/95720340/199785113-17751974-96e3-482d-981e-0284f577f0c7.png)
 
 SINGLE BETS PROFILE
-![profilesingle](https://user-images.githubusercontent.com/95720340/199785074-f9ffa68a-167b-41ec-be01-8063324ef52e.png)
+![singlewagertooltip](https://user-images.githubusercontent.com/95720340/200472688-cb5cb152-b824-4422-beab-09edc532a9a1.png)
 
 PARLEY BETS PROFILE
-![profileparley](https://user-images.githubusercontent.com/95720340/199785086-d5381dbf-85e0-43d3-9d1b-7234b2d2ba58.png)
+![parleywagertooltip](https://user-images.githubusercontent.com/95720340/200472678-512ba239-98dc-4a8e-b898-e4803fd73094.png)
 
 WAGER HISTORY POPUP MODAL
-![wagerHistoryPopupModal](https://user-images.githubusercontent.com/95720340/200086463-4258bd56-0f45-4a3d-92a6-14b0fd343d4c.png)
+![modalsingle](https://user-images.githubusercontent.com/95720340/200454169-f79b20fa-69b3-43fb-be17-f2ffb20603e1.png)
+
+WAGER HISTORY POPUP MODAL FOR PARLEY
+![modalparley](https://user-images.githubusercontent.com/95720340/200454175-0eeb9af9-9464-41c9-b35e-927570486439.png)
 
 ABOUT PAGE
 ![about](https://user-images.githubusercontent.com/95720340/199785127-4dc2a956-e0f7-4493-87a5-010393c7cb7b.png)
+
