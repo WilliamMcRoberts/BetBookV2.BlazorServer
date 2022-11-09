@@ -415,7 +415,6 @@ else
         if (firstRender)
         {
             await CheckForSavedBetSlip();
-            StateHasChanged();
         }
     }
 
@@ -435,8 +434,7 @@ else
 
         if (result.Success && result.Value.Any())
         {
-            betSlip.preBets.Clear();
-            betSlip.preBets.AddRange(result.Value);
+            betSlip.preBets = result.Value;
         }
     }
 

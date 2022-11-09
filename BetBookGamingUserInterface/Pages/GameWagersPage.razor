@@ -314,7 +314,6 @@ else if (game is not null)
         if (firstRender)
         {
             await CheckForSavedBetSlip();
-            StateHasChanged();
         }
     }
 
@@ -333,8 +332,7 @@ else if (game is not null)
         var result = await localStorage.GetAsync<List<CreateBetModel>>("CurrentBetSlip");
         if (result.Success)
         {
-            betSlip.preBets.Clear();
-            betSlip.preBets.AddRange(result.Value);
+            betSlip.preBets = result.Value;
         }
     }
 
