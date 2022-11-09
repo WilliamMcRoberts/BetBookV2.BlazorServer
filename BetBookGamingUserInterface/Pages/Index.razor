@@ -400,7 +400,7 @@ else
         isBusy = true;
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
-        games = await gameService.GetGamesByWeek(season, 10);
+        games = await gameService.GetGamesByWeek(season, week);
         isBusy = false;
         await LoadAndVerifyUser();
         // TODO - Set Time Limit Local Storage For Games
