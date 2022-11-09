@@ -398,12 +398,25 @@ else
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
-        await CheckForSavedBetSlip();
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
         games = await gameService.GetGamesByWeek(season, 10);
         isBusy = false;
         await LoadAndVerifyUser();
+        // TODO - Set Time Limit Local Storage For Games
+    }
+
+    #endregion
+
+    #region AfterRender
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await CheckForSavedBetSlip();
+            StateHasChanged();
+        }
     }
 
     #endregion
@@ -419,7 +432,8 @@ else
     private async Task CheckForSavedBetSlip()
     {
         var result = await localStorage.GetAsync<List<CreateBetModel>>("CurrentBetSlip");
-        if (result.Success)
+
+        if (result.Success && result.Value.Any())
         {
             betSlip.preBets.Clear();
             betSlip.preBets.AddRange(result.Value);

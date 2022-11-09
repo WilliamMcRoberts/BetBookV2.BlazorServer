@@ -297,13 +297,25 @@ else if (game is not null)
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
-        await CheckForSavedBetSlip();
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
         games = await gameService.GetGamesByWeek(season, week);
         game = games.Where(g => g.ScoreID == ScoreId).FirstOrDefault();
         isBusy = false;
         loggedInUser = await authProvider.GetUserFromAuth(userData);
+    }
+
+    #endregion
+
+    #region AfterRender
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await CheckForSavedBetSlip();
+            StateHasChanged();
+        }
     }
 
     #endregion
