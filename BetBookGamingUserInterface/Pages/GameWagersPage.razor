@@ -292,7 +292,7 @@ else if (game is not null)
     private List<GameDto> gameList = new();
     #endregion
 
-    #region OnInitialized
+    #region OnInitializedAsync
 
     protected override async Task OnInitializedAsync()
     {
@@ -307,7 +307,7 @@ else if (game is not null)
 
     #endregion
 
-    #region AfterRender
+    #region OnAfterRenderAsync
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
