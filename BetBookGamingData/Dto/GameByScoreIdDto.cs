@@ -1,6 +1,5 @@
 ﻿namespace BetBookGamingData.Dto;
 
-
 public class GameByScoreIdDto
 {
     public Score Score { get; set; }

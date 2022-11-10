@@ -1,7 +1,4 @@
 ﻿
-using BetBookGamingData.Models;
-using Microsoft.Extensions.Logging;
-
 namespace BetBookGamingData.Data;
 
 public class MongoParleyBetSlipData : IMongoParleyBetSlipData

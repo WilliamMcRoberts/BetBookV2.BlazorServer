@@ -1,0 +1,9 @@
+﻿global using BetBookGamingData.Data;
+global using BetBookGamingData.DbAccess;
+global using BetBookGamingData.Services;
+global using Serilog;
+global using BetBookGamingMinimalApi;
+global using BetBookGamingMinimalApi.Api;
+global using BetBookGamingMinimalApi.MiddleWare;
+global using BetBookGamingData.Models;
+global using BetBookGamingData;

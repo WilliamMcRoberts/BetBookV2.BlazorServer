@@ -1,7 +1,4 @@
-﻿using BetBookGamingData.Data;
-using BetBookGamingData.DbAccess;
-using BetBookGamingData.Services;
-using Serilog;
+﻿
 
 namespace BetBookGamingMinimalApi;
 

@@ -1,7 +1,4 @@
-﻿using BetBookGamingData.Services;
-using BetBookGamingData;
-using BetBookGamingData.Data;
-using BetBookGamingData.Models;
+﻿
 
 namespace BetBookGamingMinimalApi.Api;
 

@@ -1,12 +1,4 @@
 ﻿
-using BetBookGamingData.Dto;
-using BetBookGamingData.Models;
-using Microsoft.Extensions.Configuration;
-using System.Net.Http.Json;
-using Microsoft.Extensions.Logging;
-using BetBookGamingData.Data;
-using Microsoft.Extensions.Caching.Memory;
-
 namespace BetBookGamingData.Services;
 
 public interface IGameService

@@ -1,6 +1,5 @@
 ﻿@page "/gameWagers/{ScoreId:int}"
 @inject IGameService gameService
-@inject AuthenticationStateProvider authProvider
 @inject IMongoUserData userData
 @inject BetSlipState betSlip
 @inject NavigationManager navManager
@@ -270,6 +269,8 @@ else if (game is not null)
     #endregion
 
     #region Properties
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
     private bool ExpandSinglesBetSlip { get; set; }
     private bool ExpandParleyBetSlip { get; set; }
     private bool parleyBetCountBad => betSlip.preBets.Count < 2;
@@ -302,7 +303,7 @@ else if (game is not null)
         games = await gameService.GetGamesByWeek(season, week);
         game = games.Where(g => g.ScoreID == ScoreId).FirstOrDefault();
         isBusy = false;
-        loggedInUser = await authProvider.GetUserFromAuth(userData);
+        loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
     }
 
     #endregion
@@ -349,7 +350,7 @@ else if (game is not null)
         if (showToastSingle)
         {
             await ToastObj.ShowAsync();
-            loggedInUser = await authProvider.GetUserFromAuth(userData);
+            loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
         }
     }
 
@@ -374,7 +375,7 @@ else if (game is not null)
         if (showToastParley)
         {
             await ToastObj.ShowAsync();
-            loggedInUser = await authProvider.GetUserFromAuth(userData);
+            loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
         }
     }
 

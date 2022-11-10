@@ -1,6 +1,5 @@
 ﻿@page "/"
 @inject NavigationManager navManager
-@inject AuthenticationStateProvider authProvider
 @inject ILogger<Index> logger
 @inject IMongoUserData userData
 @inject IMongoSingleBetData singleBetData
@@ -367,6 +366,9 @@ else
 
     #region Properties
 
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
     private bool ExpandSinglesBetSlip { get; set; }
     private bool ExpandParleyBetSlip { get; set; }
     private bool parleyBetCountBad => betSlip.preBets.Count < 2;
@@ -450,7 +452,7 @@ else
         if (showToastSingle)
         {
             await ToastObj.ShowAsync();
-            loggedInUser = await authProvider.GetUserFromAuth(userData);
+            loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
         }
     }
 
@@ -475,7 +477,7 @@ else
         if (showToastParley)
         {
             await ToastObj.ShowAsync();
-            loggedInUser = await authProvider.GetUserFromAuth(userData);
+            loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
         }
     }
 
@@ -494,7 +496,7 @@ else
 
     private async Task LoadAndVerifyUser()
     {
-        var authState = await authProvider.GetAuthenticationStateAsync();
+        var authState = await AuthenticationStateTask;
         string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
         loggedInUser = await userData.GetCurrentUserFromAuthentication(objectId) ?? new();
 

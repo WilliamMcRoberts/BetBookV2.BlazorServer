@@ -1,15 +1,5 @@
-﻿using BetBookGamingData.Data;
-using BetBookGamingData.DbAccess;
-using BetBookGamingData.Services;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.Identity.Web;
-using Microsoft.Identity.Web.UI;
-using Serilog;
-using Stripe;
-using Syncfusion.Blazor;
-
+﻿
 namespace BetBookGamingUserInterface;
-
 
 public static class RegisterServices
 {

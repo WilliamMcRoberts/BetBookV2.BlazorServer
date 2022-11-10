@@ -1,6 +1,4 @@
-﻿using BetBookGamingData.Data;
-using BetBookGamingData.Models;
-
+﻿
 namespace BetBookGamingMinimalApi.Api;
 
 public static class SingleBetsApi

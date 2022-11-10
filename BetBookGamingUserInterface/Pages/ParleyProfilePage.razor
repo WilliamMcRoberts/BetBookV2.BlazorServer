@@ -206,8 +206,12 @@ else
 
 @code {
 
+    #region Properties
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    #endregion
 
     #region Collections
     List<ParleyBetSlipModel> bettorParleyBetSlips = new();
@@ -230,7 +234,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
-        loggedInUser = await authProvider.GetUserFromAuth(userData);
+        loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
 
         bettorParleyBetSlips = await parleyBetSlipData.GetBettorParleyBetSlips(loggedInUser.UserId);
 

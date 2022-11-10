@@ -4,4 +4,13 @@ global using BetBookGamingData.Data;
 global using BetBookGamingData.Helpers;
 global using BetBookGamingData.Services;
 global using BetBookGamingData.Dto;
-
+global using Microsoft.AspNetCore.Components.Authorization;
+global using BetBookGamingUserInterface;
+global using Microsoft.AspNetCore.Rewrite;
+global using Serilog;
+global using BetBookGamingData.DbAccess;
+global using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+global using Microsoft.Identity.Web;
+global using Microsoft.Identity.Web.UI;
+global using Stripe;
+global using Syncfusion.Blazor;

@@ -1,7 +1,4 @@
 ﻿
-using Microsoft.Extensions.Logging;
-using Stripe;
-
 namespace BetBookGamingData.Data;
 
 public class MongoUserData : IMongoUserData
@@ -10,8 +7,8 @@ public class MongoUserData : IMongoUserData
 	private readonly ILogger<IMongoUserData> _logger;
 	private readonly IConfiguration _configuration;
 
-	public MongoUserData(
-		IMongoDbConnection mongoDbConnection, ILogger<IMongoUserData> logger, IConfiguration configuration)
+	public MongoUserData(IMongoDbConnection mongoDbConnection, 
+		ILogger<IMongoUserData> logger, IConfiguration configuration)
 	{
 		_users = mongoDbConnection.UsersCollection;
 		_logger = logger;

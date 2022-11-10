@@ -1,8 +1,4 @@
-﻿using BetBookGamingData.Data;
-using BetBookGamingData.Dto;
-using BetBookGamingData.Helpers;
-using Microsoft.Extensions.Logging;
-
+﻿
 namespace BetBookGamingData.Services;
 
 public class BetSlipState

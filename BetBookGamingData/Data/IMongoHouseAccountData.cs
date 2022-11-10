@@ -1,9 +1,8 @@
-﻿namespace BetBookGamingData.Data
+﻿namespace BetBookGamingData.Data;
+
+public interface IMongoHouseAccountData
 {
-    public interface IMongoHouseAccountData
-    {
-        Task CreateHouseAccount();
-        Task<HouseAccountModel> GetHouseAccount();
-        Task UpdateHouseAccount(HouseAccountModel house);
-    }
+    Task CreateHouseAccount();
+    Task<HouseAccountModel> GetHouseAccount();
+    Task UpdateHouseAccount(HouseAccountModel house);
 }

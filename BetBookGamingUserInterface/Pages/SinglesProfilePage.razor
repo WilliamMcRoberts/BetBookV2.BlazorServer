@@ -1,7 +1,6 @@
 ﻿@page "/SinglesProfilePage"
 @inject ILogger<SinglesProfilePage> logger
 @inject IMongoUserData userData
-@inject AuthenticationStateProvider authProvider
 @inject IMongoSingleBetData singleBetData
 @inject IGameService gameService
 
@@ -166,8 +165,12 @@ else
 
 @code {
 
+    #region Properties
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+    #endregion
 
     #region Collections
 
@@ -195,7 +198,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
-        loggedInUser = await authProvider.GetUserFromAuth(userData);
+        loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
 
         bettorSingleBets = await singleBetData.GetBettorSingleBets(loggedInUser.UserId);
 

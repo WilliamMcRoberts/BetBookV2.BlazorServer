@@ -1,11 +1,5 @@
 ﻿
-
-
-using BetBookGamingData.Services;
-
 namespace BetBookGamingData.Models;
-
-
 
 public class UserModel
 {

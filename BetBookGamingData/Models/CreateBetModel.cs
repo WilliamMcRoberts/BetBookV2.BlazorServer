@@ -1,7 +1,4 @@
 ﻿
-
-using BetBookGamingData.Dto;
-
 namespace BetBookGamingData.Models;
 
 public class CreateBetModel

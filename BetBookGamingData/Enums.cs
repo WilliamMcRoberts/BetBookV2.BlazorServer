@@ -1,5 +1,4 @@
 ﻿
-using NetEscapades.EnumGenerators;
 
 namespace BetBookGamingData;
 

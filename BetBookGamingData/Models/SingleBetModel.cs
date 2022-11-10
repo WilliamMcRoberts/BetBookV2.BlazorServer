@@ -1,7 +1,4 @@
 ﻿
-
-using BetBookGamingData.Dto;
-
 namespace BetBookGamingData.Models;
 
 #nullable enable

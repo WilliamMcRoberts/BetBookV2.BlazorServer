@@ -1,12 +1,4 @@
 ﻿
-
-using BetBookGamingData.Data;
-using BetBookGamingData.Dto;
-using BetBookGamingData.Helpers;
-using BetBookGamingData.Models;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-
 namespace BetBookGamingData.Services;
 
 public class UpdateSingleBetsTimer : BackgroundService

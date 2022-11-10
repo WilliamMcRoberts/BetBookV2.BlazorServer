@@ -1,6 +1,4 @@
 ﻿
-using Microsoft.Extensions.Logging;
-
 namespace BetBookGamingData.Data;
 
 public class MongoSingleBetData : IMongoSingleBetData

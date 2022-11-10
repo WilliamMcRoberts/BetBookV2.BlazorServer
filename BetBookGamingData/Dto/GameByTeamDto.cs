@@ -1,8 +1,5 @@
 ﻿
-
 namespace BetBookGamingData.Dto;
-
-
 
 public class GameByTeamDto
 {
