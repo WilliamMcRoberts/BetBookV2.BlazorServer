@@ -75,7 +75,7 @@ public class GameService : IGameService
 
             games = results?.ToArray();
 
-            _cache.Set(CacheKey, games, TimeSpan.FromMinutes(10));
+            _cache.Set(CacheKey, games, TimeSpan.FromMinutes(15));
         }
 
         catch (Exception ex)

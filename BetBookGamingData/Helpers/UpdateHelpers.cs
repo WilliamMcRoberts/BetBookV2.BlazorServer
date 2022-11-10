@@ -16,8 +16,11 @@ public static class UpdateHelpers
 
         foreach (GameDto game in finishedGames)
         {
-            bool getHomeScore = decimal.TryParse(game.HomeScore?.ToString(), out var homeScore);
-            bool getAwayScore = decimal.TryParse(game.AwayScore?.ToString(), out var awayScore);
+            if(!decimal.TryParse(game.HomeScore?.ToString(), out var homeScore) ||
+                !decimal.TryParse(game.AwayScore?.ToString(), out var awayScore))
+            {
+                continue;
+            }
 
             decimal totalScore = homeScore + awayScore;
 
@@ -26,6 +29,9 @@ public static class UpdateHelpers
 
             foreach (SingleBetModel singleBet in singleBetsOnGameInProgress)
             {
+                singleBet.GameSnapshot.AwayScore = awayScore;
+                singleBet.GameSnapshot.HomeScore = homeScore;
+
                 if (singleBet.BetType == BetType.MONEYLINE)
                 {
                     string winner = homeScore > awayScore ? game.HomeTeam
@@ -35,6 +41,7 @@ public static class UpdateHelpers
                     singleBet.SingleBetStatus = winner == singleBet.WinnerChosen ? SingleBetStatus.WINNER
                         : winner == string.Empty ? SingleBetStatus.PUSH : SingleBetStatus.LOSER;
 
+                    
                     await singleBetData.UpdateSingleBet(singleBet);
                 }
 
@@ -78,6 +85,7 @@ public static class UpdateHelpers
                             : SingleBetStatus.PUSH;
 
                         await singleBetData.UpdateSingleBet(singleBet);
+                        continue;
                     }
 
                     singleBet.SingleBetStatus =
@@ -115,8 +123,11 @@ public static class UpdateHelpers
 
                 if (game.IsOver)
                 {
-                    singleBetForParley.SingleBetForParleyStatus =
-                        singleBetForParley.ProcessFinishedSingleBetForParley(game);
+                    var betStatus = singleBetForParley.ProcessFinishedSingleBetForParley(game);
+                    if (betStatus is not null) 
+                    { 
+                        singleBetForParley.SingleBetForParleyStatus = (SingleBetForParleyStatus)betStatus; 
+                    }
                 }
             }
 
@@ -125,10 +136,10 @@ public static class UpdateHelpers
                 if (parleyBet.CheckIfParleyBetLoser())
                     parleyBet.ParleyBetSlipStatus = ParleyBetSlipStatus.LOSER;
 
-                if (parleyBet.CheckIfParleyBetWinner())
+                else if (parleyBet.CheckIfParleyBetWinner())
                     parleyBet.ParleyBetSlipStatus = ParleyBetSlipStatus.WINNER;
 
-                if (parleyBet.CheckIfParleyBetPush())
+                else if (parleyBet.CheckIfParleyBetPush())
                     parleyBet.ParleyBetSlipStatus = ParleyBetSlipStatus.PUSH;
             }
 
@@ -169,11 +180,17 @@ public static class UpdateHelpers
         return true;
     }
 
-    public static SingleBetForParleyStatus ProcessFinishedSingleBetForParley(
+    public static SingleBetForParleyStatus? ProcessFinishedSingleBetForParley(
         this SingleBetForParleyModel singleBetForParley, GameDto game)
     {
-        bool getHomeScore = decimal.TryParse(game.HomeScore?.ToString(), out var homeScore);
-        bool getAwayScore = decimal.TryParse(game.AwayScore?.ToString(), out var awayScore);
+        if(!decimal.TryParse(game.HomeScore?.ToString(), out var homeScore) 
+            || !decimal.TryParse(game.AwayScore?.ToString(), out var awayScore))
+        {
+            return null;
+        }
+
+        singleBetForParley.GameSnapshot.HomeScore = homeScore;
+        singleBetForParley.GameSnapshot.AwayScore = awayScore;
 
         decimal totalScore = homeScore + awayScore;
 
