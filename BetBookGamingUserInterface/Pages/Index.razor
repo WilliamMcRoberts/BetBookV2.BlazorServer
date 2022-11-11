@@ -452,6 +452,7 @@ else
         if (showToastSingle)
         {
             await ToastObj.ShowAsync();
+            await localStorage.DeleteAsync("CurrentBetSlip");
             loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
         }
     }
@@ -477,6 +478,7 @@ else
         if (showToastParley)
         {
             await ToastObj.ShowAsync();
+            await localStorage.DeleteAsync("CurrentBetSlip");
             loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
         }
     }
