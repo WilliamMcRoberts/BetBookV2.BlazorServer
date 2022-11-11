@@ -41,7 +41,7 @@
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0, 0.5);
     backdrop-filter: blur(10px);
-    margin: 0 auto;
+    margin: 1em auto;
     border: 2px solid darkblue;
     width: 60%;
     border-radius: 50px;
@@ -76,12 +76,18 @@
     width: 60%;
 }
 
-.accordion-container-wager-details {
-    width: 60%;
+.wager-accordion-container {
+    width: 50%;
     margin: 0 auto;
     position: center;
     margin-top: 1.5em;
     background: transparent;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 1;
+    top: -14%;
+    text-align: center;
 }
 
 .name-of-team {
@@ -101,8 +107,8 @@
         display: none;
     }
 
-    .accordion-container-wager-details {
-        width: 95%;
+    .wager-accordion-container {
+        width: 80%;
     }
 
     .matchup-container {

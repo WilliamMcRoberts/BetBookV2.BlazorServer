@@ -163,6 +163,7 @@ html, body {
     display: flex;
     justify-content: space-evenly;
     margin-bottom:0;
+    /*position: relative;*/
 }
 
 .user-info-bar {
@@ -429,10 +430,13 @@ html, body {
 }
 
 .accordion-container {
-    width: 70%;
-    margin:.5em auto;
-    position:center;
-    
+    width: 60%;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: 1;
+    top: -11%;
+    text-align: center;
 }
 
 .data-grid-container {
@@ -468,27 +472,24 @@ html, body {
     border-radius: 50px;
     margin: .5em;
     backdrop-filter: blur(10px);
-
+    border: 2px solid rgb(255,99,71);
 }
 
 #AccordionElement {
     font-weight: 700;
-    background:none;
+    background: none;
     border:none;
+    width: 100%;
 }
 
 .e-accordion .e-acrdn-item.e-select > .e-acrdn-header {
-    border: 2px dashed rgb(255,99,71);
+    border: none;
     background-color:white;
 }
 
 .e-accordion .e-acrdn-item .e-acrdn-header .e-toggle-icon .e-icons {
     color: rgb(255,99,71);
-}
-.e-accordion .e-acrdn-item.e-select.e-active > .e-acrdn-header .e-acrdn-header-content,
-.e-accordion .e-acrdn-item.e-select.e-item-focus > .e-acrdn-header .e-acrdn-header-content {
-    color: rgb(255,99,71);
-    font-weight: 700;
+    border:none;
 }
 
 /*********************************
@@ -799,7 +800,7 @@ ul {
     }
 
     .accordion-container {
-        width: 95%;
+        width: 85%;
     }
 
     .bar {
