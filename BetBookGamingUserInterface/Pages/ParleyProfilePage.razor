@@ -16,7 +16,7 @@ else
 {
     <FootballSpinners />
 
-    <HistoryBar BetType="typeof(ParleyBetSlipModel)" OnParleyButtonClick="@SetParleyDataGrid" />
+    <HistoryBar BetType="typeof(ParleyBetSlipModel)" OnParleyButtonClick="SetParleyDataGrid" />
 
     <div class="data-grid-container-profile-parley">
         <SfGrid ID="DataGrid" DataSource="@GetParleyBetList()">

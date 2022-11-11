@@ -294,7 +294,7 @@ else if (game is not null)
 
     #region Collections
     private GameDto[] games;
-    private IReadOnlyList<GameDto> gameList { get; set; }
+    private List<CreateBetModel> betList = new();
     #endregion
 
     #region OnInitializedAsync

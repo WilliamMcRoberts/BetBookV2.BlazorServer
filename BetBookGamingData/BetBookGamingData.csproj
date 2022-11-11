@@ -7,17 +7,17 @@
   </PropertyGroup>
 	
 	<ItemGroup>
-        <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.10" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
-        <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-        <PackageReference Include="Polly" Version="7.2.3" />
-        <PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
-	    <PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta04" />
-	    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.10" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+		<PackageReference Include="MongoDB.Driver" Version="2.18.0" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="Polly" Version="7.2.3" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.4" />
+		<PackageReference Include="NetEscapades.EnumGenerators" Version="1.0.0-beta04" />
+		<PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.1" />
 		<PackageReference Include="Stripe.net" Version="40.14.0" />
 	</ItemGroup>
 

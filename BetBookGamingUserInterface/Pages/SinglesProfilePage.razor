@@ -15,7 +15,7 @@ else
 {
     <FootballSpinners/>
 
-    <HistoryBar BetType="typeof(SingleBetModel)" OnSingleButtonClick="@SetSingleDataGrid" />
+    <HistoryBar BetType="typeof(SingleBetModel)" OnSingleButtonClick="SetSingleDataGrid" />
 
     <div class="data-grid-container-profile">
         <SfGrid ID="DataGrid" DataSource="@GetSingleBetList()">
@@ -158,7 +158,6 @@ else
 </style>
 
 @code {
-
     #region Properties
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
@@ -192,6 +191,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
+
         loggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
 
         bettorSingleBets = await singleBetData.GetBettorSingleBets(loggedInUser.UserId);
