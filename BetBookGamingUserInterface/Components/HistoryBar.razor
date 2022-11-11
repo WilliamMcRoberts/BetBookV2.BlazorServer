@@ -1,0 +1,44 @@
+﻿
+@if(BetType == typeof(SingleBetModel))
+{
+    <div class="bar">
+        <button @onclick="(() => SetSingleStatus(SingleBetStatus.IN_PROGRESS))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Active</button>
+        <button @onclick="(() => SetSingleStatus(SingleBetStatus.WINNER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Winners</button>
+        <label class="grad-title" style="margin-top:.75em">Single Bets</label>
+        <button @onclick="(() => SetSingleStatus(SingleBetStatus.PUSH))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Pushes</button>
+        <button @onclick="(() => SetSingleStatus(SingleBetStatus.LOSER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Losers</button>
+    </div>
+
+}
+else if(BetType == typeof(ParleyBetSlipModel))
+{
+    <div class="bar">
+        <button @onclick="(() => SetParleyStatus(ParleyBetSlipStatus.IN_PROGRESS))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Active</button>
+        <button @onclick="(() => SetParleyStatus(ParleyBetSlipStatus.WINNER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Winners</button>
+        <label class="grad-title" style="margin-top:.75em">Parley Bets</label>
+        <button @onclick="(() => SetParleyStatus(ParleyBetSlipStatus.PUSH))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Pushes</button>
+        <button @onclick="(() => SetParleyStatus(ParleyBetSlipStatus.LOSER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Losers</button>
+    </div>
+}
+
+
+@code {
+    [Parameter]
+    public EventCallback<SingleBetStatus> OnSingleButtonClick { get; set; }
+
+    [Parameter]
+    public EventCallback<ParleyBetSlipStatus> OnParleyButtonClick { get; set; }
+
+    [Parameter]
+    public Type BetType { get; set; }
+
+    public async Task SetSingleStatus(SingleBetStatus singleBetStatus)
+    {
+        await OnSingleButtonClick.InvokeAsync(singleBetStatus);
+    }
+
+    public async Task SetParleyStatus(ParleyBetSlipStatus parleyBetSlipStatus)
+    {
+        await OnParleyButtonClick.InvokeAsync(parleyBetSlipStatus);
+    }
+}

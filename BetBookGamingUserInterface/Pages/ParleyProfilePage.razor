@@ -16,13 +16,7 @@ else
 {
     <FootballSpinners />
 
-    <div class="bar">
-        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.IN_PROGRESS))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Active</button>
-        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.WINNER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Winners</button>
-        <label class="grad-title" style="margin-top:.75em">Parley Bets</label>
-        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.PUSH))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Push</button>
-        <button @onclick="(() => SetParleyDataGrid(ParleyBetSlipStatus.LOSER))" class="btn btn-light btn-sm mt-2 mb-2 bet-button">Losers</button>
-    </div>
+    <HistoryBar BetType="typeof(ParleyBetSlipModel)" OnParleyButtonClick="@SetParleyDataGrid" />
 
     <div class="data-grid-container-profile-parley">
         <SfGrid ID="DataGrid" DataSource="@GetParleyBetList()">
@@ -207,10 +201,12 @@ else
 @code {
 
     #region Properties
+
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
     [CascadingParameter]
     public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
     #endregion
 
     #region Collections
@@ -231,6 +227,7 @@ else
     #endregion
 
     #region OnInitialized
+
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
@@ -256,9 +253,11 @@ else
 
         isBusy = false;
     }
+
     #endregion
 
     #region OtherMethods
+
     private async Task ShowGameDetailsSingleBetForParleyModal(MouseEventArgs mouseEventArgs, SingleBetForParleyModel wager)
     {
         GameByScoreIdDto finishedGame = await gameService.GetGameByScoreId(wager.GameSnapshot.ScoreID);
