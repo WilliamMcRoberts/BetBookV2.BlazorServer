@@ -163,7 +163,6 @@ html, body {
     display: flex;
     justify-content: space-evenly;
     margin-bottom:0;
-    /*position: relative;*/
 }
 
 .user-info-bar {
@@ -430,7 +429,7 @@ html, body {
 }
 
 .accordion-container {
-    width: 60%;
+    width: 50%;
     position: absolute;
     left: 50%;
     transform: translate(-50%, 0);
@@ -800,7 +799,7 @@ ul {
     }
 
     .accordion-container {
-        width: 85%;
+        width: 80%;
     }
 
     .bar {

@@ -259,7 +259,7 @@ else if (game is not null)
 </a>
 
 @code {
-    
+
     #region Toast
     public SfToast ToastObj;
     private ToastEffect ShowAnimation = ToastEffect.FadeIn;
@@ -294,7 +294,7 @@ else if (game is not null)
 
     #region Collections
     private GameDto[] games;
-    private List<GameDto> gameList = new();
+    private IReadOnlyList<GameDto> gameList { get; set; }
     #endregion
 
     #region OnInitializedAsync
