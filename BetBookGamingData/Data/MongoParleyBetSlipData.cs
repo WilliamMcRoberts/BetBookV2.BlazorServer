@@ -64,7 +64,7 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
         }
         catch (Exception ex)
         {
-            _logger.LogInformation(ex, "Failed To Insert Parley Bet...Transaction Aborted / ParleyBetSlipData");
+            _logger.LogInformation(ex, message: "Failed To Insert Parley Bet...Transaction Aborted / ParleyBetSlipData");
 
             await session.AbortTransactionAsync();
             return false;
@@ -73,16 +73,36 @@ public class MongoParleyBetSlipData : IMongoParleyBetSlipData
 
     public async Task<List<ParleyBetSlipModel>> GetBettorParleyBetSlips(string userId)
     {
-        var results = await _parleyBetSlips.FindAsync(b => b.BettorId == userId);
+        _logger.LogInformation("Calling GetBettorParleyBetSlips / MongoParleyBetSlipData");
 
-        return results.ToList();
+        var bets = new List<ParleyBetSlipModel>();
+        try
+        {
+            var results = await _parleyBetSlips.FindAsync(b => b.BettorId == userId);
+            bets = results.ToList();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation(ex, message: "Failed To Get Bettor Parley Bets / ParleyBetSlipData");
+        }
+
+        return bets;
     }
 
     public async Task<List<ParleyBetSlipModel>> GetAllParleyBetSlipsInProgress()
     {
-        var results = await _parleyBetSlips.FindAsync(b => b.ParleyBetSlipStatus == ParleyBetSlipStatus.IN_PROGRESS);
+        var bets = new List<ParleyBetSlipModel>();
+        try
+        {
+            var results = await _parleyBetSlips.FindAsync(b => b.ParleyBetSlipStatus == ParleyBetSlipStatus.IN_PROGRESS);
+            bets = results.ToList();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation(ex, message: "Failed To Get Parley Bets In Progress / ParleyBetSlipData");
+        }
 
-        return results.ToList();
+        return bets;
     }
 
     public async Task UpdateParleyBetSlip(ParleyBetSlipModel parleyBetSlip)

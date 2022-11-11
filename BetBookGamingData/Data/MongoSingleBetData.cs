@@ -64,7 +64,7 @@ public class MongoSingleBetData : IMongoSingleBetData
         }
         catch (Exception ex)
         {
-            _logger.LogInformation(ex, "Failed To Insert Single Bet...Transaction Aborted / SingleBetData");
+            _logger.LogInformation(ex, message: "Failed To Insert Single Bet...Transaction Aborted / SingleBetData");
 
             await session.AbortTransactionAsync();
             return false;
@@ -73,18 +73,39 @@ public class MongoSingleBetData : IMongoSingleBetData
 
     public async Task<List<SingleBetModel>> GetBettorSingleBets(string bettorId)
     {
-        var results = await _singleBets.FindAsync(b => b.BettorId == bettorId);
+        _logger.LogInformation("Calling GetBettorSingleBets / MongoSingleBetData");
 
-        return results.ToList();
+        var bets = new List<SingleBetModel>();
+        try
+        {
+            var results = await _singleBets.FindAsync(b => b.BettorId == bettorId);
+            bets = results.ToList();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation(ex, message: "Failed To Get Bettor Single Bets / SingleBetData");
+        }
+        return bets;
     }
 
     public async Task<List<SingleBetModel>> GetAllSingleBetsOnGameInProgress(int scoreIdOfGame)
     {
-        var results = await _singleBets.FindAsync(
-                b => b.GameSnapshot.ScoreID == scoreIdOfGame 
-                && b.SingleBetStatus == SingleBetStatus.IN_PROGRESS);
+        _logger.LogInformation("Calling GetAllSingleBetsOnGameInProgress / MongoSingleBetData");
 
-        return results.ToList();
+        var bets = new List<SingleBetModel>();
+        try
+        {
+            var results = await _singleBets.FindAsync(
+                        b => b.GameSnapshot.ScoreID == scoreIdOfGame
+                        && b.SingleBetStatus == SingleBetStatus.IN_PROGRESS);
+
+            bets = results.ToList();
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation(ex, message: "Failed To Get Single Bets On Game / SingleBetData");
+        }
+        return bets;
     }
 
     public async Task UpdateSingleBet(SingleBetModel singleBet)
