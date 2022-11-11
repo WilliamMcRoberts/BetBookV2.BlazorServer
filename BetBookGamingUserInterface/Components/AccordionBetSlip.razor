@@ -1,0 +1,213 @@
+﻿@inject BetSlipState betSlip
+@inject ProtectedLocalStorage localStorage
+@inject IMongoUserData userData
+@inject IJSRuntime js
+
+
+<div class="accordion-container">
+    <SfAccordion ID="AccordionElement" @ref="@Accordion">
+        <AccordionEvents Created="OnAccordionCreate"></AccordionEvents>
+        <AccordionItems>
+            <AccordionItem Id="AccordionItem" @bind-Expanded="@ExpandSinglesBetSlip">
+                <HeaderTemplate>
+                    <strong>Singles Bet Slip || Balance - $@LoggedInUser?.AccountBalance.ToString("#,##0.00")</strong>
+                </HeaderTemplate>
+                <ContentTemplate>
+                    <div style="padding:10px">
+
+                        @foreach (CreateBetModel createBetModel in betSlip.preBets)
+                        {
+                            <div class="create-bet-model-container">
+                                <button @onclick="(() => betSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                <div class="bet-info-container">
+                                    <div class="game-bet-type">
+                                        <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
+                                        <strong>@createBetModel.BetType</strong>
+                                    </div>
+                                    <div class="winner-moneyline-container">
+                                        <strong class="winner-moneyline">@betSlip.GetWinnerSummary(createBetModel)</strong>
+                                        <strong class="winner-moneyline">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
+                                    </div>
+                                    <div class="bet-amount-input-container">
+                                        <strong style="margin:.25em .25em">$</strong>
+                                        <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div style="text-align:center;margin:1em 1em;">
+                            <strong>Total Singles Payout</strong>
+                            <strong>$@betSlip.GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
+                        </div>
+
+                        @if (betSlip.gameHasStarted)
+                        {
+                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @betSlip.startedGameDescription has already started *</h6>
+                        }
+                        @if (userStatusBad)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
+                        }
+                        @if (betSlip.betAmountForSinglesBad)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
+                        }
+
+                        <div class="frame">
+                            <button @onclick="SubmitSinglesBetSlip" class="custom-btn btn-submit-wager"><span>Submit Wager</span></button>
+                        </div>
+
+                    </div>
+                </ContentTemplate>
+            </AccordionItem>
+            <AccordionItem Id="AccordionItem" @bind-Expanded="@ExpandParleyBetSlip">
+                <HeaderTemplate>
+                    <strong>Parley Bet Slip || Balance - $@LoggedInUser?.AccountBalance.ToString("#,##0.00")</strong>
+                </HeaderTemplate>
+                <ContentTemplate>
+                    <div style="padding:10px">
+
+                        @foreach (CreateBetModel createBetModel in betSlip.preBets)
+                        {
+                            <div class="create-bet-model-container">
+                                <button @onclick="(() => betSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                <div class="bet-info-container">
+                                    <div class="game-bet-type-parley">
+                                        <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
+                                        <strong>@createBetModel.BetType</strong>
+                                    </div>
+                                    <div class="winner-moneyline-container-parley">
+                                        <strong class="winner-moneyline-parley">@betSlip.GetWinnerSummary(createBetModel)</strong>
+                                        <strong class="winner-moneyline-parley">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div style="display:flex;flex-direction:column;">
+
+                            <div style="display:flex;flex-direction:column;width:35%;margin:.5em auto;text-align:center;">
+                                <strong style="text-align:center;">Wager Amount</strong>
+                                <div style="display:flex;justify-content:center;">
+                                    <strong style="margin:.25em .25em">$</strong>
+                                    <input class="bet-amount-input" type="number" @bind-value="@betSlip.totalWagerForParley" @bind-value:event="oninput" />
+                                </div>
+                            </div>
+
+                            <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
+                                <strong>Total Parley Payout</strong>
+                                <strong>$@betSlip.GetPayoutForTotalBetsParley().ToString("#,##0.00")</strong>
+                            </div>
+
+                        </div>
+
+                        @if (parleyBetCountBad)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Slip Must Have At Least 2 Wagers *</h6>
+                        }
+                        @if (userStatusBad)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
+                        }
+                        @if (betSlip.betAmountForParleyBad && betSlip.totalWagerForParley <= 0)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Must Have A Wager Amount *</h6>
+                        }
+                        @if (betSlip.conflictingBetsForParley)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
+                        }
+                        @if (betSlip.gameHasStarted)
+                        {
+                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @betSlip.startedGameDescription has already started *</h6>
+                        }
+
+                        <div class="frame">
+                            <button @onclick="SubmitParleyBetSlip" class="custom-btn btn-submit-wager"><span>Submit Wager</span></button>
+                        </div>
+
+                    </div>
+                </ContentTemplate>
+            </AccordionItem>
+        </AccordionItems>
+    </SfAccordion>
+</div>
+
+
+@code {
+    private SfAccordion Accordion;
+    private bool userStatusBad;
+    private bool showToastSingle;
+    private bool parleyBetCountBad => betSlip.preBets.Count < 2;
+    private bool showToastParley;
+
+
+
+    private bool ExpandSinglesBetSlip { get; set; }
+    private bool ExpandParleyBetSlip { get; set; }
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    [Parameter]
+    public EventCallback OnValidSubmit { get; set; }
+
+    [Parameter]
+    public UserModel LoggedInUser { get; set; }
+
+    private void OnAccordionCreate()
+    {
+        ExpandSinglesBetSlip = false;
+        ExpandParleyBetSlip = false;
+    }
+
+    private async Task SubmitSinglesBetSlip()
+    {
+        if (LoggedInUser.AccountBalance == 0)
+        {
+            userStatusBad = true;
+            return;
+        }
+
+        showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(LoggedInUser);
+
+        if (showToastSingle)
+        {
+            //await ToastObj.ShowAsync();
+            await OnValidSubmit.InvokeAsync();
+            await localStorage.DeleteAsync("CurrentBetSlip");
+            LoggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
+        }
+    }
+
+    private async Task SubmitParleyBetSlip()
+    {
+        if (betSlip.preBets.Count < 2) return;
+
+        if (LoggedInUser.AccountBalance == 0)
+        {
+            userStatusBad = true;
+            return;
+        }
+
+        if (betSlip.CheckForConflictingBets())
+        {
+            await js.InvokeVoidAsync("alert", "You have conflicting bets in your bet slip...cannot submit parley wager.", "OK");
+            return;
+        }
+
+        showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(LoggedInUser);
+
+        if (showToastParley)
+        {
+            //await ToastObj.ShowAsync();
+            await OnValidSubmit.InvokeAsync();
+            await localStorage.DeleteAsync("CurrentBetSlip");
+            LoggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
+        }
+    }
+
+
+
+}
