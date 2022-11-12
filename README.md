@@ -10,19 +10,16 @@
 Version 2 of Bet Book NFL is updated with a better user experience, more betting styles, and professional wagers. A $10,000 paper account is provided upon account creation. Enjoy!
 
 WAGER SELECTION
-![wagersn](https://user-images.githubusercontent.com/95720340/200472703-bd7d53ec-0e27-4255-bfd8-97d79443f0ae.png)
-
-GAME SELECTION
-![gametooltip](https://user-images.githubusercontent.com/95720340/200472694-a58d5928-3608-4ec9-945c-d39cf5eba6e6.png)
+![home](https://user-images.githubusercontent.com/95720340/201454360-b4599c3f-0ba3-4825-91b1-bf6952475510.png)
 
 BET SLIP CREATION
-![bscreation](https://user-images.githubusercontent.com/95720340/200472709-3b728b99-59d8-4f1e-a4e8-90141fdf21b9.png)
+![wagercreation](https://user-images.githubusercontent.com/95720340/201454353-20d24b46-3b9c-4f9f-b1ff-abfcff2df0e6.png)
 
 GAME DETAILS
-![gamedetails](https://user-images.githubusercontent.com/95720340/199785113-17751974-96e3-482d-981e-0284f577f0c7.png)
+![details](https://user-images.githubusercontent.com/95720340/201454349-883b2502-3b4f-446a-83d4-be20457441d8.png)
 
 SINGLE BETS PROFILE
-![singlewagertooltip](https://user-images.githubusercontent.com/95720340/200472688-cb5cb152-b824-4422-beab-09edc532a9a1.png)
+![singlehistory](https://user-images.githubusercontent.com/95720340/201454346-bf1a44aa-9438-442f-81fe-1e95fbf346de.png)
 
 PARLEY BETS PROFILE
 ![parleywagertooltip](https://user-images.githubusercontent.com/95720340/200472678-512ba239-98dc-4a8e-b898-e4803fd73094.png)
