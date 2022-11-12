@@ -4,23 +4,23 @@
     <AuthorizeView>
         <Authorized>
             <div class="login-display">
-                <SfDropDownButton CssClass="e-caret-hide ddown" Content="About" @ref="aboutbtn">
+            <SfDropDownButton CssClass="e-caret-hide custom e-round-corner" Content="About" @ref="aboutbtn">
                     <DropDownMenuItems>
                         <DropDownMenuItem Url="About" Text="Bet Book V2"></DropDownMenuItem>
                     </DropDownMenuItems>
                 </SfDropDownButton>
-                <SfDropDownButton CssClass="e-caret-hide" Content="Place Wager" @ref="wagersbtn" >
+            <SfDropDownButton CssClass="e-caret-hide custom e-round-corner" Content="Place Wager" @ref="wagersbtn">
                     <DropDownMenuItems>
                         <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
                     </DropDownMenuItems>
                 </SfDropDownButton>
-                <SfDropDownButton CssClass="e-caret-hide" Content="History" @ref="profilebtn">
+            <SfDropDownButton CssClass="e-caret-hide custom e-round-corner" Content="History" @ref="profilebtn">
                     <DropDownMenuItems>
                         <DropDownMenuItem Url="SinglesProfilePage" Text="My Single Bets"></DropDownMenuItem>
                         <DropDownMenuItem Url="ParleyProfilePage" Text="My Parley Bets"></DropDownMenuItem>
                     </DropDownMenuItems>
                 </SfDropDownButton>
-                <SfDropDownButton CssClass="e-caret-hide" Content="Account" @ref="accountbtn">
+            <SfDropDownButton CssClass="e-caret-hide custom e-round-corner" Content="Account" @ref="accountbtn">
                     <DropDownMenuItems>
                         <DropDownMenuItem Url="MicrosoftIdentity/Account/SignOut" Text="Sign Out"></DropDownMenuItem>
                     </DropDownMenuItems>
@@ -65,6 +65,14 @@
 
 <style>
 
+    .custom.e-dropdown-popup {
+        margin: 5px -20px;
+    }
+
+    .e-round-corner {
+        border-radius: 10px;
+    }
+
     .e-btn {
         line-height: 1em;
         outline: none;
@@ -73,19 +81,9 @@
         position: relative;
         background: none;
         border: none;
-        font-size: 17px;
+        font-size: 18px;
         font-weight: 900;
     }
-
-        .e-btn:hover {
-            color: darkblue;
-            background:transparent;
-        }
-
-        .e-btn.e-active {
-            color: darkblue;
-            background: transparent;
-        }
 
     .e-dropdown-btn, .e-dropdown-btn.e-btn {
         color: white;
@@ -99,32 +97,51 @@
     }
 
         .e-dropdown-btn:hover {
-           color:darkblue;
+            color: darkblue;
             background-size: 90% 5px;
         }
 
     .e-dropdown-popup {
         border: 1px solid darkblue;
         border-radius: 5px;
+        background: transparent;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0, 0.5);
+        backdrop-filter: blur(10px);
     }
+
+    .e-dropdown-popup:hover {
+        background:transparent;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0, 0.5);
+        backdrop-filter: blur(10px);
+            
+        }
 
     .e-dropdown-btn.e-active {
         border: none;
         color: darkblue;
+        background-size: 90% 5px;
     }
 
-    .e-dropdown-popup ul .e-item .e-menu-url{
-        background-color: darkgray;
-        backdrop-filter: blur(10px);
-        font-weight: 700;
+    .e-dropdown-popup ul .e-item .e-menu-url {
+        background: transparent;
+        font-weight: 900;
+        font-size: 16px;
         display: flex;
-        color:darkblue;
+        color: darkblue;
         text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px #fff;
     }
 
-     .e-dropdown-popup ul .e-item .e-menu-url:hover {
-        color: white;
-        text-shadow: 0 0 2.5px darkblue, 0 0 5px darkblue, 0 0 7.5px darkblue, 0 0 10px darkblue;
+        .e-dropdown-popup ul .e-item .e-menu-url:hover {
+            color: white;
+            text-shadow: 0 0 2.5px darkblue, 0 0 5px darkblue, 0 0 7.5px darkblue, 0 0 10px darkblue;
+            background: transparent;
+        }
+
+    .e-dropdown-popup ul .e-item:hover {
+        color: darkblue;
+        background: transparent;
     }
 
     .login-display-mini {
