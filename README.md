@@ -12,9 +12,6 @@ Version 2 of Bet Book NFL is updated with a better user experience, more betting
 WAGER SELECTION
 ![home](https://user-images.githubusercontent.com/95720340/201454360-b4599c3f-0ba3-4825-91b1-bf6952475510.png)
 
-GAME SELECTION
-![gametooltip](https://user-images.githubusercontent.com/95720340/200472694-a58d5928-3608-4ec9-945c-d39cf5eba6e6.png)
-
 BET SLIP CREATION
 ![wagercreation](https://user-images.githubusercontent.com/95720340/201454353-20d24b46-3b9c-4f9f-b1ff-abfcff2df0e6.png)
 
