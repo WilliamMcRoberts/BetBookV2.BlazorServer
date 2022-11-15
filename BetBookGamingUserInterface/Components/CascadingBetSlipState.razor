@@ -234,6 +234,9 @@
         return parleyBetGood;
     }
 
-    public void RemoveBetFromPreBetsList(CreateBetModel createBetModel) =>
+    public void RemoveBetFromPreBetsList(CreateBetModel createBetModel)
+    {
         PreBets.Remove(createBetModel);
+        StateHasChanged();
+    }
 }
