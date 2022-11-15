@@ -18,13 +18,13 @@
                             <div class="create-bet-model-container">
                                 <button @onclick="(() => BetSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
                                 <div class="bet-info-container">
-                                    <div class="game-bet-type">
+                                    <div class="game-bet-type-slip">
                                         <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
                                         <strong>@createBetModel.BetType</strong>
                                     </div>
                                     <div class="winner-moneyline-container">
-                                        <strong class="winner-moneyline">@createBetModel.GetWinnerSummary()</strong>
-                                        <strong class="winner-moneyline">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
+                                        <strong class="winner-moneyline-slip">@createBetModel.GetWinnerSummary()</strong>
+                                        <strong class="winner-moneyline-slip">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
                                     </div>
                                     <div class="bet-amount-input-container">
                                         <strong style="margin:.25em .25em">$</strong>
@@ -240,6 +240,30 @@
             width: 100%;
             transition: 800ms ease all;
         }
+
+        .create-bet-model-container {
+            display: flex;
+            justify-content: center;
+        }
+
+    @@media (max-width: 640px) {
+   
+        .accordion-container {
+            width: 70%;
+
+        }
+
+
+    }
+
+    @@media (max-width: 480px) {
+        .accordion-container {
+            width: 90%;
+
+        }
+    }
+
+
 </style>
 
 @code {

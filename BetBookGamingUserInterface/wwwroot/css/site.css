@@ -192,14 +192,10 @@ ul {
     .data-grid-container-profile-parley {
         width: 95%;
     }
-
-    .accordion-container {
-        width: 80%;
-    }
 }
 
 @media (max-width: 640px) {
-
+  
     .bar {
         width: 95%;
     }

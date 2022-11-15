@@ -93,7 +93,7 @@ else
         isBusy = true;
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
-        games = await gameService.GetGamesByWeek(season, week);
+        games = await gameService.GetGamesByWeek(season, 11);
         isBusy = false;
         await LoadAndVerifyUser();
     }
