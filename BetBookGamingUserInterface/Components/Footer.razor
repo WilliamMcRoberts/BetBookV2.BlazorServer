@@ -37,7 +37,7 @@
             <h6 class="title">@lisence</h6>
             <h6 class="title">@city</h6>
             <div class="link-support">
-                <a class="link-support-about" style="text-align:center;" href="mailto:support@betbookgaming.com" subject="Support Ticket">support@betbookgaming.com</a>
+                <a class="link-support-about-footer" style="text-align:center;" href="mailto:support@betbookgaming.com" subject="Support Ticket">support@betbookgaming.com</a>
             </div>
         </div>
         <div class="trust-logo">
@@ -67,13 +67,131 @@
     </div>
 </div>
 
+<style>
 
+    .social-media-icon-container {
+        display: flex;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .icon-wrap {
+        margin: 0 auto;
+    }
+
+    .icon {
+        height: 35px;
+    }
+
+    .icon-container {
+        display: flex;
+        text-decoration: none;
+        justify-content: center;
+    }
+
+    .contact-item {
+        width: 35%;
+        padding: 1em 1em;
+        text-align: center;
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+
+    .trust-logo {
+        margin-top: 4em;
+    }
+
+    .name {
+        font-size: 25px;
+        color: white;
+        margin-top: .2em;
+    }
+
+    .fb-icon {
+        height: 35px;
+        margin-right: .25em;
+    }
+
+    .footer-nav-container {
+        display: flex;
+        justify-content: space-evenly;
+        width: 90%;
+        margin-bottom: 2em;
+        margin: 0 auto;
+    }
+
+    .nav-title-game-container {
+        margin-left: 2em;
+    }
+
+    .link-support-about-footer {
+        background-image: linear-gradient(180deg, #fff, #00008b);
+        text-decoration: none;
+        font-weight: 900;
+        background-size: 0% 6px;
+        background-repeat: no-repeat;
+        background-position: left bottom;
+        color: darkblue;
+        transition: 300ms ease;
+        text-shadow: 0 0 10px #fff;
+    }
+
+        .link-support-about-footer:hover {
+            background-size: 100% 6px;
+            color: #00008b;
+        }
+
+    .footer {
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0, 0.5);
+        backdrop-filter: blur(10px);
+        width: 100%;
+        border-top: 4px solid #000;
+        margin-top: 200px;
+        color: white;
+    }
+
+    .nav-title {
+        font-size: 25px;
+        line-height: 0.70em;
+        outline: none;
+        animation: animateLabel 30s linear infinite;
+        position: relative;
+        background: none;
+        border: none;
+        display: flex;
+        letter-spacing: 0.9px;
+        width: fit-content;
+        font-weight: 900;
+        text-decoration: underline;
+    }
+
+    .footer-link {
+        margin-top: 1em;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .footer-game-item {
+        list-style-type: none;
+        margin-top: .25em;
+        margin-bottom: .25em;
+    }
+
+    .game-item-nav {
+        text-decoration: none;
+        color: #fff;
+        font-weight: 700;
+}
+
+    .game-item-nav:hover {
+        color: #000;
+        text-decoration: underline;
+    }
+</style>
 
 @code {
-
     string copyright = "\u00a9 Copyright Bet Book Gaming Inc.";
     string lisence = "All Rights Reserved. Digital Millennium Copyright Act.";
     string city = "Cincinnati, OH 45248";
-
-
 }

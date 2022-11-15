@@ -30,6 +30,51 @@ public static class CalculationHelpers
         (winner == game.AwayTeam ? (int)game.PointSpreadAwayTeamMoneyLine! : (int)game.PointSpreadHomeTeamMoneyLine!)
         : betType == BetType.OVERUNDER ? (winner[0] == 'O' ? (int)game.OverPayout! : (int)game.UnderPayout!)
         : (winner == game.AwayTeam ? (int)game.AwayTeamMoneyLine! : (int)game.HomeTeamMoneyLine!);
+
+    public static decimal CalculateSingleBetPayout(this decimal betAmount, int moneylinePayout) =>
+         moneylinePayout < 0 ? betAmount / ((decimal)moneylinePayout * -1 / 100) + betAmount
+         : ((decimal)moneylinePayout / 100) * betAmount;
+
+    public static decimal CalculatePointsAfterSpread(this GameDto game, string chosenWinner) =>
+         chosenWinner == game.HomeTeam ? 0 + (decimal)game.PointSpread!
+            : 0 - (decimal)game.PointSpread!;
+
+    public static decimal GetPayoutForTotalBetsParley(this List<CreateBetModel> betList, decimal totalWagerForParley)
+    {
+        if (betList.Count < 2) return 0;
+
+        decimal totalDecimalOdds = 1;
+
+        foreach (CreateBetModel createBetModel in betList)
+        {
+            decimal decimalMoneyline =
+                ConvertMoneylinePayoutToDecimalFormat(createBetModel.MoneylinePayout);
+
+            totalDecimalOdds *= decimalMoneyline;
+        }
+
+        return totalWagerForParley * totalDecimalOdds;
+    }
+
+    public static decimal GetPayoutForTotalBetsSingles(this List<CreateBetModel> betList)
+    {
+        decimal total = 0;
+
+        foreach (CreateBetModel createBetModel in betList)
+        {
+            decimal betPayout = createBetModel.MoneylinePayout < 0 ?
+                     createBetModel.BetAmount / ((decimal)createBetModel.MoneylinePayout * -1 / 100) + createBetModel.BetAmount
+                     : ((decimal)createBetModel.MoneylinePayout / 100) * createBetModel.BetAmount;
+
+            total += betPayout;
+        }
+
+        return total;
+    }
+
+    public static decimal ConvertMoneylinePayoutToDecimalFormat(int moneylinePayout) =>
+         moneylinePayout < 0 ? (100 / (decimal)moneylinePayout * -1) + (decimal)1
+         : ((decimal)moneylinePayout / 100) + 1;
 }
 
 #nullable restore

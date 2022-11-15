@@ -1,0 +1,127 @@
+﻿
+    @if(Game is not null)
+    {
+    <div style="display:flex;justify-content:space-evenly;">
+        <div>
+            <img style="height: 50px;" src="@($"images/{Game.AwayTeam.ToLower()}" + ".svg")" />
+            <h4 class="team-name-modal">@Game.AwayTeam</h4>
+        </div>
+        <strong class="at-modal">@@</strong>
+        <div>
+            <img style="height: 50px;" src="@($"images/{Game.HomeTeam.ToLower()}" + ".svg")" />
+            <h4 class="team-name-modal">@Game.HomeTeam</h4>
+        </div>
+    </div>
+        <div class="game-details-container">
+        
+            <div class="game-details-section">
+               
+                <div class="details-section">
+                    <strong class="detail-label">Date</strong>
+                    <strong class="detail-text">@Game.Date.ToString("M") </strong>
+                    <strong class="detail-text">@Game.Date.DayOfWeek @Game.Date.ToString("hh:mm tt")</strong>
+                </div>
+
+                <div class="details-section">
+                    <strong class="detail-label">Matchup</strong>
+                    <strong class="detail-text">@Game.AwayTeam @@ @Game.HomeTeam</strong>
+                    <strong class="detail-text">@Game.StadiumDetails.Name</strong>
+                </div>
+
+                <div class="details-section">
+                    <strong class="detail-label">Point Spread</strong>
+                    <strong class="detail-text">@Game.AwayTeam @($"{Game?.PointSpread:-#.0;+#.0;+0}") @Game.AwayTeam @($"{Game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</strong>
+                    <strong class="detail-text">@Game.HomeTeam @($"{Game?.PointSpread:+#.0;-#.0;+0}") @Game.HomeTeam @($"{Game?.PointSpreadHomeTeamMoneyLine:+#;-#;}")</strong>
+                </div>
+
+            </div>
+
+            <div class="game-details-section">
+
+                <div class="details-section">
+                    <strong class="detail-label">Moneyline</strong>
+                    <strong class="detail-text">@Game.AwayTeam @($"{Game?.AwayTeamMoneyLine:+#;-#;}")</strong>
+                    <strong class="detail-text">@Game.HomeTeam @($"{Game?.HomeTeamMoneyLine:+#;-#;}")</strong>
+                </div>
+
+                <div class="details-section">
+                    <strong class="detail-label">OverUnder</strong>
+                    <strong class="detail-text">Over @Game?.OverUnder @($"{Game?.OverPayout:+#;-#;}")</strong>
+                    <strong class="detail-text">Under @Game?.OverUnder @($"{Game?.UnderPayout:+#;-#;}")</strong>
+                </div>
+
+                <div class="details-section">
+                    <label class="detail-label">Weather</label>
+                    <strong class="detail-text">High @Game?.ForecastTempHigh &#xb0</strong>
+                    <strong class="detail-text">Low @Game?.ForecastTempLow &#xb0</strong>
+                    <strong class="detail-text">Wind @Game?.ForecastWindSpeed Mph</strong>
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+<style>
+
+    .at-modal {
+        margin-top: 1em;
+        text-align: center;
+        color: #fff;
+        text-shadow: 0 0 2.5px #000, 0 0 5px #000, 0 0 7.5px #000;
+        font-size: 1.25em;
+    }
+
+    .team-name-modal {
+        font-size: 1em;
+        text-align: center;
+        font-weight: 900;
+        color: #fff;
+        text-shadow: 0 0 2.5px #000, 0 0 5px #000, 0 0 7.5px #000;
+    }
+
+    .game-details-container {
+        display: flex;
+        justify-content: space-evenly;
+    }
+
+    .details-section {
+        display: flex;
+        flex-direction: column;
+        margin: .25em auto;
+    }
+
+    .detail-label {
+        text-transform: uppercase;
+        font-size: .85em;
+        text-decoration: underline;
+        text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000, 0 0 5px #000, 0 0 6px #000;
+    }
+
+    .detail-text {
+        font-size: .75em;
+        text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000;
+    }
+
+    .game-details-section {
+        display: flex;
+        flex-direction: column;
+        color: white;
+        font-family: sans-serif;
+        text-align: center;
+    }
+
+
+    @@media (max-width: 475px) {
+        .game-details-container {
+            flex-direction: column;
+        }
+    }
+
+</style>
+
+
+@code {
+    [Parameter]
+    public GameDto Game { get; set; }
+}

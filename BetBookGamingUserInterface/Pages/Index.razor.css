@@ -2,7 +2,7 @@
 
 
 
-#game-link {
+/*#game-link {
     position: relative;
     background-color: rgb(211,211,211, .9);
 }
@@ -42,10 +42,7 @@
         border-color: #0000 #0000 #0000 #000;
     }
 
-.date-cell {
-    padding: .5em .5em;
-    text-align: center;
-}
+
 
 .team-cell-top {
     padding: .5em .5em;
@@ -56,6 +53,6 @@
 .team-cell {
     text-align: center;
     padding: .5em .5em;
-}
+}*/
 
 

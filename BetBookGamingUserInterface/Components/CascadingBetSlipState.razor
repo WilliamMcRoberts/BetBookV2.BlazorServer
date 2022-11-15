@@ -1,0 +1,239 @@
+﻿@inject IGameService gameService 
+@inject IMongoParleyBetSlipData parleyBetSlipData
+@inject IMongoSingleBetData singleBetData
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
+
+    private List<CreateBetModel> preBets = new();
+    public List<CreateBetModel> PreBets
+    {
+        get => preBets;
+        set
+        {
+            if (preBets != value)
+            {
+                preBets = value;
+                StateHasChanged();
+            }
+        }
+    }
+
+    public bool conflictingBetsForParley;
+    public decimal totalWagerForParley;
+    public decimal totalPayoutForParley;
+    public bool parleyBetAmountBad;
+    public bool gameHasStarted;
+    public bool betAmountForSinglesBad;
+    public bool betAmountForParleyBad;
+    public string startedGameDescription;
+    public bool isSubmitting;
+    public SeasonType season;
+    public int week;
+
+    public void SelectOrRemoveWinnerAndGameForBet(string winner, GameDto game, BetType betType)
+    {
+        if (PreBets.Contains(PreBets.Where(b => b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
+                   .FirstOrDefault()!))
+        {
+            PreBets.Remove(
+            PreBets.Where(b => b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
+                   .FirstOrDefault()!);
+
+            StateHasChanged();
+            conflictingBetsForParley = CheckForConflictingBets();
+            return;
+        }
+
+        PreBets.Add(new CreateBetModel
+            {
+                Id = Guid.NewGuid(),
+                BetType = betType,
+                BetAmount = 0,
+                MoneylinePayout = winner.GetMoneylinePayoutForBet(game, betType),
+                Game = game,
+                Winner = winner,
+                PointSpread = Math.Round(Convert.ToDecimal(game.PointSpread), 1),
+                OverUnder = Math.Round(Convert.ToDecimal(game.OverUnder), 1),
+            });
+        StateHasChanged();
+        conflictingBetsForParley = CheckForConflictingBets();
+    }
+
+    public bool CheckForConflictingBets()
+    {
+        foreach (CreateBetModel cb in PreBets)
+        {
+            if (PreBets.Where(b => b.Game.ScoreID == cb.Game.ScoreID && b.BetType == cb.BetType).Count() > 1)
+                return true;
+        }
+
+        return false;
+    }
+
+    public async Task<bool> OnSubmitBetsFromSinglesBetSlip(UserModel loggedInUser)
+    {
+        if (isSubmitting || PreBets.Count < 1)
+            return false;
+
+        isSubmitting = true;
+
+        bool isSuccessful = await SubmitSingleBetsInBetsList(PreBets, loggedInUser);
+
+        isSubmitting = false;
+        gameHasStarted = false;
+
+        return isSuccessful;
+    }
+
+    private async Task<bool> SubmitSingleBetsInBetsList(
+       List<CreateBetModel> singleBetsList, UserModel loggedInUser)
+    {
+        gameHasStarted = false;
+        betAmountForSinglesBad = false;
+        season = DateTime.Now.CalculateSeason();
+        week = season.CalculateWeek(DateTime.Now);
+
+        GameDto[] gameCheckArray =
+            await gameService.GetGamesByWeek(season, week);
+
+        foreach (CreateBetModel createBetModel in singleBetsList)
+        {
+            if (createBetModel.BetAmount <= 0)
+            {
+                betAmountForSinglesBad = true;
+                return false;
+            }
+
+            GameDto game = gameCheckArray.Where(g => g.ScoreID == createBetModel.Game.ScoreID)
+                .FirstOrDefault()!;
+
+            if (game.HasStarted)
+            {
+                gameHasStarted = true;
+                startedGameDescription = $"{game.AwayTeam} at {game.HomeTeam}";
+                return false;
+            }
+
+            var singleBet = new SingleBetModel
+            {
+                WinnerChosen = createBetModel.BetType == BetType.OVERUNDER ?
+                                (createBetModel.Winner[0] == 'O' ? "Over" : "Under")
+                                : createBetModel.Winner,
+
+                BetPayout =
+                        Math.Round(createBetModel.BetAmount.CalculateSingleBetPayout(createBetModel.MoneylinePayout), 2),
+
+                BettorId = loggedInUser.UserId,
+                BetType = createBetModel.BetType,
+                BetAmount = createBetModel.BetAmount,
+                SingleBetStatus = SingleBetStatus.IN_PROGRESS,
+                SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
+                GameSnapshot = CreateGameSnapshot(createBetModel.Game),
+                PointsAfterSpread = createBetModel.Game.CalculatePointsAfterSpread(createBetModel.Winner)
+            };
+
+            await singleBetData.CreateSingleBet(singleBet);
+        }
+        return true;
+    }
+
+    public GameSnapshotModel CreateGameSnapshot(GameDto gameDto) =>
+       new GameSnapshotModel
+           {
+               Week = gameDto.Week,
+               Date = gameDto.Date,
+               AwayTeam = gameDto.AwayTeam,
+               HomeTeam = gameDto.HomeTeam,
+               PointSpread = Math.Round(Convert.ToDecimal(gameDto.PointSpread), 1),
+               OverUnder = Math.Round(Convert.ToDecimal(gameDto.OverUnder), 1),
+               AwayTeamMoneyLine = gameDto.AwayTeamMoneyLine,
+               HomeTeamMoneyLine = gameDto.HomeTeamMoneyLine,
+               PointSpreadAwayTeamMoneyLine = gameDto.PointSpreadAwayTeamMoneyLine,
+               PointSpreadHomeTeamMoneyLine = gameDto.PointSpreadHomeTeamMoneyLine,
+               ScoreID = gameDto.ScoreID,
+               OverPayout = gameDto.OverPayout,
+               UnderPayout = gameDto.UnderPayout
+           };
+
+    public async Task<bool> OnSubmitBetsFromParleyBetSlip(UserModel loggedInUser)
+    {
+        if (isSubmitting)
+            return false;
+
+        betAmountForParleyBad = false;
+        gameHasStarted = false;
+        isSubmitting = true;
+
+        if (totalWagerForParley <= 0)
+        {
+            isSubmitting = false;
+            betAmountForParleyBad = true;
+            return false;
+        }
+
+        season = DateTime.Now.CalculateSeason();
+        week = season.CalculateWeek(DateTime.Now);
+
+        GameDto[] gameCheckArray =
+            await gameService.GetGamesByWeek(season, week);
+
+        var parleyBetSlip = new ParleyBetSlipModel();
+
+        foreach (CreateBetModel createBetModel in PreBets)
+        {
+            GameDto game = gameCheckArray.Where(g => g.ScoreID == createBetModel.Game.ScoreID)
+                .FirstOrDefault()!;
+
+            if (game.HasStarted)
+            {
+                gameHasStarted = true;
+                startedGameDescription = $"{game.AwayTeam} at {game.HomeTeam}";
+                return false;
+            }
+
+            parleyBetSlip.SingleBetsForParleyList.Add(new SingleBetForParleyModel
+            {
+                WinnerChosen = createBetModel.BetType == BetType.OVERUNDER ?
+                                (createBetModel.Winner[0] == 'O' ? "Over" : "Under")
+                                : createBetModel.Winner,
+
+                PointsAfterSpread =
+                        createBetModel.Game.CalculatePointsAfterSpread(createBetModel.Winner),
+
+                BettorId = loggedInUser.UserId,
+                BetType = createBetModel.BetType,
+                SingleBetForParleyStatus = SingleBetForParleyStatus.IN_PROGRESS,
+                GameSnapshot = CreateGameSnapshot(createBetModel.Game)
+            });
+        }
+
+        parleyBetSlip.BettorId = loggedInUser.UserId;
+        parleyBetSlip.ParleyBetAmount = totalWagerForParley;
+        parleyBetSlip.ParleyBetPayout = Math.Round(totalPayoutForParley, 2);
+        parleyBetSlip.ParleyBetSlipStatus = ParleyBetSlipStatus.IN_PROGRESS;
+        parleyBetSlip.ParleyBetSlipPayoutStatus = ParleyBetSlipPayoutStatus.UNPAID;
+
+
+        bool parleyBetGood = await parleyBetSlipData.CreateParleyBetSlip(parleyBetSlip);
+
+        if(parleyBetGood)
+        {
+            totalWagerForParley = 0;
+            totalPayoutForParley = 0;
+        }
+
+        isSubmitting = false;
+        gameHasStarted = false;
+
+        return parleyBetGood;
+    }
+
+    public void RemoveBetFromPreBetsList(CreateBetModel createBetModel) =>
+        PreBets.Remove(createBetModel);
+}

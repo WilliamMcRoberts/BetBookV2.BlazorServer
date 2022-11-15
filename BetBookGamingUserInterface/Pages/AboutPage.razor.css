@@ -1,0 +1,30 @@
+﻿
+.about-about {
+    background: rgba(255,255,255,.2);
+    backdrop-filter: blur(25px);
+    border: 4px solid #000;
+    color: white;
+    width: 70%;
+    margin: 0 auto;
+    padding: 2em 2em;
+    border-radius: 50px;
+    box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
+    text-shadow: 0 0 2.5px #000, 0 0 5px #000, 0 0 7.5px #000, 0 0 10px #000;
+}
+
+.link-support-about {
+    background-image: linear-gradient(180deg, #fff, #00008b);
+    text-decoration: none;
+    font-weight: 900;
+    background-size: 0% 10px;
+    background-repeat: no-repeat;
+    background-position: left bottom;
+    color: darkblue;
+    transition: 300ms ease;
+    text-shadow: 0 0 10px #fff;
+}
+
+    .link-support-about:hover {
+        background-size: 100% 10px;
+        color: #00008b;
+    }

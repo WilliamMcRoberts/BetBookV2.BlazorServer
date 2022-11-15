@@ -1,4 +1,27 @@
 ﻿
+.data-grid-container-profile {
+    width: 70%;
+    margin: 0 auto;
+    border: 4px solid #000;
+    border-top: none;
+    box-shadow: 7.5px 7.5px 20px black;
+}
+
+.teams-single {
+    text-align: center;
+}
+
+    .teams-single:hover {
+        background-color: darkgray;
+        cursor: pointer;
+        color: darkblue;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        box-shadow: 0 0 10px rgb(0,0,0);
+    }
+
 #wager-link {
     position: relative;
 }

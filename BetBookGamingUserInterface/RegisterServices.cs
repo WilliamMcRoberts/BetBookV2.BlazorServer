@@ -32,11 +32,7 @@ public static class RegisterServices
         builder.Services.AddHostedService<UpdateParleyBetsTimer>();
         StripeConfiguration.ApiKey = builder.Configuration[key: "Stripe:SecretKey"];
 
-        builder.Services.AddScoped<BetSlipState>();
-
-
         builder.Services.AddSingleton<IGameService, GameService>();
-
 
         builder.Services.AddHttpClient("sportsdata", client =>
         {

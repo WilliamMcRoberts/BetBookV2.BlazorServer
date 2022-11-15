@@ -1,8 +1,6 @@
-﻿@inject BetSlipState betSlip
-@inject ProtectedLocalStorage localStorage
+﻿@inject ProtectedLocalStorage localStorage
 @inject IMongoUserData userData
 @inject IJSRuntime js
-
 
 <div class="accordion-container">
     <SfAccordion ID="AccordionElement" @ref="@Accordion">
@@ -15,17 +13,17 @@
                 <ContentTemplate>
                     <div style="padding:10px">
 
-                        @foreach (CreateBetModel createBetModel in betSlip.preBets)
+                        @foreach (CreateBetModel createBetModel in BetSlip.PreBets)
                         {
                             <div class="create-bet-model-container">
-                                <button @onclick="(() => betSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                <button @onclick="(() => BetSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
                                 <div class="bet-info-container">
                                     <div class="game-bet-type">
                                         <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
                                         <strong>@createBetModel.BetType</strong>
                                     </div>
                                     <div class="winner-moneyline-container">
-                                        <strong class="winner-moneyline">@betSlip.GetWinnerSummary(createBetModel)</strong>
+                                        <strong class="winner-moneyline">@createBetModel.GetWinnerSummary()</strong>
                                         <strong class="winner-moneyline">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
                                     </div>
                                     <div class="bet-amount-input-container">
@@ -38,18 +36,18 @@
 
                         <div style="text-align:center;margin:1em 1em;">
                             <strong>Total Singles Payout</strong>
-                            <strong>$@betSlip.GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
+                            <strong>$@BetSlip.PreBets.GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
                         </div>
 
-                        @if (betSlip.gameHasStarted)
+                        @if (BetSlip.gameHasStarted)
                         {
-                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @betSlip.startedGameDescription has already started *</h6>
+                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @BetSlip.startedGameDescription has already started *</h6>
                         }
                         @if (userStatusBad)
                         {
                             <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
                         }
-                        @if (betSlip.betAmountForSinglesBad)
+                        @if (BetSlip.betAmountForSinglesBad)
                         {
                             <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
                         }
@@ -68,17 +66,17 @@
                 <ContentTemplate>
                     <div style="padding:10px">
 
-                        @foreach (CreateBetModel createBetModel in betSlip.preBets)
+                        @foreach (CreateBetModel createBetModel in BetSlip.PreBets)
                         {
                             <div class="create-bet-model-container">
-                                <button @onclick="(() => betSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                <button @onclick="(() => BetSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
                                 <div class="bet-info-container">
                                     <div class="game-bet-type-parley">
                                         <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
                                         <strong>@createBetModel.BetType</strong>
                                     </div>
                                     <div class="winner-moneyline-container-parley">
-                                        <strong class="winner-moneyline-parley">@betSlip.GetWinnerSummary(createBetModel)</strong>
+                                        <strong class="winner-moneyline-parley">@createBetModel.GetWinnerSummary()</strong>
                                         <strong class="winner-moneyline-parley">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
                                     </div>
                                 </div>
@@ -91,13 +89,13 @@
                                 <strong style="text-align:center;">Wager Amount</strong>
                                 <div style="display:flex;justify-content:center;">
                                     <strong style="margin:.25em .25em">$</strong>
-                                    <input class="bet-amount-input" type="number" @bind-value="@betSlip.totalWagerForParley" @bind-value:event="oninput" />
+                                    <input class="bet-amount-input" type="number" @bind-value="@BetSlip.totalWagerForParley" @bind-value:event="oninput"/>
                                 </div>
                             </div>
 
                             <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
                                 <strong>Total Parley Payout</strong>
-                                <strong>$@betSlip.GetPayoutForTotalBetsParley().ToString("#,##0.00")</strong>
+                                <strong>$@BetSlip.PreBets.GetPayoutForTotalBetsParley(BetSlip.totalPayoutForParley).ToString("#,##0.00")</strong>
                             </div>
 
                         </div>
@@ -110,17 +108,17 @@
                         {
                             <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
                         }
-                        @if (betSlip.betAmountForParleyBad && betSlip.totalWagerForParley <= 0)
+                        @if (BetSlip.betAmountForParleyBad && BetSlip.totalWagerForParley <= 0)
                         {
                             <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Must Have A Wager Amount *</h6>
                         }
-                        @if (betSlip.conflictingBetsForParley)
+                        @if (BetSlip.conflictingBetsForParley)
                         {
                             <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
                         }
-                        @if (betSlip.gameHasStarted)
+                        @if (BetSlip.gameHasStarted)
                         {
-                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @betSlip.startedGameDescription has already started *</h6>
+                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @BetSlip.startedGameDescription has already started *</h6>
                         }
 
                         <div class="frame">
@@ -134,21 +132,132 @@
     </SfAccordion>
 </div>
 
+<style>
+
+    /******************************************
+                Accordion
+    ******************************************/
+
+    .accordion-container {
+        width: 50%;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    #AccordionItem {
+        background-color: rgb(255,255,255, .15);
+        border-radius: 10px;
+        margin: .5em;
+        backdrop-filter: blur(25px);
+        border: 2px solid #000;
+        background: none;
+    }
+
+    #AccordionElement {
+        font-weight: 700;
+        background: none;
+        border: none;
+        width: 100%;
+    }
+
+    .e-accordion .e-acrdn-item.e-select > .e-acrdn-header {
+        border: none;
+        backdrop-filter: blur(25px);
+        box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
+    }
+
+    .e-accordion .e-acrdn-item .e-acrdn-header .e-toggle-icon .e-icons {
+        color: rgb(255,99,71);
+        border: none;
+        background: none;
+    }
+
+    /************************************************
+                End Accordion
+    ************************************************/
+
+
+    .bet-amount-input {
+        border: 2px solid black;
+        width: auto;
+    }
+
+    .custom-btn {
+        width: 130px;
+        height: 40px;
+        color: #fff;
+        border-radius: 5px;
+        padding: 10px 25px;
+        font-family: 'Lato', sans-serif;
+        font-weight: 500;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: inline-block;
+        box-shadow: inset 2px 2px 2px 0px rgba(255,255,255,.5), 7px 7px 20px 0px rgba(0,0,0,.1), 4px 4px 5px 0px rgba(0,0,0,.1);
+        outline: none;
+    }
+
+    .btn-submit-wager {
+        width: 130px;
+        height: 40px;
+        line-height: 42px;
+        padding: 0;
+        border: none;
+        background: rgb(255,27,0);
+        background: linear-gradient(0deg, rgba(255,27,0,1) 0%, rgba(251,75,2,1) 100%);
+    }
+
+        .btn-submit-wager:hover {
+            color: #f0094a;
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .btn-submit-wager:before,
+        .btn-submit-wager:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 2px;
+            width: 0;
+            background: #f0094a;
+            box-shadow: -1px -1px 5px 0px #fff, 7px 7px 20px 0px #0003, 4px 4px 5px 0px #0002;
+            transition: 400ms ease all;
+        }
+
+        .btn-submit-wager:after {
+            right: inherit;
+            top: inherit;
+            left: 0;
+            bottom: 0;
+        }
+
+        .btn-submit-wager:hover:before,
+        .btn-submit-wager:hover:after {
+            width: 100%;
+            transition: 800ms ease all;
+        }
+</style>
 
 @code {
+
     private SfAccordion Accordion;
     private bool userStatusBad;
     private bool showToastSingle;
-    private bool parleyBetCountBad => betSlip.preBets.Count < 2;
+    private bool parleyBetCountBad => BetSlip.PreBets.Count < 2;
     private bool showToastParley;
-
-
-
+    private decimal totalParleyPayout;
     private bool ExpandSinglesBetSlip { get; set; }
     private bool ExpandParleyBetSlip { get; set; }
 
     [CascadingParameter]
     public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    [CascadingParameter]
+    public CascadingBetSlipState BetSlip { get; set; }
 
     [Parameter]
     public EventCallback OnValidSubmit { get; set; }
@@ -170,11 +279,11 @@
             return;
         }
 
-        showToastSingle = await betSlip.OnSubmitBetsFromSinglesBetSlip(LoggedInUser);
+        showToastSingle = await BetSlip.OnSubmitBetsFromSinglesBetSlip(LoggedInUser);
 
         if (showToastSingle)
         {
-            //await ToastObj.ShowAsync();
+            BetSlip.PreBets.Clear();
             await OnValidSubmit.InvokeAsync();
             await localStorage.DeleteAsync("CurrentBetSlip");
             LoggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
@@ -183,7 +292,7 @@
 
     private async Task SubmitParleyBetSlip()
     {
-        if (betSlip.preBets.Count < 2) return;
+        if (BetSlip.PreBets.Count < 2) return;
 
         if (LoggedInUser.AccountBalance == 0)
         {
@@ -191,23 +300,20 @@
             return;
         }
 
-        if (betSlip.CheckForConflictingBets())
+        if (BetSlip.CheckForConflictingBets())
         {
             await js.InvokeVoidAsync("alert", "You have conflicting bets in your bet slip...cannot submit parley wager.", "OK");
             return;
         }
 
-        showToastParley = await betSlip.OnSubmitBetsFromParleyBetSlip(LoggedInUser);
+        showToastParley = await BetSlip.OnSubmitBetsFromParleyBetSlip(LoggedInUser);
 
         if (showToastParley)
         {
-            //await ToastObj.ShowAsync();
+            BetSlip.PreBets.Clear();
             await OnValidSubmit.InvokeAsync();
             await localStorage.DeleteAsync("CurrentBetSlip");
             LoggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
         }
     }
-
-
-
 }

@@ -1,196 +1,30 @@
 ﻿@page "/"
-@inject NavigationManager navManager
 @inject ILogger<Index> logger
 @inject IMongoUserData userData
-@inject IMongoSingleBetData singleBetData
-@inject IMongoParleyBetSlipData parleyBetSlipData
 @inject IGameService gameService
-@inject BetSlipState betSlip
-@inject ProtectedLocalStorage localStorage
 
 <PageTitle>Home</PageTitle>
 
-@if(isBusy)
+@if(!isBusy)
 {
-    <LoadingSpinnerCircle />
+    <FootballSpinners />
+
+    <AccordionBetSlip OnValidSubmit="@ShowToast" LoggedInUser="loggedInUser" />
+
+    <GamesDisplay Games="games" />
 }
 
 else 
 {
-    <FootballSpinners/>
-
-    <AccordionBetSlip OnValidSubmit="@ShowToast" LoggedInUser="loggedInUser"/>
-
-    <div class="bar">
-        <div style="margin:.5em;">
-            <label class="grad-title-week" style="margin:.35em auto;font-weight: 900;">Week @week</label>
-        </div>
-    </div>
-
-    <div class="data-grid-container">
-        <SfGrid ID="DataGrid" DataSource="@games?.OrderBy(g => g.DateTime)">
-            <GridColumns>
-                <GridColumn Width="80"
-                        HeaderText="Date"
-                        TextAlign="TextAlign.Center">
-                </GridColumn>
-                <GridColumn Width="90"
-                        HeaderText="Game"
-                        TextAlign="TextAlign.Center">
-                </GridColumn>
-                <GridColumn HeaderText="Point Spread"
-                        TextAlign="TextAlign.Center">
-                </GridColumn>
-                <GridColumn HeaderText="Moneyline"
-                        TextAlign="TextAlign.Center">
-                </GridColumn>
-                <GridColumn HeaderText="Over/Under"
-                        TextAlign="TextAlign.Center">
-                </GridColumn>
-            </GridColumns>
-            <GridTemplates>
-                <RowTemplate>
-                    @{
-                        var game = (context as GameDto);
-
-                        if (game?.HasStarted == false)
-                        {
-
-                            <td class="@GetCellClass(game!) ">
-                                <div class="date-cell">
-                                    <strong>@game?.Date.ToString("M-d")</strong>
-                                </div>
-                                <div class="date-cell">
-                                    <strong>@game?.Date.ToString("h:mm")</strong>
-                                </div>
-                            </td>
-
-                            <td id="game-link" class="@GetCellClass(game!) ">
-                                                                        
-                                <span id="tooltipGameContent">Game Details</span>
-                                <a href="@($"/GameWagers/{game.ScoreID}")">
-                                    <div class="teams-bottom">
-                                        <div class="team-cell-top">
-                                            <img class="team-icon-top-row" src="@($"images/{game?.AwayTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.AwayTeam</strong>
-                                        </div>
-                                        <div class="team-cell">
-                                            <strong class="at-sign">@@</strong><img class="team-icon-bottom-row" src="@($"images/{game?.HomeTeam.ToLower()}" + ".svg")" /> <strong class="team-name">@game?.HomeTeam</strong>
-                                        </div>
-                                    </div>
-                                </a>
-                            </td>
-
-                        <td class="@GetCellClass(game!)">
-                                <div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.POINTSPREAD))"
-                         class="@GetCellClass(game!.AwayTeam, game, BetType.POINTSPREAD) cell-btn">
-                                    <div style="display: flex;justify-content: space-evenly;">
-                                        <strong style="margin-right:.5em;">@($"{game.PointSpread:-#.0;+#.0;+0}")</strong>
-                                        <strong>@($"{game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</strong>
-                                    </div>
-                                    </div>
-                                <div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.POINTSPREAD))"
-                                    class="@GetCellClass(game!.HomeTeam, game, BetType.POINTSPREAD) cell-btn">
-                                    <div style="display:flex;justify-content:space-evenly;">
-                                        <strong style="margin-right:.5em;">@($"{game.PointSpread:+#.0;-#.0;+0}")</strong>
-                                        <strong>@($"{game?.PointSpreadHomeTeamMoneyLine:+#;-#;}")</strong>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="@GetCellClass(game!)" style="text-align:center;">
-                                <div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.MONEYLINE))"
-                                    class="@GetCellClass(game!.AwayTeam, game, BetType.MONEYLINE) cell-btn">
-                                    <strong>@($"{game?.AwayTeamMoneyLine:+#;-#;}")</strong>
-                                </div>
-                                <div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.MONEYLINE))"
-                                    class="@GetCellClass(game!.HomeTeam, game, BetType.MONEYLINE) cell-btn">
-                                    <strong>@($"{game?.HomeTeamMoneyLine:+#;-#;}")</strong>
-                                </div>
-                            </td>
-                            <td class="@GetCellClass(game!)">
-                                <div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
-                                    class="@GetCellClass(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) cell-btn">
-                                    <div style="display:flex;justify-content:space-evenly;">
-                                        <strong>Over @game?.OverUnder</strong>
-                                        <strong>@($"{game?.OverPayout:+#;-#;}")</strong>
-                                    </div>
-                                </div>
-                                <div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))"
-                                    class="@GetCellClass(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) cell-btn">
-                                    <div style="display:flex;justify-content:space-evenly;">
-                                        <strong>Under @game?.OverUnder</strong>
-                                        <strong>@($"{game?.UnderPayout:+#;-#;}")</strong>
-                                    </div>
-                                </div>
-                            </td>
-                        }
-                    }
-                </RowTemplate>
-            </GridTemplates>
-        </SfGrid>
-    </div>
-
-    <div class="data-grid-container-mini">
-        <SfGrid ID="DataGrid" DataSource="@games?.OrderBy(g => g.DateTime)">
-            <GridColumns>
-                <GridColumn Width="80"
-                        HeaderText="Date"
-                        TextAlign="TextAlign.Center">
-                </GridColumn>
-                <GridColumn Width="90"
-                        HeaderText="Game"
-                        TextAlign="TextAlign.Center">
-                </GridColumn>
-                <GridColumn HeaderText="Wagers"
-                        TextAlign="TextAlign.Center">
-                </GridColumn>
-            </GridColumns>
-            <GridTemplates>
-                <RowTemplate>
-                    @{
-                        var game = (context as GameDto);
-                        if (game?.HasStarted == false)
-                        {
-                            <td class="@GetCellClass(game!)">
-                                <div class="date-cell">
-                                    <strong>@game?.Date.ToString("M-d")</strong>
-                                </div>
-                                <div class="date-cell">
-                                    <strong>@game?.Date.ToString("h:mm")</strong>
-                                </div>
-                            </td>
-                            <td id="game-link" class="@GetCellClass(game!)">
-                                <span id="tooltipGameContent">Game Details</span>
-                                <a href="@($"/GameWagers/{game.ScoreID}")">
-                                    <div class="teams-bottom">
-                                        <div class="team-cell-top">
-                                            <img class="team-icon-top-row" src="@($"images/{game?.AwayTeam.ToLower()}" + ".svg")" /> <strong class="team-name-index">@game?.AwayTeam</strong>
-                                        </div>
-                                        <div class="team-cell">
-                                            <strong class="at-sign-index">@@</strong><img class="team-icon-bottom-row" src="@($"images/{game?.HomeTeam.ToLower()}" + ".svg")" /> <strong class="team-name-index">@game?.HomeTeam</strong>
-                                        </div>
-                                    </div>
-                                </a>
-                            </td>
-                            <td class="@GetCellClass(game!)">
-                                <a href="@($"/GameWagers/{game.ScoreID}")">
-                                    <div class="clickable-cell cell-btn">
-                                        <strong>Wagers</strong>
-                                    </div>
-                                </a>
-                            </td>
-                        }
-                    }
-                </RowTemplate>
-            </GridTemplates>
-        </SfGrid>
-    </div>
+    <LoadingSpinnerCircle />
 }
 
-<SfToast @ref="ToastObj" Timeout="@time" ShowCloseButton="true" Title="Good Luck On Your New Wager!" Content="@Content">
+<SfToast @ref="ToastObj" Timeout="@time" ShowCloseButton="true" 
+    Title="Good Luck On Your New Wager!" Content="@Content">
     <ToastPosition X="Right" Y="Bottom"></ToastPosition>
     <ToastAnimationSettings>
-        <ToastShowAnimationSettings Effect="@ShowAnimation"></ToastShowAnimationSettings>
-        <ToastHideAnimationSettings Effect="@HideAnimation"></ToastHideAnimationSettings>
+        <ToastShowAnimationSettings Effect="@ShowAnimation" />
+        <ToastHideAnimationSettings Effect="@HideAnimation" />
     </ToastAnimationSettings>
 </SfToast>
 
@@ -224,6 +58,9 @@ else
 
 @code {
 
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
     #region Toast
 
     public SfToast ToastObj;
@@ -231,13 +68,6 @@ else
     private ToastEffect ShowAnimation = ToastEffect.FadeIn;
     private ToastEffect HideAnimation = ToastEffect.FadeOut;
     private string Content => $"Thank you for choosing Bet Book.";
-
-    #endregion
-
-    #region Properties
-
-    [CascadingParameter]
-    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
     #endregion
 
@@ -253,7 +83,6 @@ else
     #region Collections
 
     private GameDto[] games;
-    private List<CreateBetModel> betList = new();
 
     #endregion
 
@@ -271,47 +100,12 @@ else
 
     #endregion
 
-    #region OnAfterRenderAsync
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await CheckForSavedBetSlip();
-        }
-    }
-
-    #endregion
-
     #region Other Methods
 
     private async Task ShowToast()
     {
         await ToastObj.ShowAsync();
     }
-
-    private async Task ChooseOrRemoveWager(string winner, GameDto game, BetType betType)
-    {
-        betSlip.SelectOrRemoveWinnerAndGameForBet(winner, game, betType);
-        await localStorage.SetAsync("CurrentBetSlip", betSlip.preBets);
-    }
-
-    private async Task CheckForSavedBetSlip()
-    {
-        var result = await localStorage.GetAsync<List<CreateBetModel>>("CurrentBetSlip");
-
-        if (result.Success && result.Value.Any())
-        {
-            betSlip.preBets = result.Value;
-        }
-    }
-
-    public string GetCellClass(string winner, GameDto game, BetType betType) => betSlip.preBets.Contains(
-        betSlip.preBets.Where(b =>b.Winner == winner && b.Game.ScoreID == game.ScoreID && b.BetType == betType)
-            .FirstOrDefault()!) ? "clickable-cell-active" : "clickable-cell";
-
-    private string GetCellClass(GameDto game) => games.IndexOf(game) == games.Length - 1 ? 
-        "bottom-row-cell" : "cell";
 
     private async Task LoadAndVerifyUser()
     {
