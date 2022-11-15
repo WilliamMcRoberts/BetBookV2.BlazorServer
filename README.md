@@ -10,26 +10,23 @@
 Version 2 of Bet Book NFL is updated with a better user experience, more betting styles, and professional wagers. A $10,000 paper account is provided upon account creation. Enjoy!
 
 WAGER SELECTION
-![home](https://user-images.githubusercontent.com/95720340/201454360-b4599c3f-0ba3-4825-91b1-bf6952475510.png)
+![homepage](https://user-images.githubusercontent.com/95720340/201810180-0816494f-b940-41c0-9b8d-3070fc391e03.png)
 
 BET SLIP CREATION
-![wagercreation](https://user-images.githubusercontent.com/95720340/201454353-20d24b46-3b9c-4f9f-b1ff-abfcff2df0e6.png)
+![create](https://user-images.githubusercontent.com/95720340/201810167-0ad0b742-d756-4c14-9c7c-5e12c2fe47dc.png)
 
-GAME DETAILS
-![details](https://user-images.githubusercontent.com/95720340/201454349-883b2502-3b4f-446a-83d4-be20457441d8.png)
+GAME DETAILS MODAL 
+![gamedetailsmodal](https://user-images.githubusercontent.com/95720340/201810158-008de4b4-a210-4426-b079-33141c323776.png)
 
 SINGLE BETS PROFILE
-![singlehistory](https://user-images.githubusercontent.com/95720340/201454346-bf1a44aa-9438-442f-81fe-1e95fbf346de.png)
-
-PARLEY BETS PROFILE
-![parleywagertooltip](https://user-images.githubusercontent.com/95720340/200472678-512ba239-98dc-4a8e-b898-e4803fd73094.png)
+![singlehis](https://user-images.githubusercontent.com/95720340/201810151-9d1e7997-5c9f-4e9c-8604-c58190a5e1e5.png)
 
 WAGER HISTORY POPUP MODAL
-![modalsingle](https://user-images.githubusercontent.com/95720340/200454169-f79b20fa-69b3-43fb-be17-f2ffb20603e1.png)
+![wagerdetailsmodal](https://user-images.githubusercontent.com/95720340/201810139-6c32df6b-a1e6-4224-866b-943a69b0119b.png)
 
 WAGER HISTORY POPUP MODAL FOR PARLEY
-![modalparley](https://user-images.githubusercontent.com/95720340/200454175-0eeb9af9-9464-41c9-b35e-927570486439.png)
+![pwagerdetailsmodal](https://user-images.githubusercontent.com/95720340/201810127-5384237b-2122-4ddd-b7c6-25c614705e20.png)
 
 ABOUT PAGE
-![about](https://user-images.githubusercontent.com/95720340/199785127-4dc2a956-e0f7-4493-87a5-010393c7cb7b.png)
+![about](https://user-images.githubusercontent.com/95720340/201810186-4e925f98-6fce-4a7e-8879-0743ae260490.png)
 
