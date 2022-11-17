@@ -26,12 +26,14 @@
                     <strong class="detail-label">Matchup</strong>
                     <strong class="detail-text">@Game.AwayTeam @@ @Game.HomeTeam</strong>
                     <strong class="detail-text">@Game.StadiumDetails.Name</strong>
+                    <strong class="detail-text">Surface: @Game.StadiumDetails.PlayingSurface</strong>
+                    <strong class="detail-text">@Game.StadiumDetails.Type</strong>
                 </div>
 
                 <div class="details-section">
                     <strong class="detail-label">Point Spread</strong>
-                    <strong class="detail-text">@Game.AwayTeam @($"{Game?.PointSpread:-#.0;+#.0;+0}") @Game.AwayTeam @($"{Game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</strong>
-                    <strong class="detail-text">@Game.HomeTeam @($"{Game?.PointSpread:+#.0;-#.0;+0}") @Game.HomeTeam @($"{Game?.PointSpreadHomeTeamMoneyLine:+#;-#;}")</strong>
+                    <strong class="detail-text">@Game.AwayTeam @($"{Game?.PointSpread:-#.0;+#.0;+0}") @($"{Game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</strong>
+                    <strong class="detail-text">@Game.HomeTeam @($"{Game?.PointSpread:+#.0;-#.0;+0}") @($"{Game?.PointSpreadHomeTeamMoneyLine:+#;-#;}")</strong>
                 </div>
 
             </div>
