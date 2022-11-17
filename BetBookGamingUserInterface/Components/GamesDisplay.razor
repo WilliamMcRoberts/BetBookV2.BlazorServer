@@ -29,7 +29,7 @@
 			<div class="column-box">
 				<strong class="bet-type-title"><span class="bet-type-title-text">PointSpread</span></strong>
 				<div class="button-box">
-					<span id="tooltipWagerButtonContentPointSpread">@(IsInBetMemPool(game!.AwayTeam, game, BetType.POINTSPREAD) ? "Remove Wager" : "Select Wager")</span>
+					<span id="tooltipWagerButtonContentPointSpread">@(IsInBetMemPool(game!.AwayTeam, game, BetType.POINTSPREAD) ? $"Remove {game!.AwayTeam} {game.PointSpread:-#.0;+#.0;+0}" : $"Select {game!.AwayTeam} {game.PointSpread:-#.0;+#.0;+0}")</span>
 					<div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@(IsInBetMemPool(game!.AwayTeam, game, BetType.POINTSPREAD) ? "bet-btn-container-active" : "bet-btn-container")">
 						<span id="span-btn"></span>
 						<span id="span-btn"></span>
@@ -42,7 +42,7 @@
 					</div>
 				</div>
 				<div class="button-box">
-					<span id="tooltipWagerButtonContentPointSpread">@(IsInBetMemPool(game!.HomeTeam, game, BetType.POINTSPREAD) ? "Remove Wager" : "Select Wager")</span>
+					<span id="tooltipWagerButtonContentPointSpread">@(IsInBetMemPool(game!.HomeTeam, game, BetType.POINTSPREAD) ? $"Remove {game!.HomeTeam} {game.PointSpread:+#.0;-#.0;+0}" : $"Select {game!.HomeTeam} {game.PointSpread:+#.0;-#.0;+0}")</span>
 					<div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@(IsInBetMemPool(game!.HomeTeam, game, BetType.POINTSPREAD) ? "bet-btn-container-active" : "bet-btn-container")">
 						<span id="span-btn"></span>
 						<span id="span-btn"></span>
@@ -57,7 +57,7 @@
 			<div class="column-box">
 				<strong class="bet-type-title"><span class="bet-type-title-text">Moneyline</span></strong>
 				<div class="button-box">
-					<span id="tooltipWagerButtonContentMoneyline">@(IsInBetMemPool(game!.AwayTeam, game, BetType.MONEYLINE) ? "Remove Wager" : "Select Wager")</span>
+					<span id="tooltipWagerButtonContentMoneyline">@(IsInBetMemPool(game!.AwayTeam, game, BetType.MONEYLINE) ? $"Remove {game!.AwayTeam}" : $"Select {game!.AwayTeam}")</span>
 					<div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.MONEYLINE))" class="@(IsInBetMemPool(game!.AwayTeam, game, BetType.MONEYLINE) ? "bet-btn-container-active" : "bet-btn-container")">
 						<span id="span-btn"></span>
 						<span id="span-btn"></span>
@@ -69,7 +69,7 @@
 					</div>
 				</div>
 				<div class="button-box">
-					<span id="tooltipWagerButtonContentMoneyline">@(IsInBetMemPool(game!.HomeTeam, game, BetType.MONEYLINE) ? "Remove Wager" : "Select Wager")</span>
+					<span id="tooltipWagerButtonContentMoneyline">@(IsInBetMemPool(game!.HomeTeam, game, BetType.MONEYLINE) ? $"Remove {game!.HomeTeam}" : $"Select {game!.HomeTeam}")</span>
 					<div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.MONEYLINE))" class="@(IsInBetMemPool(game!.HomeTeam, game, BetType.MONEYLINE) ? "bet-btn-container-active" : "bet-btn-container")">
 						<span id="span-btn"></span>
 						<span id="span-btn"></span>
@@ -84,8 +84,7 @@
 			<div class="column-box">
 				<strong class="bet-type-title"><span class="bet-type-title-text">OverUnder</span></strong>
 				<div class="button-box">
-					<span id="tooltipWagerButtonContentOverUnder">@(IsInBetMemPool(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "Remove Wager" : "Select Wager")</span>
-
+					<span id="tooltipWagerButtonContentOverUnder">@(IsInBetMemPool(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? $"Remove O {game?.OverUnder}" : $"Select O {game?.OverUnder}")</span>
 					<div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@(IsInBetMemPool(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "bet-btn-container-active" : "bet-btn-container")">
 						<span id="span-btn"></span>
 						<span id="span-btn"></span>
@@ -97,8 +96,7 @@
 					</div>
 				</div>
 				<div class="button-box">
-					<span id="tooltipWagerButtonContentOverUnder">@(IsInBetMemPool(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "Remove Wager" : "Select Wager")</span>
-
+					<span id="tooltipWagerButtonContentOverUnder">@(IsInBetMemPool(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? $"Remove U {game?.OverUnder}" : $"Select U {game?.OverUnder}")</span>
 					<div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@(IsInBetMemPool(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "bet-btn-container-active" : "bet-btn-container")">
 						<span id="span-btn"></span>
 						<span id="span-btn"></span>
@@ -118,9 +116,9 @@
 
 	#tooltipWagerButtonContentPointSpread {
 		position: absolute;
-		left: 35%;
+		left: 34.5%;
 		top: 30%;
-		transform: translateX(-35%);
+		transform: translateX(-34.5%);
 		transform: translateY(30%);
 		background-color: rgb(0, 0, 0);
 		color: #fff;
@@ -135,9 +133,9 @@
 
 	#tooltipWagerButtonContentMoneyline {
 		position: absolute;
-		left: 57%;
+		left: 57.5%;
 		top: 30%;
-		transform: translateX(-57%);
+		transform: translateX(-57.5%);
 		transform: translateY(30%);
 		background-color: rgb(0, 0, 0);
 		color: #fff;
@@ -152,9 +150,9 @@
 
 	#tooltipWagerButtonContentOverUnder {
 		position: absolute;
-		left: 78%;
+		left: 78.5%;
 		top: 30%;
-		transform: translateX(-78%);
+		transform: translateX(-78.5%);
 		transform: translateY(30%);
 		background-color: rgb(0, 0, 0);
 		color: #fff;
@@ -518,10 +516,8 @@
 			left: 0;
 			width: 27.5%;
 			height: 100%;
-			/*backdrop-filter: blur(10px);*/
 			box-shadow: 0 0 5px 2px rgba(0,0, 0, .9);
 			background-color: rgba(0, 0, 0, .35);
-			/*background: rgb(0, 0, 0);*/
 	}
 
 		.game-container:nth-of-type(even) {
@@ -564,8 +560,8 @@
 		}
 
 		#tooltipWagerButtonContentMoneyline {
-			transform: translateX(-50.5%);
-			left: 50.5%;
+			transform: translateX(-52%);
+			left: 52%;
 			font-size: .45em;
 			padding: 3px 6px;
 			transform: translateY(40%);
