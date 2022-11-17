@@ -269,7 +269,7 @@
 				top: 0;
 				left: 0;
 				width: 0;
-				height: 1.5px;
+				height: 1px;
 				background: #000;
 			}
 
@@ -282,7 +282,7 @@
 			bottom: 0;
 			right: 0;
 			width: 0;
-			height: 1.5px;
+			height: 1px;
 			background: #000;
 		}
 
@@ -294,7 +294,7 @@
 		.bet-btn-container-active #span-btn:nth-child(2) {
 			top: 0;
 			left: 0;
-			width: 1.5px;
+			width: 1px;
 			height: 0;
 			background: #000;
 		}
@@ -307,7 +307,7 @@
 		.bet-btn-container-active #span-btn:nth-child(4) {
 			bottom: 0;
 			right: 0;
-			width: 1.5px;
+			width: 1px;
 			height: 0;
 			background: #000;
 		}
@@ -499,7 +499,7 @@
 		background: rgba(255,255,255,.2);
 		box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
 		backdrop-filter:blur(25px);
-		border: 4px solid #000;
+		border: 3px solid #000;
         width: 70%;
         margin: .5em auto;
         border-radius: 10px;
@@ -513,13 +513,16 @@
 	.game-container:before {
 			content: '';
 			position: absolute;
-			border-right: 2px solid rgba(0,0,0,.5);
+			border-right: 3px solid rgba(0,0,0, .8);
 			top: 0;
 			left: 0;
 			width: 27.5%;
 			height: 100%;
-			backdrop-filter: blur(10px);
-		}
+			/*backdrop-filter: blur(10px);*/
+			box-shadow: 0 0 5px 2px rgba(0,0, 0, .9);
+			background-color: rgba(0, 0, 0, .35);
+			/*background: rgb(0, 0, 0);*/
+	}
 
 		.game-container:nth-of-type(even) {
 			transform: translateX(-400%);
