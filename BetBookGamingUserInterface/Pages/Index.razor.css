@@ -1,7 +1,7 @@
 ﻿
 
 #hiddenContent {
-    overflow-y: hidden;
+    overflow: hidden;
 }
 
 .scroll-text {
