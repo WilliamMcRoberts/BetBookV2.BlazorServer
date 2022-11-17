@@ -10,11 +10,19 @@
 {
     <FootballSpinners />
 
-    <AccordionBetSlip OnValidSubmit="@ShowToast" LoggedInUser="loggedInUser" />
+    <div id="scrollBox" class="scroll-box">
+        <h2 class="scroll-text">Scroll Down</h2>
+        <img class="scroll-img" src="/images/arrowdown.png" />
+        <h2 class="scroll-text">For Games</h2>
+    </div>
 
-    
-    <GamesDisplay Games="games" />
-
+    <div class="b-slip">
+        <AccordionBetSlip OnValidSubmit="@ShowToast" LoggedInUser="loggedInUser" />
+    </div>
+        
+    <div id="hiddenContent">
+        <GamesDisplay Games="games" />
+    </div>
 }
 
 else 
@@ -33,7 +41,15 @@ else
 
 <style>
 
-    
+    .b-slip {
+        position: fixed;
+        z-index: 3;
+        /*top: 0;*/
+        right: 0;
+        bottom: 0;
+        left: 0;
+        visibility: @(BetSlip.PreBets.Count > 0 ? "visible" : "hidden");
+    }
 
     .e-grid .e-spinner-pane {
         display: none;
@@ -66,6 +82,9 @@ else
     [CascadingParameter]
     public Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
+    [CascadingParameter]
+    public CascadingBetSlipState BetSlip { get; set; }
+
     #region Toast
 
     public SfToast ToastObj;
@@ -78,6 +97,7 @@ else
 
     #region Fields
 
+    private bool betSlipVisible;
     private bool isBusy;
     private UserModel loggedInUser;
     private int week;
@@ -99,10 +119,7 @@ else
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
         games = await gameService.GetGamesByWeek(season, week);
-        
         isBusy = false;
-        await sb.UpdateFinishedSingleBets(11, SeasonType.REG, gameService);
-
         await LoadAndVerifyUser();
     }
 

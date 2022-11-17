@@ -1,7 +1,7 @@
 ﻿@inject AuthenticationStateProvider authProvider
 @inject IMongoUserData userData
 
-<div id="header" class="headernew px-5 pt-3 nav-links">
+<header id="header" class="headernew px-5 pt-3 nav-links">
 
     <a href="/" class="icon-container">
             <image class="fb-icon" src="/images/fbicon.png" />
@@ -12,7 +12,7 @@
         <LoginDisplay />
     </div>
     
-</div>
+</header>
 
 <style>
     .headernew {
@@ -22,7 +22,7 @@
         left: 0;
         width: 100%;
         z-index: 99;
-        transition: top 0.3s;
+        transition: top 1s;
         position: fixed;
         background-color: rgb(0,0,0);
         background-color: rgba(0,0,0, 0.5);

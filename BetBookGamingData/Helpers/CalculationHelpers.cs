@@ -53,7 +53,7 @@ public static class CalculationHelpers
             totalDecimalOdds *= decimalMoneyline;
         }
 
-        return totalWagerForParley * totalDecimalOdds;
+        return Math.Round(totalWagerForParley * totalDecimalOdds, 2);
     }
 
     public static decimal GetPayoutForTotalBetsSingles(this List<CreateBetModel> betList)

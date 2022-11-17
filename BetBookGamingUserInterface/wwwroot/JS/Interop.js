@@ -6,11 +6,18 @@ window.onscroll = () => {
     adjustHeader()
     drawleft()
     drawright()
+    fadeOut()
 }
 
-//window.addEventListener('scroll', drawleft, false);
-
-//window.addEventListener('scroll', drawright, false);
+function fadeOut() {
+    var scrollBox = document.getElementById('scrollBox')
+    var distanceToTopScrollBox = window.pageYOffset + scrollBox.getBoundingClientRect().top;
+    var elementHeightScrollBox = scrollBox.offsetHeight;
+    var scrollTop = document.documentElement.scrollTop + 100;
+    if (scrollTop > distanceToTopScrollBox) {
+        scrollBox.style.opacity = 1 - (scrollTop - distanceToTopScrollBox) / elementHeightScrollBox;
+    }
+}
 
 function drawleft() {
     var svg = document.getElementById("svg-div-left");

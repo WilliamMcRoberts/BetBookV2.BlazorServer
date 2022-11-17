@@ -1,58 +1,49 @@
 ﻿
 
-
-
-/*#game-link {
-    position: relative;
-    background-color: rgb(211,211,211, .9);
+#hiddenContent {
+    overflow-y: hidden;
 }
 
+.scroll-text {
+    font-weight: 700;
+    font-size: 2em;
+    margin: 1em auto;
+    text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000, 0 0 5px #000, 0 0 6px #000;
+}
 
+.scroll-img {
+    border: none;
+    box-shadow: 0 0 40px #fff;
+    border-radius: 10px;
+    width: 80px;
+    margin: 0 auto;
+}
 
-    #game-link:hover #tooltipGameContent {
-        top: 20%;
-        visibility: visible;
-        opacity: 1;
-        transition-delay: .75s;
-    }
-
-#tooltipGameContent {
-    position: absolute;
-    left: -45%;
-    top: 0;
-    transform: translateX(-45%);
-    background-color: rgb(0, 0, 0);
+.scroll-box {
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0, 0.5);
+    backdrop-filter: blur(10px);
+    border: 2px solid #fff;
+    box-shadow: 5px 5px 10px 5px rgba(0,0, 0, 0.9);
+    text-align: center;
+    width: 30%;
+    margin: 2.5em auto;
+    padding: 1em;
     color: #fff;
-    white-space: nowrap;
-    padding: 7.5px 15px;
-    border-radius: 7px;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.5s ease;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-    #tooltipGameContent::before {
-        content: "";
-        position: absolute;
-        left: 98%;
-        top: 0;
-        transform: translateX(98%);
-        transform: translateY(7.5%);
-        border: 13px solid;
-        border-color: #0000 #0000 #0000 #000;
+@media (max-width: 520px) {
+    .scroll-text {
+        font-size: 1.25em;
     }
-
-
-
-.team-cell-top {
-    padding: .5em .5em;
-    border-bottom: 1px solid lightgrey;
-    text-align: center;
 }
 
-.team-cell {
-    text-align: center;
-    padding: .5em .5em;
-}*/
-
-
+@media (max-width: 1000px) {
+    .scroll-box {
+        width: 50%;
+    }
+}

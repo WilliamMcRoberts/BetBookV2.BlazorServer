@@ -27,16 +27,16 @@
                                         <strong class="winner-moneyline-slip">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
                                     </div>
                                     <div class="bet-amount-input-container">
-                                        <strong style="margin:.25em .25em">$</strong>
+                                        <strong style="margin:.25em .25em;color:darkgreen">$</strong>
                                         <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
                                     </div>
                                 </div>
                             </div>
                         }
 
-                        <div style="text-align:center;margin:1em 1em;">
+                        <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
                             <strong>Total Singles Payout</strong>
-                            <strong>$@BetSlip.PreBets.GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
+                            <strong><span style="color:darkgreen">$</span>@BetSlip.PreBets.GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
                         </div>
 
                         @if (BetSlip.gameHasStarted)
@@ -88,14 +88,17 @@
                             <div style="display:flex;flex-direction:column;width:35%;margin:.5em auto;text-align:center;">
                                 <strong style="text-align:center;">Wager Amount</strong>
                                 <div style="display:flex;justify-content:center;">
-                                    <strong style="margin:.25em .25em">$</strong>
+                                    <strong style="margin:.25em .25em;color: darkgreen">$</strong>
                                     <input class="bet-amount-input" type="number" @bind-value="@BetSlip.totalWagerForParley" @bind-value:event="oninput"/>
                                 </div>
                             </div>
 
                             <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
                                 <strong>Total Parley Payout</strong>
-                                <strong>$@(BetSlip.totalPayoutForParley = Math.Round(BetSlip.PreBets.GetPayoutForTotalBetsParley(BetSlip.totalWagerForParley), 2))</strong>
+                                <strong>
+                                    <span style="color:darkgreen">$</span>@(BetSlip.totalPayoutForParley = BetSlip.PreBets.GetPayoutForTotalBetsParley(BetSlip.totalWagerForParley))
+                                </strong>
+
                             </div>
 
                         </div>
@@ -142,7 +145,8 @@
         width: 50%;
         text-align: center;
         margin: 0 auto;
-  }
+        
+    }
 
     #AccordionItem {
         background-color: rgb(255,255,255, .15);
@@ -248,22 +252,16 @@
         }
 
     @@media (max-width: 640px) {
-   
         .accordion-container {
             width: 70%;
-
         }
-
-
     }
 
     @@media (max-width: 480px) {
         .accordion-container {
-            width: 90%;
-
+            width: 85%;
         }
     }
-
 
 </style>
 

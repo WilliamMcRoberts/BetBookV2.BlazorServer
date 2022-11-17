@@ -2,17 +2,12 @@
 @inject ProtectedLocalStorage localStorage
 
 
-<div class="scroll-box">
-	<h2 class="scroll-text">Scroll Down</h2>
-	<img class="scroll-img" src="/images/scrolldown.png" />
-	<h2 class="scroll-text">For Games</h2>
-</div>
+
 
 @foreach(var game in Games?.OrderBy(g => g.Date))
 {
 	@if(!game.HasStarted)
 	{
-		
 		<div class="game-container">
 
 			<span style="position:absolute;" id="span"></span>
@@ -327,37 +322,6 @@
 			transform: translateY(-100%);
 		}
 
-	.scroll-text {
-		font-weight: 700;
-		font-size: 2em;
-		margin: 1em auto;
-		text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000, 0 0 5px #000, 0 0 6px #000;
-	}
-
-	.scroll-img {
-		border: none;
-		box-shadow: inset 0 0 20px #000;
-		border-radius: 10px;
-		width: 80px;
-		margin: 0 auto;
-	}
-
-	.scroll-box {
-		background: rgba(255,255,255,.2);
-		box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
-		backdrop-filter:blur(25px);
-		text-align:center;
-		width: 30%;
-		margin: 2em auto;
-		padding: 1em;
-		color: #fff;
-		border-radius: 10px;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		border: none;
-	}
-
 	#tooltipGameContent {
 		position: absolute;
 		left: 12.5%;
@@ -460,6 +424,7 @@
 		justify-content: space-evenly;
 		transform: translateX(400%);
 		transition: .55s ease;
+		overflow: hidden;
 	}
 
 	.game-container:before {
@@ -586,7 +551,6 @@
 		BetSlip.SelectOrRemoveWinnerAndGameForBet(winner, game, betType);
 		
 		await localStorage.SetAsync("CurrentBetSlip", BetSlip.PreBets);
-		StateHasChanged();
 	}
 
 	public bool IsInBetMemPool(string winner, GameDto game, BetType betType) => BetSlip.PreBets.Contains(
