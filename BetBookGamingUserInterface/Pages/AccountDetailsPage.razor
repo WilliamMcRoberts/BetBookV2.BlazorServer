@@ -1,0 +1,271 @@
+﻿@page "/AccountDetails"
+@inject IMongoUserData _userData
+
+<PageTitle>Account Details</PageTitle>
+
+<div class="account-details-container">
+    <div class="account-details-section">
+         <label class="details-text">Account Details</label>
+         <div class="detail-box">
+            <p>Display Name:</p> <p>@loggedInUser?.DisplayName</p>
+        </div>
+        <div class="detail-box">
+            <p>Email:</p> <p>@loggedInUser?.EmailAddress</p>
+        </div>
+        <div class="detail-box">
+            <p>Balance:</p> <p style="text-align:left;">$@loggedInUser?.AccountBalance.ToString("#,###,##0.00")</p>
+        </div>
+
+        <div class="d-flex justify-content-end">
+            <div @onclick="@((mouseArgs) => ShowAddFundsModal(mouseArgs))" class="funds-btn-container">
+                <span id="span-btn"></span>
+                <span id="span-btn"></span>
+                <span id="span-btn"></span>
+                <span id="span-btn"></span>
+                Add Funds
+            </div>
+        </div>
+            
+            
+    </div>
+
+ </div>
+    
+
+
+
+
+<style>
+
+    .funds-btn-container {
+        text-align: center;
+        padding: 5px 15px;
+        color: #fff;
+        font-size: 1em;
+        text-transform: uppercase;
+        font-family: sans-serif;
+        letter-spacing: 4px;
+        overflow: hidden;
+        background: rgba(255,255,255,.1);
+        box-shadow: 0 5px 5px rgba(0,0,0.2);
+        width: auto;
+        border-radius: 10px;
+        box-shadow: inset 0 0 20px #000;
+        background: transparent;
+        box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
+        backdrop-filter: blur(25px);
+        border: 2px solid #000;
+        text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000, 0 0 5px #000, 0 0 6px #000;
+        font-weight: 700;
+        margin: .25em .5em;
+
+    }
+
+    .funds-btn-container:hover {
+        cursor: pointer;
+    }
+
+        .funds-btn-container:before {
+            content: '';
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            background: rgba(255,255,255,.1);
+        }
+
+        .funds-btn-container:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+            transition: 0.35s;
+            transition-delay: 0.35s;
+        }
+
+        .funds-btn-container:hover:after {
+            left: 100%;
+        }
+
+    .funds-btn-container #span-btn {
+            position: absolute;
+            display: block;
+            transition: 0.5s ease;
+        }
+
+            .funds-btn-container #span-btn:nth-child(1) {
+                top: 0;
+                left: 0;
+                width: 0;
+                height: 1px;
+                background: #fff;
+            }
+
+        .funds-btn-container:hover #span-btn:nth-child(1) {
+            width: 100%;
+            transform: translateX(100%);
+        }
+
+        .funds-btn-container #span-btn:nth-child(3) {
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 1px;
+            background: #fff;
+        }
+
+        .funds-btn-container:hover #span-btn:nth-child(3) {
+            width: 100%;
+            transform: translateX(-100%);
+        }
+
+        .funds-btn-container #span-btn:nth-child(2) {
+            top: 0;
+            left: 0;
+            width: 1px;
+            height: 0;
+            background: #fff;
+        }
+
+    .funds-btn-container:hover #span-btn:nth-child(2) {
+            height: 100%;
+            transform: translateY(100%);
+        }
+
+        .funds-btn-container #span-btn:nth-child(4) {
+            bottom: 0;
+            right: 0;
+            width: 1px;
+            height: 0;
+            background: #fff;
+        }
+
+        .funds-btn-container:hover #span-btn:nth-child(4) {
+            height: 100%;
+            transform: translateY(-100%);
+        }
+
+    .detail-box {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    p {
+        font-size: .75em;
+        text-shadow: 0 0 2.5px #000, 0 0 5px #000;
+        margin: .5em 2em;
+    }
+
+    .details-text {
+        text-shadow: 0 0 2.5px #000, 0 0 5px #000, 0 0 7.5px #000, 0 0 10px #000;
+        font-size: .85em;
+        text-decoration: underline;
+        margin-left: 1.75em;
+    }
+
+    .account-details-section {
+        border-radius: 10px;
+        box-shadow: inset 0 0 20px #000;
+        background: rgba(255,255,255,.2);
+        box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
+        backdrop-filter: blur(25px);
+        border: 4px solid #000;
+        width: auto;
+        color: #fff;
+        margin: 0 auto;
+        padding: 10px;
+        max-width: 60%;
+        min-width: 300px;
+    }
+
+</style>
+
+
+@code {
+
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
+    [CascadingParameter]
+    public ModalWrapper ModalWrapper { get; set; }
+
+    private UserModel loggedInUser;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadAndVerifyUser();
+    }
+
+    private void ShowAddFundsModal(MouseEventArgs mouseEventArgs)
+    {
+        var ParameterArguments = new Dictionary<string, object>
+            {
+                ["LoggedInUser"] = loggedInUser,
+            };
+
+        ModalWrapper.ShowModal(mouseEventArgs, typeof(AddFunds), ParameterArguments);
+    }
+
+    private async Task LoadAndVerifyUser()
+    {
+        var authState = await AuthenticationStateTask;
+        string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
+        loggedInUser = await _userData.GetCurrentUserFromAuthentication(objectId) ?? new();
+
+        if (string.IsNullOrWhiteSpace(objectId)) return;
+
+        string firstName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("givenname"))?.Value;
+        string lastName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("surname"))?.Value;
+        string displayName = authState.User.Claims.FirstOrDefault(c => c.Type.Equals("name"))?.Value;
+        string emailAddress = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("email"))?.Value;
+
+        bool isDirty = false;
+
+        if (!objectId.Equals(loggedInUser.ObjectIdentifier))
+        {
+            isDirty = true;
+            loggedInUser.ObjectIdentifier = objectId;
+        }
+
+        if (!firstName.Equals(loggedInUser.FirstName))
+        {
+            isDirty = true;
+            loggedInUser.FirstName = firstName;
+        }
+
+        if (!lastName.Equals(loggedInUser.LastName))
+        {
+            isDirty = true;
+            loggedInUser.LastName = lastName;
+        }
+
+        if (!displayName.Equals(loggedInUser.DisplayName))
+        {
+            isDirty = true;
+            loggedInUser.DisplayName = displayName;
+        }
+
+        if (!emailAddress.Equals(loggedInUser.EmailAddress))
+        {
+            isDirty = true;
+            loggedInUser.EmailAddress = emailAddress;
+        }
+
+        if (isDirty)
+        {
+            if (string.IsNullOrWhiteSpace(loggedInUser.UserId))
+            {
+                loggedInUser.AccountBalance = 10000;
+
+                await _userData.CreateUser(loggedInUser);
+                return;
+            }
+
+            await _userData.UpdateUser(loggedInUser);
+        }
+    }
+
+}

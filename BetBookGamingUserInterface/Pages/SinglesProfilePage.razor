@@ -18,6 +18,7 @@ else
     <HistoryBar BetType="typeof(SingleBetModel)" OnSingleButtonClick="SetSingleDataGrid" />
 
     <div class="data-grid-container-profile">
+      
         <SfGrid ID="DataGrid" DataSource="@GetSingleBetList()">
             <GridColumns>
                 <GridColumn 
@@ -151,18 +152,27 @@ else
     </div>
 }
 
+    
+
 <style>
+
     .e-grid .e-spinner-pane {
         display: none;
     }
+
 </style>
 
 @code {
+
+    public SfGrid<SingleBetModel> BetGrid { get; set; }
+
     #region Properties
+
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
     [CascadingParameter]
     public Task<AuthenticationState> AuthenticationStateTask { get; set; }
+
     #endregion
 
     #region Collections
@@ -219,6 +229,11 @@ else
 
     #region Other Methods
 
+    private void GridToolbarClicked()
+    {
+        
+    }
+
     private async Task ShowGameDetailsSingleBetModal(MouseEventArgs mouseEventArgs, SingleBetModel wager)
     {
         GameByScoreIdDto finishedGame = await gameService.GetGameByScoreId(wager.GameSnapshot.ScoreID);
@@ -236,18 +251,23 @@ else
         pointsAfterSpread < 0 ? $"- {pointsAfterSpread.ToString().Trim('-')}" 
             : $"+ {pointsAfterSpread}";
 
-    private void SetSingleDataGrid(SingleBetStatus singleBetStatus) =>
+    private void SetSingleDataGrid(SingleBetStatus singleBetStatus)
+    {
         (singleInProgressGrid, singleWinnersGrid, singlePushGrid, singleLosersGrid) =
             singleBetStatus == SingleBetStatus.LOSER ? (false, false, false, true) :
             singleBetStatus == SingleBetStatus.WINNER ? (false, true, false, false) :
             singleBetStatus == SingleBetStatus.PUSH ? (false, false, true, false)
             : (true, false, false, false);
+    }
 
-    private List<SingleBetModel> GetSingleBetList() =>
-        singleLosersGrid ? bettorSingleBetsLosers 
-            : singleWinnersGrid ? bettorSingleBetsWinners 
-            : singlePushGrid ? bettorSingleBetsPush 
-            : bettorSingleBetsInProgress;
+    private List<SingleBetModel> GetSingleBetList()
+    {
+        return
+            singleLosersGrid ? bettorSingleBetsLosers
+                : singleWinnersGrid ? bettorSingleBetsWinners
+                : singlePushGrid ? bettorSingleBetsPush
+                : bettorSingleBetsInProgress;
+    }
 
     private string GetCellClass(SingleBetModel singleBet) =>
         singleLosersGrid ? (bettorSingleBetsLosers.IndexOf(singleBet) == bettorSingleBetsLosers.Count - 1 ? "bottom-row-cell" : "cell")

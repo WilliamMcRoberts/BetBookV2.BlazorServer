@@ -95,7 +95,7 @@
 
                             <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
                                 <strong>Total Parley Payout</strong>
-                                <strong>$@BetSlip.PreBets.GetPayoutForTotalBetsParley(BetSlip.totalWagerForParley).ToString("#,##0.00")</strong>
+                                <strong>$@(BetSlip.totalPayoutForParley = Math.Round(BetSlip.PreBets.GetPayoutForTotalBetsParley(BetSlip.totalWagerForParley), 2))</strong>
                             </div>
 
                         </div>
@@ -142,7 +142,7 @@
         width: 50%;
         text-align: center;
         margin: 0 auto;
-    }
+  }
 
     #AccordionItem {
         background-color: rgb(255,255,255, .15);
@@ -164,6 +164,7 @@
         border: none;
         backdrop-filter: blur(25px);
         box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
+        background: rgba(255, 255, 255);
     }
 
     .e-accordion .e-acrdn-item .e-acrdn-header .e-toggle-icon .e-icons {
@@ -273,7 +274,6 @@
     private bool showToastSingle;
     private bool parleyBetCountBad => BetSlip.PreBets.Count < 2;
     private bool showToastParley;
-    private decimal totalParleyPayout;
     private bool ExpandSinglesBetSlip { get; set; }
     private bool ExpandParleyBetSlip { get; set; }
 

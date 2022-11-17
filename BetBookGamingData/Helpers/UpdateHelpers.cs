@@ -99,19 +99,16 @@ public static class UpdateHelpers
         List<ParleyBetSlipModel> parleyBetSlipsInProgress = 
             await parleyBetData.GetAllParleyBetSlipsInProgress();
 
-        GameDto[] games = 
-            await gameService.GetGamesByWeek(season, week);
+        GameDto[] games = await gameService.GetGamesByWeek(season, week);
 
-        List<GameDto> finishedGames = 
-            games.Where(g => g.IsOver).ToList();
+        List<GameDto> finishedGames = games.Where(g => g.IsOver).ToList();
 
         foreach (ParleyBetSlipModel parleyBet in parleyBetSlipsInProgress)
         {
             foreach (SingleBetForParleyModel singleBetForParley in parleyBet.SingleBetsForParleyList)
             {
-                GameDto game =
-                    games.Where(g => g.ScoreID == singleBetForParley.GameSnapshot.ScoreID)
-                         .FirstOrDefault();
+                GameDto game = games.Where(g => g.ScoreID == singleBetForParley.GameSnapshot.ScoreID)
+                                    .FirstOrDefault();
 
                 if (game is null)
                     continue;
@@ -119,23 +116,18 @@ public static class UpdateHelpers
                 if (game.IsOver)
                 {
                     var betStatus = singleBetForParley.ProcessFinishedSingleBetForParley(game);
+                    
                     if (betStatus is not null) 
-                    { 
                         singleBetForParley.SingleBetForParleyStatus = (SingleBetForParleyStatus)betStatus; 
-                    }
                 }
             }
 
             if (parleyBet.SingleBetsForParleyList.Count == parleyBet.SingleBetsForParleyList.Where(b => b.SingleBetForParleyStatus != SingleBetForParleyStatus.IN_PROGRESS).Count())
             {
-                if (parleyBet.CheckIfParleyBetLoser())
-                    parleyBet.ParleyBetSlipStatus = ParleyBetSlipStatus.LOSER;
-
-                else if (parleyBet.CheckIfParleyBetWinner())
-                    parleyBet.ParleyBetSlipStatus = ParleyBetSlipStatus.WINNER;
-
-                else if (parleyBet.CheckIfParleyBetPush())
-                    parleyBet.ParleyBetSlipStatus = ParleyBetSlipStatus.PUSH;
+                parleyBet.ParleyBetSlipStatus = 
+                    parleyBet.CheckIfParleyBetLoser() ? ParleyBetSlipStatus.LOSER
+                    : parleyBet.CheckIfParleyBetWinner() ? ParleyBetSlipStatus.WINNER 
+                    : ParleyBetSlipStatus.PUSH;
             }
 
             await parleyBetData.UpdateParleyBetSlip(parleyBet);
@@ -196,7 +188,8 @@ public static class UpdateHelpers
                 : string.Empty;
 
             return winner == singleBetForParley.WinnerChosen ? SingleBetForParleyStatus.WINNER
-                : winner == string.Empty ? SingleBetForParleyStatus.PUSH : SingleBetForParleyStatus.LOSER;
+                : winner == string.Empty ? SingleBetForParleyStatus.PUSH 
+                : SingleBetForParleyStatus.LOSER;
 
         }
 

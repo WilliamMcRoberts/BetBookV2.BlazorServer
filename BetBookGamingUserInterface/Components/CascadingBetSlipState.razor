@@ -215,7 +215,7 @@
 
         parleyBetSlip.BettorId = loggedInUser.UserId;
         parleyBetSlip.ParleyBetAmount = totalWagerForParley;
-        parleyBetSlip.ParleyBetPayout = Math.Round(totalPayoutForParley, 2);
+        parleyBetSlip.ParleyBetPayout = totalPayoutForParley;
         parleyBetSlip.ParleyBetSlipStatus = ParleyBetSlipStatus.IN_PROGRESS;
         parleyBetSlip.ParleyBetSlipPayoutStatus = ParleyBetSlipPayoutStatus.UNPAID;
 

@@ -1,16 +1,24 @@
 ﻿@inject NavigationManager navManager
 @inject ProtectedLocalStorage localStorage
 
-@foreach(var game in Games.OrderBy(g => g.Date))
+
+<div class="scroll-box">
+	<h2 class="scroll-text">Scroll Down</h2>
+	<img class="scroll-img" src="/images/scrolldown.png" />
+	<h2 class="scroll-text">For Games</h2>
+</div>
+
+@foreach(var game in Games?.OrderBy(g => g.Date))
 {
 	@if(!game.HasStarted)
 	{
+		
 		<div class="game-container">
 
-			<span id="span"></span>
-			<span id="span"></span>
-			<span id="span"></span>
-			<span id="span"></span>
+			<span style="position:absolute;" id="span"></span>
+			<span style="position:absolute;" id="span"></span>
+			<span style="position:absolute;" id="span"></span>
+			<span style="position:absolute;" id="span"></span>
 
 			<div @onclick="@((mouseArgs) => ShowGameDetailsModal(mouseArgs, game))" class="column-box-teams">
 				<span id="tooltipGameContent">Game Details</span>
@@ -26,29 +34,327 @@
 					<strong class="team-name"> @game?.HomeTeam</strong>
 				</div>
 			</div>
-
-
 			<div class="column-box">
 				<strong class="bet-type-title"><span class="bet-type-title-text">PointSpread</span></strong>
-				<button @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@(IsInBetMemPool(game!.AwayTeam, game, BetType.POINTSPREAD) ? "bet-btn-active" : "bet-btn")"><span class="bet-btn-text">@($"{game.PointSpread:-#.0;+#.0;+0}") @($"{game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")</span></button>
-				<button @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@(IsInBetMemPool(game!.HomeTeam, game, BetType.POINTSPREAD) ? "bet-btn-active" : "bet-btn")"><span class="bet-btn-text">@($"{game.PointSpread:+#.0;-#.0;+0}") @($"{game?.PointSpreadHomeTeamMoneyLine:+#;-#;}")</span></button>
+				<div class="d-flex justify-content-end">
+					<div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.POINTSPREAD))" class="@(IsInBetMemPool(game!.AwayTeam, game, BetType.POINTSPREAD) ? "bet-btn-container-active" : "bet-btn-container")">
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span class="bet-btn-text">
+							@(IsInBetMemPool(game!.AwayTeam, game, BetType.POINTSPREAD) ? "Remove" : $"{game.PointSpread:-#.0;+#.0;+0} {game?.PointSpreadAwayTeamMoneyLine:+#;-#;}")
+						</span>
+					</div>
+				</div>
+				<div class="d-flex justify-content-end">
+					<div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.POINTSPREAD))" class="@(IsInBetMemPool(game!.HomeTeam, game, BetType.POINTSPREAD) ? "bet-btn-container-active" : "bet-btn-container")">
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span class="bet-btn-text">
+							@(IsInBetMemPool(game!.HomeTeam, game, BetType.POINTSPREAD) ? "Remove" : $"{game.PointSpread:+#.0;-#.0;+0} {game?.PointSpreadHomeTeamMoneyLine:+#;-#;}")
+						</span>
+					</div>
+				</div>
 			</div>
 			<div class="column-box">
 				<strong class="bet-type-title"><span class="bet-type-title-text">Moneyline</span></strong>
-				<button @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.MONEYLINE))" class="@(IsInBetMemPool(game!.AwayTeam, game, BetType.MONEYLINE) ? "bet-btn-active" : "bet-btn")"><span class="bet-btn-text">@($"{game?.AwayTeamMoneyLine:+#;-#;}")</span></button>
-				<button @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.MONEYLINE))" class="@(IsInBetMemPool(game!.HomeTeam, game, BetType.MONEYLINE) ? "bet-btn-active" : "bet-btn")"><span class="bet-btn-text">@($"{game?.HomeTeamMoneyLine:+#;-#;}")</span></button>
+				<div class="d-flex justify-content-end">
+					<div @onclick="(() => ChooseOrRemoveWager(game!.AwayTeam, game, BetType.MONEYLINE))" class="@(IsInBetMemPool(game!.AwayTeam, game, BetType.MONEYLINE) ? "bet-btn-container-active" : "bet-btn-container")">
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span class="bet-btn-text">
+							@(IsInBetMemPool(game!.AwayTeam, game, BetType.MONEYLINE) ? "Remove" : $"{game?.AwayTeamMoneyLine:+#;-#;}")
+						</span>
+					</div>
+				</div>
+				<div class="d-flex justify-content-end">
+					<div @onclick="(() => ChooseOrRemoveWager(game!.HomeTeam, game, BetType.MONEYLINE))" class="@(IsInBetMemPool(game!.HomeTeam, game, BetType.MONEYLINE) ? "bet-btn-container-active" : "bet-btn-container")">
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span class="bet-btn-text">
+							@(IsInBetMemPool(game!.HomeTeam, game, BetType.MONEYLINE) ? "Remove" : $"{game?.HomeTeamMoneyLine:+#;-#;}")
+						</span>
+					</div>
+				</div>
 			</div>
 			<div class="column-box">
 				<strong class="bet-type-title"><span class="bet-type-title-text">OverUnder</span></strong>
-				<button @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@(IsInBetMemPool(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "bet-btn-active" : "bet-btn")"><span class="bet-btn-text">O @game?.OverUnder @($"{game?.OverPayout:+#;-#;}")</span></button>
-				<button @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@(IsInBetMemPool(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "bet-btn-active" : "bet-btn")"><span class="bet-btn-text">U @game?.OverUnder @($"{game?.UnderPayout:+#;-#;}")</span></button>
+				<div class="d-flex">
+					<div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@(IsInBetMemPool(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "bet-btn-container-active" : "bet-btn-container")">
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span class="bet-btn-text">
+							@(IsInBetMemPool(string.Concat(OverUnder.OVER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "Remove" : "O " + $"{game?.OverUnder} {game?.UnderPayout:+#;-#;}")
+						</span>
+					</div>
+				</div>
+				<div class="d-flex">
+					<div @onclick="(() => ChooseOrRemoveWager(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER))" class="@(IsInBetMemPool(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "bet-btn-container-active" : "bet-btn-container")">
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span id="span-btn"></span>
+						<span class="bet-btn-text">
+							@(IsInBetMemPool(string.Concat(OverUnder.UNDER.ToStringFast(), game?.ScoreID.ToString()), game!, BetType.OVERUNDER) ? "Remove" : "U " + $"{game?.OverUnder} {game?.UnderPayout:+#;-#;}")
+						</span>
+					</div>
+				</div>
 			</div>
-
 		</div>
 	}
 }
 
 <style>
+
+	.bet-btn-container {
+		text-align: center;
+		padding: 0 5px;
+		font-size: .85em;
+		color: #fff;
+		font-family: sans-serif;
+		overflow: hidden;
+		width: 100%;
+		border-radius: 10px;
+		box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
+		backdrop-filter: blur(25px);
+		border: 2px solid #000;
+		text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000, 0 0 5px #000, 0 0 6px #000, 0 0 7px #000;
+		font-weight: 700;
+		margin: 0 auto;
+	}
+
+		.bet-btn-container-active {
+			text-align: center;
+			padding: 0 5px;
+			font-size: .85em;
+			color: #fff;
+			font-family: sans-serif;
+			overflow: hidden;
+			width: 100%;
+			border-radius: 10px;
+			box-shadow: 0 0 2px rgba(0,0, 0, 0.8), 0 0 4px rgba(0,0, 0, 0.8), 0 0 6px rgba(0,0, 0, 0.8), 0 0 8px rgba(0,0, 0, 0.8), 0 0 10px rgba(0,0, 0, 0.8), 0 0 12px rgba(0,0, 0, 0.8), 0 0 14px rgba(0,0, 0, 0.8);
+			backdrop-filter: blur(25px);
+			border: 2px solid #fff;
+			text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000, 0 0 5px #000, 0 0 6px #000, 0 0 7px #000, 0 0 8px #000, 0 0 9px #000;
+			font-weight: 700;
+			margin: 0 auto;
+		}
+
+		.bet-btn-container-active:hover {
+			cursor: pointer;
+		}
+
+		.bet-btn-container-active:before {
+			content: '';
+			top: 0;
+			left: 0;
+			width: 50%;
+			height: 100%;
+			background: transparent;
+		}
+
+		.bet-btn-container-active:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -100%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg,transparent,rgba(0,0,0,.3),transparent);
+			transition: 0.35s;
+			transition-delay: 0.35s;
+		}
+
+		.bet-btn-container-active:hover:after {
+			left: 100%;
+		}
+
+		.bet-btn-container-active #span-btn {
+			border-radius: 10px;
+			position: absolute;
+			display: block;
+			transition: 0.5s ease;
+		}
+
+			.bet-btn-container-active #span-btn:nth-child(1) {
+				top: 0;
+				left: 0;
+				width: 0;
+				height: 1.5px;
+				background: #000;
+			}
+
+		.bet-btn-container-active:hover #span-btn:nth-child(1) {
+			width: 100%;
+			transform: translateX(100%);
+		}
+
+		.bet-btn-container-active #span-btn:nth-child(3) {
+			bottom: 0;
+			right: 0;
+			width: 0;
+			height: 1.5px;
+			background: #000;
+		}
+
+		.bet-btn-container-active:hover #span-btn:nth-child(3) {
+			width: 100%;
+			transform: translateX(-100%);
+		}
+
+		.bet-btn-container-active #span-btn:nth-child(2) {
+			top: 0;
+			left: 0;
+			width: 1.5px;
+			height: 0;
+			background: #000;
+		}
+
+		.bet-btn-container-active:hover #span-btn:nth-child(2) {
+			height: 100%;
+			transform: translateY(100%);
+		}
+
+		.bet-btn-container-active #span-btn:nth-child(4) {
+			bottom: 0;
+			right: 0;
+			width: 1.5px;
+			height: 0;
+			background: #000;
+		}
+
+		.bet-btn-container-active:hover #span-btn:nth-child(4) {
+			height: 100%;
+			transform: translateY(-100%);
+		}
+
+		.bet-btn-container:hover {
+			cursor: pointer;
+		}
+
+		.bet-btn-container:before {
+			content: '';
+			top: 0;
+			left: 0;
+			width: 50%;
+			height: 100%;
+			background: rgba(255,255,255,.1);
+		}
+
+		.bet-btn-container:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -100%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);
+			transition: 0.35s;
+			transition-delay: 0.35s;
+		}
+
+		.bet-btn-container:hover:after {
+			left: 100%;
+		}
+
+		.bet-btn-container #span-btn {
+			border-radius: 10px;
+			position: absolute;
+			display: block;
+			transition: 0.5s ease;
+		}
+
+			.bet-btn-container #span-btn:nth-child(1) {
+				top: 0;
+				left: 0;
+				width: 0;
+				height: 1px;
+				background: #fff;
+			}
+
+		.bet-btn-container:hover #span-btn:nth-child(1) {
+			width: 100%;
+			transform: translateX(100%);
+		}
+
+		.bet-btn-container #span-btn:nth-child(3) {
+			bottom: 0;
+			right: 0;
+			width: 0;
+			height: 1px;
+			background: #fff;
+		}
+
+		.bet-btn-container:hover #span-btn:nth-child(3) {
+			width: 100%;
+			transform: translateX(-100%);
+		}
+
+		.bet-btn-container #span-btn:nth-child(2) {
+			top: 0;
+			left: 0;
+			width: 1px;
+			height: 0;
+			background: #fff;
+		}
+
+		.bet-btn-container:hover #span-btn:nth-child(2) {
+			height: 100%;
+			transform: translateY(100%);
+		}
+
+		.bet-btn-container #span-btn:nth-child(4) {
+			bottom: 0;
+			right: 0;
+			width: 1px;
+			height: 0;
+			background: #fff;
+		}
+
+		.bet-btn-container:hover #span-btn:nth-child(4) {
+			height: 100%;
+			transform: translateY(-100%);
+		}
+
+	.scroll-text {
+		font-weight: 700;
+		font-size: 2em;
+		margin: 1em auto;
+		text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000, 0 0 5px #000, 0 0 6px #000;
+	}
+
+	.scroll-img {
+		border: none;
+		box-shadow: inset 0 0 20px #000;
+		border-radius: 10px;
+		width: 80px;
+		margin: 0 auto;
+	}
+
+	.scroll-box {
+		background: rgba(255,255,255,.2);
+		box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
+		backdrop-filter:blur(25px);
+		text-align:center;
+		width: 30%;
+		margin: 2em auto;
+		padding: 1em;
+		color: #fff;
+		border-radius: 10px;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		border: none;
+	}
 
 	#tooltipGameContent {
 		position: absolute;
@@ -67,35 +373,8 @@
 		font-size: .5em;
 	}
 
-	.bet-btn {
-		background: transparent;
-		border: none;
-		font-size: .75em;
-		color: white;
-		box-shadow: inset 0 0 5px 2px rgba(0,0, 0, 0.6);
-		text-shadow: 0 0 1px #000, 0 0 2px #000, 0 0 3px #000, 0 0 4px #000, 0 0 5px #000, 0 0 6px #000;
-		border-radius: 7px;
-	}
-
-		.bet-btn-active {
-			backdrop-filter: blur(10px);
-			background: transparent;
-			font-weight: 700;
-			color: #000;
-			box-shadow: 0 0 2.5px 2px rgba(0,0, 0, 0.6), 0 0 5px 2px rgba(0,0, 0, 0.6), 0 0 7.5px 2px rgba(0,0, 0, 0.6), 0 0 10px 2px rgba(0,0, 0, 0.6);
-		text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #fff, 0 0 5px #fff, 0 0 6px #fff;
-			border-radius: 7px;
-			border: none;
+	.bet-btn-text {
 			font-size: .75em;
-		}
-
-		.bet-btn:hover {
-			backdrop-filter:blur(10px);
-			background: transparent;
-			font-weight: 700;
-			color: #000;
-			box-shadow: 0 0 2.5px 2px rgba(0,0, 0, 0.6), 0 0 5px 2px rgba(0,0, 0, 0.6), 0 0 7.5px 2px rgba(0,0, 0, 0.6), 0 0 10px 2px rgba(0,0, 0, 0.6);
-			text-shadow: 0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px #fff, 0 0 5px #fff, 0 0 6px #fff;
 		}
 
 	.bet-type-title {
@@ -168,7 +447,6 @@
 		padding: 10px;
 		color: #fff;
 		font-family: sans-serif;
-		overflow: hidden;
 		background: rgba(255,255,255,.2);
 		box-shadow: inset 0 0 7.5px 3px rgba(0,0, 0, 0.8);
 		backdrop-filter:blur(25px);
@@ -178,108 +456,57 @@
         border-radius: 10px;
 		display:flex;
 		justify-content: space-evenly;
+		transform: translateX(400%);
+		transition: .55s ease;
 	}
 
-		.game-container:before {
+	.game-container:before {
 			content: '';
 			position: absolute;
+			border-right: 2px solid rgba(0,0,0,.5);
 			top: 0;
 			left: 0;
-			width: 28%;
+			width: 27.5%;
 			height: 100%;
-			background: rgb(255, 255, 255, .15);
-			border-right: 2px solid rgb(0, 0, 0, .5);
+			backdrop-filter: blur(10px);
 		}
 
-		.game-container:after {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: -100%;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);
-			transition: 0.35s;
-			transition-delay: .15s;
+		.game-container:nth-of-type(even) {
+			transform: translateX(-400%);
 		}
 
-			.game-container:hover:after {
-					left: 100%;
-			}
-
-		.game-container #span {
-			position: absolute;
-			display: block;
-			transition: .35s ease;
+		.game-container.show {
+			transform: translateX(0);
 		}
 
-			.game-container #span:nth-child(1) {
-				top: 0;
-				left: 0;
-				width: 0;
-				height: 2px;
-				background: #fff;
-			}
 
-				.game-container:hover #span:nth-child(1) {
-					width: 100%;
-					transform: translateX(100%);
-				}
-
-		.game-container #span:nth-child(3) {
-			bottom: 0;
-			right: 0;
-			width: 0;
-			height: 2px;
-			background: #fff;
-		}
-
-			.game-container:hover #span:nth-child(3) {
-				width: 100%;
-				transform: translateX(-100%);
-			}
-
-		.game-container #span:nth-child(2) {
-			top: 0;
-			left: 0;
-			width: 2px;
-			height: 0;
-			background: #fff;
-		}
-
-			.game-container:hover #span:nth-child(2) {
-				height: 100%;
-				transform: translateY(100%);
-			}
-
-		.game-container #span:nth-child(4) {
-			bottom: 0;
-			right: 0;
-			width: 2px;
-			height: 0;
-			background: #fff;
-		}
-
-			.game-container:hover #span:nth-child(4) {
-				height: 100%;
-				transform: translateY(-100%);
-			}
-
-	@@media (max-width: 450px) {
+	@@media (max-width: 460px) {
 		.date-text {
-			font-size: .65em;
+			font-size: .70em;
 		}
 
 		.bet-type-title-text {
-			font-size: .65em;
+			font-size: .70em;
 		}
 
 		.bet-btn-text {
-			font-size: .65em;
+			font-size: .70em;
+		}
+		
+		.column-box {
+			margin: 0 auto;
+		}
+
+		.column-box-teams {
+			margin: 0 auto;
 		}
 	}
 
 	@@media (max-width: 520px) {
+
+		.team-name {
+			display: none;
+		}
 		.date-header {
 			text-transform: capitalize;
 		}
@@ -288,12 +515,8 @@
 			text-transform: capitalize;
 		}
 
-		.bet-btn {
-			font-size: .65em;
-		}
-
-		.bet-btn-active {
-			font-size: .65em;
+		.scroll-text {
+			font-size: 1.25em;
 		}
 	}
 
@@ -304,20 +527,6 @@
 		.bet-type-title {
 			font-size: .75em;
 		}
-
-		.bet-btn {
-			font-size: .65em;
-		}
-	}
-
-	@@media (max-width: 585px) {
-		.team-name {
-			display: none;
-		}
-
-		.game-container:before {
-			width: 29%;
-		}
 	}
 
     @@media (max-width: 785px) {
@@ -326,6 +535,12 @@
         }
     }
 
+	@@media (max-width: 1000px) {
+		.scroll-box {
+			width: 50%;
+		}
+	}
+
 </style>
 
 @code {
@@ -333,10 +548,8 @@
 	[CascadingParameter]
 	public ModalWrapper ModalWrapper { get; set; }
 
-	[CascadingParameter] public CascadingBetSlipState BetSlip { get; set; }
-
-	//[Parameter]
-	//public EventCallback BetSlipChanged { get; set; }
+	[CascadingParameter] 
+	public CascadingBetSlipState BetSlip { get; set; }
 
 	[Parameter]
 	public GameDto[] Games { get; set; }
@@ -345,12 +558,6 @@
 	{
 		await CheckForSavedBetSlip();
 	}
-
-	//protected override async Task OnAfterRenderAsync(bool firstRender)
-	//{
-	//	if(firstRender)
-	//		await CheckForSavedBetSlip();
-	//}
 
 	private void ShowGameDetailsModal(MouseEventArgs mouseEventArgs, GameDto game)
 	{

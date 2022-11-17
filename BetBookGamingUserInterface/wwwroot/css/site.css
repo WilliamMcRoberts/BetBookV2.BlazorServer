@@ -134,6 +134,17 @@ html, body {
     margin-right: .5em;
 }
 
+.team-icon-top-row-parley {
+    height: 20px;
+    margin-right: .5em;
+    margin-left: 1.25em;
+}
+
+.team-icon-bottom-row-parley {
+    height: 20px;
+    margin-right: .5em;
+}
+
 img#doge {
     position: fixed;
     bottom: -75px;
@@ -194,7 +205,7 @@ ul {
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 680px) {
   
     .bar {
         width: 95%;
@@ -215,14 +226,14 @@ ul {
     }
 }
 
-@media (min-width: 640px) {
+@media (min-width: 680px) {
 
     .data-grid-container-profile-mini {
         display: none;
     }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 680px) {
 
     .data-grid-container-profile-parley {
         display: none;
@@ -235,40 +246,13 @@ ul {
     }
 }
 
-@media (min-width: 640px) {
+@media (min-width: 680px) {
 
     .data-grid-container-profile-parley-mini {
         display: none;
     }
 }
 
-@media (max-width: 585px) {
-
-    .data-grid-container-mini {
-        width: 95%;
-        margin: 0 auto;
-        border: 4px solid #000;
-    }
-
-    .data-grid-container {
-        display: none;
-    }
-
-    .clickable-cell {
-        text-align: center;
-   }
-
-    img#doge {
-        display: none;
-    }
-}
-
-@media (min-width: 585px) {
-
-    .data-grid-container-mini {
-        display: none;
-    }
-}
 
 @media (max-width: 800px) {
 
@@ -346,6 +330,7 @@ ul {
 
 }
 
+
 @media(max-width: 400px) {
 
     .team-name {
@@ -361,10 +346,6 @@ ul {
 
 @media(max-width: 390px) {
 
-    .team-name {
-        font-size: 8px;
-    }
-
     .at-sign {
         display:none;
     }
@@ -379,6 +360,11 @@ ul {
         height: 17px;
         margin-right: .1em;
     }
+
+    .cell-parley-text {
+        font-size: 9px;
+    }
+
 }
 
 @keyframes animateLogo {

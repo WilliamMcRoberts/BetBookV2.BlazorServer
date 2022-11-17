@@ -1,6 +1,7 @@
 ﻿@page "/"
 @inject ILogger<Index> logger
 @inject IMongoUserData userData
+@inject IMongoSingleBetData sb
 @inject IGameService gameService
 
 <PageTitle>Home</PageTitle>
@@ -11,7 +12,9 @@
 
     <AccordionBetSlip OnValidSubmit="@ShowToast" LoggedInUser="loggedInUser" />
 
+    
     <GamesDisplay Games="games" />
+
 }
 
 else 
@@ -29,6 +32,8 @@ else
 </SfToast>
 
 <style>
+
+    
 
     .e-grid .e-spinner-pane {
         display: none;
@@ -93,8 +98,11 @@ else
         isBusy = true;
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
-        games = await gameService.GetGamesByWeek(season, 11);
+        games = await gameService.GetGamesByWeek(season, week);
+        
         isBusy = false;
+        await sb.UpdateFinishedSingleBets(11, SeasonType.REG, gameService);
+
         await LoadAndVerifyUser();
     }
 

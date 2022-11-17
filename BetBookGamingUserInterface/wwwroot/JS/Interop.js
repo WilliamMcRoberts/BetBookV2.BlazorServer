@@ -1,19 +1,16 @@
 ﻿
-/* When the user scrolls down, hide the navbar. When the user scrolls up, show the navbar */
 var prevScrollPos = window.pageYOffset;
 
 window.onscroll = () => {
-    var currentScrollPos = window.pageYOffset;
-    if (prevScrollPos <= currentScrollPos) {
-        document.getElementById("header").style.top = "-100px";
-        prevScrollPos = currentScrollPos;
-        return;
-    }
-    document.getElementById("header").style.top = "0";
-    prevScrollPos = currentScrollPos;
+   checkBoxes()
+    adjustHeader()
+    drawleft()
+    drawright()
 }
 
-window.addEventListener('scroll', drawleft, false);
+//window.addEventListener('scroll', drawleft, false);
+
+//window.addEventListener('scroll', drawright, false);
 
 function drawleft() {
     var svg = document.getElementById("svg-div-left");
@@ -35,8 +32,6 @@ function drawleft() {
     footballLeft.style.strokeDashoffset = length - draw;
 }
 
-window.addEventListener('scroll', drawright, false);
-
 function drawright() {
     var svg = document.getElementById("svg-div-right");
     svg.style.display = 'block';
@@ -55,4 +50,34 @@ function drawright() {
     var draw = length * scrollpercent;
 
     footballRight.style.strokeDashoffset = length - draw;
+}
+
+function adjustHeader() {
+    var currentScrollPos = window.pageYOffset;
+    if (prevScrollPos <= currentScrollPos) {
+        document.getElementById("header").style.top = "-100px";
+        prevScrollPos = currentScrollPos;
+        return;
+    }
+    document.getElementById("header").style.top = "0";
+    prevScrollPos = currentScrollPos;
+}
+
+function checkBoxes() {
+
+    const boxes = document.querySelectorAll('.game-container')
+    
+    const triggerBottom = window.innerHeight / 5 * 4
+
+    boxes.forEach(box => {
+        
+        const boxTop = box.getBoundingClientRect().top
+
+        if (boxTop < triggerBottom) {
+            box.classList.add('show')
+            return
+        }
+        box.classList.remove('show')
+
+    })
 }
