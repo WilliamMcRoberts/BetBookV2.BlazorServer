@@ -13,7 +13,7 @@ function fadeOut() {
     var scrollBox = document.getElementById('scrollBox')
     var distanceToTopScrollBox = window.pageYOffset + scrollBox.getBoundingClientRect().top;
     var elementHeightScrollBox = scrollBox.offsetHeight;
-    var scrollTop = document.documentElement.scrollTop + 100;
+    var scrollTop = document.documentElement.scrollTop + 250;
     if (scrollTop > distanceToTopScrollBox) {
         scrollBox.style.opacity = 1 - (scrollTop - distanceToTopScrollBox) / elementHeightScrollBox;
     }
