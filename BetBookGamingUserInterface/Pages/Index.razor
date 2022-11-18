@@ -15,13 +15,13 @@
         <img class="scroll-img" src="/images/arrowdown.png" />
         <h2 class="scroll-text">For Games</h2>
     </div>
-
-    <div class="b-slip">
-        <AccordionBetSlip OnValidSubmit="@ShowToast" LoggedInUser="loggedInUser" />
-    </div>
         
     <div id="hiddenContent">
         <GamesDisplay Games="games" />
+    </div>
+
+    <div id="betSlip" class="b-slip">
+        <AccordionBetSlip OnValidSubmit="@ShowToast" LoggedInUser="loggedInUser" />
     </div>
 }
 
@@ -42,11 +42,11 @@ else
 <style>
 
     .b-slip {
-        position: fixed;
+        position:fixed;
         z-index: 3;
-        /*top: 0;*/
+        /*top: 85%;*/
         right: 0;
-        bottom: 0;
+        bottom: 1%;
         left: 0;
         visibility: @(BetSlip.PreBets.Count > 0 ? "visible" : "hidden");
     }

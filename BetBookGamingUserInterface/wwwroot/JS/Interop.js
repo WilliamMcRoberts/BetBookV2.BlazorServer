@@ -7,6 +7,23 @@ window.onscroll = () => {
     drawleft()
     drawright()
     fadeOut()
+    bSlipPositionChange()
+}
+
+
+function bSlipPositionChange() {
+    var betSlip = document.getElementById('betSlip')
+    var footer = document.getElementById('footer')
+    var betSlipHeight = betSlip.offsetHeight;
+    var footerHeight = footer.offsetHeight;
+    if (betSlipHeight < footerHeight - pageYOffset + 1350) {
+        betSlip.style.position = 'fixed'
+        betSlip.style.bottom = '1%'
+
+    } else {
+        betSlip.style.position = 'absolute'
+        betSlip.style.bottom = '-5%'
+    }
 }
 
 function fadeOut() {
