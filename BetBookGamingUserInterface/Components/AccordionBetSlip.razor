@@ -28,7 +28,7 @@
                                     </div>
                                     <div class="bet-amount-input-container">
                                         <strong style="margin:.25em .25em;color:darkgreen">$</strong>
-                                        <input class="bet-amount-input" type="number" @bind-value="@createBetModel.BetAmount" @bind-value:event="oninput" />
+                                        <input class="bet-amount-input" type="number" @bind="@createBetModel.BetAmount" @bind:event="oninput" />
                                     </div>
                                 </div>
                             </div>
@@ -36,7 +36,7 @@
 
                         <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
                             <strong>Total Singles Payout</strong>
-                            <strong><span style="color:darkgreen">$</span>@BetSlip.PreBets.GetPayoutForTotalBetsSingles().ToString("#,##0.00")</strong>
+                            <strong><span style="color:darkgreen">$</span>@GetPayoutForTotalBetsSingles()</strong>
                         </div>
 
                         @if (BetSlip.gameHasStarted)
@@ -89,14 +89,14 @@
                                 <strong style="text-align:center;">Wager Amount</strong>
                                 <div style="display:flex;justify-content:center;">
                                     <strong style="margin:.25em .25em;color: darkgreen">$</strong>
-                                    <input class="bet-amount-input" type="number" @bind-value="@BetSlip.totalWagerForParley" @bind-value:event="oninput"/>
+                                    <input class="bet-amount-input" type="number" @bind="@BetSlip.totalWagerForParley" @bind:event="oninput"/>
                                 </div>
                             </div>
 
                             <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
                                 <strong>Total Parley Payout</strong>
                                 <strong>
-                                    <span style="color:darkgreen">$</span>@(BetSlip.totalPayoutForParley = BetSlip.PreBets.GetPayoutForTotalBetsParley(BetSlip.totalWagerForParley))
+                                    <span style="color:darkgreen">$</span>@GetPayoutForTotalBetsParley(BetSlip.totalWagerForParley)
                                 </strong>
 
                             </div>
@@ -337,5 +337,16 @@
             await localStorage.DeleteAsync("CurrentBetSlip");
             LoggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
         }
+    }
+
+    private string GetPayoutForTotalBetsSingles()
+    {
+        return BetSlip.PreBets.GetPayoutForTotalBetsSingles().ToString("#,##0.00");
+    }
+
+    private string GetPayoutForTotalBetsParley(decimal totalParleyWager)
+    {
+        BetSlip.totalPayoutForParley = BetSlip.PreBets.GetPayoutForTotalBetsParley(totalParleyWager);
+        return BetSlip.totalPayoutForParley.ToString("#,##0.00");
     }
 }
