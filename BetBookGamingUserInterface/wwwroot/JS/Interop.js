@@ -13,16 +13,16 @@ window.onscroll = () => {
 
 function bSlipPositionChange() {
     var betSlip = document.getElementById('betSlip')
-    var footer = document.getElementById('footer')
+    var lowerBound = document.getElementById('lower-bound')
     var betSlipHeight = betSlip.offsetHeight;
-    var footerHeight = footer.offsetHeight;
-    if (betSlipHeight < footerHeight - pageYOffset + 1350) {
+    var lowerBoundHeight = lowerBound.offsetHeight;
+    if (betSlipHeight < lowerBoundHeight - pageYOffset + 400) {
         betSlip.style.position = 'fixed'
-        betSlip.style.bottom = '1%'
+        betSlip.style.bottom = '7%'
 
     } else {
         betSlip.style.position = 'absolute'
-        betSlip.style.bottom = '-5%'
+        betSlip.style.bottom = '-15%'
     }
 }
 

@@ -20,6 +20,10 @@
         <GamesDisplay Games="games" />
     </div>
 
+    <div id="lower-bound">
+
+    </div>
+
     <div id="betSlip" class="b-slip">
         <AccordionBetSlip OnValidSubmit="@ShowToast" LoggedInUser="loggedInUser" />
     </div>
@@ -45,7 +49,7 @@ else
         position:fixed;
         z-index: 3;
         right: 0;
-        bottom: 1%;
+        bottom: 7%;
         left: 0;
         visibility: @(BetSlip.PreBets.Count > 0 ? "visible" : "hidden");
     }
