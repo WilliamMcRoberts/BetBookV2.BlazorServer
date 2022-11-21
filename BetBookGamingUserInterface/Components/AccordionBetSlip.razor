@@ -1,6 +1,7 @@
 ﻿@inject ProtectedLocalStorage localStorage
 @inject IMongoUserData userData
 @inject IJSRuntime js
+@inject ProtectedLocalStorage localStorage
 
 <div class="accordion-container">
     <SfAccordion ID="AccordionElement" @ref="@Accordion">
@@ -16,7 +17,7 @@
                         @foreach (CreateBetModel createBetModel in BetSlip.PreBets)
                         {
                             <div class="create-bet-model-container">
-                                <button @onclick="(() => BetSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                <button @onclick="(async () => await RemoveBet(createBetModel))" class="btn btn-close btn-sm close-button"></button>
                                 <div class="bet-info-container">
                                     <div class="game-bet-type-slip">
                                         <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
@@ -69,7 +70,7 @@
                         @foreach (CreateBetModel createBetModel in BetSlip.PreBets)
                         {
                             <div class="create-bet-model-container">
-                                <button @onclick="(() => BetSlip.RemoveBetFromPreBetsList(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                <button @onclick="(async () => await RemoveBet(createBetModel))" class="btn btn-close btn-sm close-button"></button>
                                 <div class="bet-info-container">
                                     <div class="game-bet-type-parley">
                                         <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
@@ -89,7 +90,7 @@
                                 <strong style="text-align:center;">Wager Amount</strong>
                                 <div style="display:flex;justify-content:center;">
                                     <strong style="margin:.25em .25em;color: darkgreen">$</strong>
-                                    <input class="bet-amount-input" type="number" @bind="@BetSlip.totalWagerForParley" @bind:event="oninput"/>
+                                    <input disabled="parleyBetCountBad" class="bet-amount-input" type="number" @bind="@BetSlip.totalWagerForParley" @bind:event="oninput"/>
                                 </div>
                             </div>
 
@@ -348,5 +349,11 @@
     {
         BetSlip.totalPayoutForParley = BetSlip.PreBets.GetPayoutForTotalBetsParley(totalParleyWager);
         return BetSlip.totalPayoutForParley.ToString("#,##0.00");
+    }
+
+    private async Task RemoveBet(CreateBetModel bet)
+    {
+        BetSlip.RemoveBetFromPreBetsList(bet);
+        await localStorage.SetAsync("CurrentBetSlip", BetSlip.PreBets);
     }
 }
