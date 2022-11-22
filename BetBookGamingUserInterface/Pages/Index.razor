@@ -20,12 +20,8 @@
         <GamesDisplay Games="games" />
     </div>
 
-    <div id="betSlip" class="b-slip">
+    <div class="b-slip">
         <AccordionBetSlip OnValidSubmit="@ShowToast" LoggedInUser="loggedInUser" />
-    </div>
-
-    <div id="lower-bound">
-
     </div>
 }
 
@@ -46,10 +42,10 @@ else
 <style>
 
     .b-slip {
-        position:fixed;
+        position:sticky;
         z-index: 3;
         right: 0;
-        bottom: 7%;
+        bottom: 3%;
         left: 0;
         visibility: @(BetSlip.PreBets.Count > 0 ? "visible" : "hidden");
     }
@@ -121,7 +117,7 @@ else
         isBusy = true;
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
-        games = await gameService.GetGamesByWeek(season, week);
+        games = await gameService.GetGamesByWeek(season, 12);
         isBusy = false;
         await LoadAndVerifyUser();
     }

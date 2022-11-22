@@ -7,23 +7,6 @@ window.onscroll = () => {
     drawleft()
     drawright()
     fadeOut()
-    bSlipPositionChange()
-}
-
-
-function bSlipPositionChange() {
-    var betSlip = document.getElementById('betSlip')
-    var lowerBound = document.getElementById('lower-bound')
-    var betSlipHeight = betSlip.offsetHeight;
-    var lowerBoundHeight = lowerBound.offsetHeight;
-    if (betSlipHeight < lowerBoundHeight - pageYOffset + 400) {
-        betSlip.style.position = 'fixed'
-        betSlip.style.bottom = '7%'
-
-    } else {
-        betSlip.style.position = 'absolute'
-        betSlip.style.bottom = '-15%'
-    }
 }
 
 function fadeOut() {
