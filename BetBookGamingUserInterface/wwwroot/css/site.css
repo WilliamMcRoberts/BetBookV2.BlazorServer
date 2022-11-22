@@ -1,5 +1,5 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
-
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Distressed&display=swap');
 html, body {
     font-family: 'Montserrat', sans-serif;
     background-image: url(../images/NFL-BG2.jpg);

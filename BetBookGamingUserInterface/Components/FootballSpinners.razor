@@ -30,14 +30,6 @@
 
 <style>
 
-    #path-right {
-        animation: animatePath 10s linear infinite;
-    }
-
-    #path-left {
-        animation: animatePath 10s linear infinite;
-    }
-
     #svg-div-left {
         display:none;
     }
@@ -79,18 +71,6 @@
         margin-bottom: auto;
         margin-left: 1em;
         margin-right: 2em;
-    }
-
-    @@keyframes animatePath {
-
-        0%, 18%, 20%, 50.1%, 60%, 65.1%, 80%, 90.1%, 92% {
-            stroke: transparent;
-        }
-
-        18.1%, 20.1%, 30%, 50%, 60.1%, 65%, 80.1%, 90%, 92.1%, 100% {
-            stroke: #fff;
-        }
-
     }
 
     @@media (max-width: 1100px) {

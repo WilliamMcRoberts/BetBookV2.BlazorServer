@@ -15,6 +15,11 @@
         <img class="scroll-img" src="/images/arrowdown.png" />
         <h2 class="scroll-text">For Games</h2>
     </div>
+
+    <div id="scrollBoxWeek">
+        <h2 id="weekText">Week @week</h2>
+    </div>
+    
         
     <div id="hiddenContent">
         <GamesDisplay Games="games" />
@@ -40,6 +45,65 @@ else
 </SfToast>
 
 <style>
+
+    #weekText {
+        font-family: 'Rubik Distressed', cursive;
+        position:relative;
+        font-size:6em;
+        letter-spacing:.15em;
+        color: #380474;
+        text-transform:uppercase;
+        width:100%;
+        text-align:center;
+        -webkit-box-reflect: below 1px linear-gradient(transparent, rgba(0,0,0,0.5));
+        line-height:0.70em;
+        outline:none;
+        animation: animateWeekText 10s linear infinite;
+    }
+
+    @@keyframes animateWeekText {
+        0%,18%,20%,50.1%,60%,65.1%,80%,90.1%,92% {
+            color: #380474;
+            box-shadow: none;
+        }
+        18.1%,20.1%,30%,50%,60.1%,65%,80.1%,90%,92.1%,100% {
+            color: #fff	;
+                text-shadow: 0 0 10px #380474, 0 0 20px #380474, 0 0 40px #380474, 0 0 80px #380474, 0 0 160px #380474;
+        }
+    }
+
+    @@media(max-width: 800px) {
+        #weekText {
+            font-size:5em;
+        }
+    }
+
+    @@media(max-width: 680px) {
+        #weekText {
+            font-size: 4em;
+        }
+    }
+
+    @@media(max-width: 560px) {
+        #weekText {
+            font-size: 3em;
+        }
+    }
+
+    @@media(max-width: 440px) {
+        #weekText {
+            font-size: 2.35em;
+        }
+    }
+
+    #scrollBoxWeek {
+        position: center;
+        opacity: 0;
+        margin: 0 auto;
+        margin-bottom: 4em;
+        text-align: center;
+        width: 70%;
+    }
 
     .b-slip {
         position:sticky;
