@@ -187,11 +187,6 @@ ul {
     justify-content: center;
 }
 
-.nav-links {
-    display: flex;
-    justify-content: flex-end;
-    font-family: 'Montserrat', sans-serif;
-}
 
 
 @media (max-width: 785px) {
@@ -320,14 +315,6 @@ ul {
     .winner-moneyline {
         font-size: 10px;
     }
-}
-
-@media(max-width: 460px) {
-
-    .fb-icon {
-        display: none;
-    }
-
 }
 
 

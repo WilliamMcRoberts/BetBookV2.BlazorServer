@@ -1,200 +1,272 @@
 ﻿@inject AuthenticationStateProvider authProvider
 @inject NavigationManager navManager
 
-    <AuthorizeView>
-        <Authorized>
-            <div class="login-display">
-            <SfDropDownButton CssClass="e-caret-hide custom e-round-corner" Content="About" @ref="aboutbtn">
-                    <DropDownMenuItems>
-                        <DropDownMenuItem Url="About" Text="Bet Book V2"></DropDownMenuItem>
-                    </DropDownMenuItems>
-                </SfDropDownButton>
-            <SfDropDownButton CssClass="e-caret-hide custom e-round-corner" Content="Place Wager" @ref="wagersbtn">
-                    <DropDownMenuItems>
-                        <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
-                    </DropDownMenuItems>
-                </SfDropDownButton>
-            <SfDropDownButton CssClass="e-caret-hide custom e-round-corner" Content="History" @ref="profilebtn">
-                    <DropDownMenuItems>
-                        <DropDownMenuItem Url="SinglesProfilePage" Text="My Single Bets"></DropDownMenuItem>
-                        <DropDownMenuItem Url="ParleyProfilePage" Text="My Parley Bets"></DropDownMenuItem>
-                    </DropDownMenuItems>
-                </SfDropDownButton>
-            <SfDropDownButton CssClass="e-caret-hide custom e-round-corner" Content="Account" @ref="accountbtn">
-                    <DropDownMenuItems>
-                        <DropDownMenuItem Url="MicrosoftIdentity/Account/SignOut" Text="Sign Out"></DropDownMenuItem>
-                        <DropDownMenuItem Url="AccountDetails" Text="Account Details"></DropDownMenuItem>
-                    </DropDownMenuItems>
-                </SfDropDownButton>
-            </div>
-        </Authorized>
-        <NotAuthorized>
-            <div class="login-display-sign-in">
-                <SfDropDownButton CssClass="e-caret-hide" Content="Sign In/Up" @ref="signinbtn">
-                    <DropDownMenuItems>
-                        <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign In"></DropDownMenuItem>
-                        <DropDownMenuItem Url="MicrosoftIdentity/Account/SignIn" Text="Sign Up"></DropDownMenuItem>
-                    </DropDownMenuItems>
-                </SfDropDownButton>
-            </div>
-        </NotAuthorized>
-    </AuthorizeView>
-    <AuthorizeView>
-        <Authorized>
-            <div class="login-display-mini">
-                <SfDropDownButton @ref="iconbtn" CssClass="e-caret-hide">
-                    <DropDownMenuItems>
-                        <DropDownMenuItem Url="About" Text="About"></DropDownMenuItem>
-                        <DropDownMenuItem Url="/" Text="Available Wagers"></DropDownMenuItem>
-                        <DropDownMenuItem Url="SinglesProfilePage" Text="My Single Bets"></DropDownMenuItem>
-                        <DropDownMenuItem Url="ParleyProfilePage" Text="My Parley Bets"></DropDownMenuItem>
-                        <DropDownMenuItem Url="AccountDetails" Text="Account Details"></DropDownMenuItem>
-                        <DropDownMenuItem Url="MicrosoftIdentity/Account/SignOut" Text="Sign Out"></DropDownMenuItem>
-                    </DropDownMenuItems>
-                </SfDropDownButton>
-            </div>
-        </Authorized>
-    </AuthorizeView>
+@*<i class="fa-solid fa-house"></i>*@
+@*<i class="fa-solid fa-bars"></i>*@
+<AuthorizeView>
+    <Authorized>
+            <div class="menu">
+                <ul class="list">
+                    <li class="item ">
+                        <a href="/">
+                            <span class="icon">
+                                <i class="fa-solid fa-football"></i>                                
+                            </span>
+                            <span class="text">
+                                Games
+                            </span>
+                        </a>
+                    </li>
+                    <li class="item">
+                        <a href="/About">
+                            <span class="icon">
+                                <i class="fa-solid fa-circle-info"></i>
+                            </span>
+                            <span class="text">
+                                About
+                            </span>
+                        </a>
+                    </li>
+                   
+                    <li class="item">
+                        <a href="/SinglesProfilePage">
+                            <span class="icon">
+                                <i class="fa-solid fa-book"></i>
+                            </span>
+                            <span class="text">
+                                History(S)
+                            </span>
+                        </a>
+                    </li>
 
-@code {
-    private SfDropDownButton aboutbtn;
-    private SfDropDownButton iconbtn;
-    private SfDropDownButton wagersbtn;
-    private SfDropDownButton profilebtn;
-    private SfDropDownButton accountbtn;
-    private SfDropDownButton signinbtn;
-}
+                    <li class="item">
+                        <a href="/ParleyProfilePage">
+                            <span class="icon set">
+                                <i class="fa-solid fa-timeline"></i>
+                            </span>
+                            <span class="text">
+                                History(P)
+                            </span>
+                        </a>
+                    </li>
+
+                    <li class="item">
+                        <a href="/AccountDetails">
+                            <span class="icon set">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <span class="text">
+                                Profile
+                            </span>
+                        </a>
+                    </li>
+                    <li class="item">
+                    <a href="MicrosoftIdentity/Account/SignOut">
+                            <span class="icon set">
+                                <i class="fa-solid fa-right-from-bracket"></i>
+                            </span>
+                            <span class="text">
+                                LogOut
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+    </Authorized>
+    <NotAuthorized>
+            <div class="menu">
+                <ul style="justify-content: space-evenly" class="list">
+                    <li class="item ">
+                    <a href="MicrosoftIdentity/Account/SignIn">
+                            <span class="icon">
+                                <i class="fa-solid fa-house"></i>
+                            </span>
+                            <span class="text">
+                                LogIn
+                            </span>
+                        </a>
+                    </li>
+                    <li class="item">
+                    <a href="MicrosoftIdentity/Account/SignIn">
+                            <span class="icon">
+                                <i class="fa-solid fa-user"></i>
+                            </span>
+                            <span class="text">
+                                SignUp
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+    </NotAuthorized>
+</AuthorizeView>
 
 <style>
 
-    h3 {
-        font-size: 3rem;
-        letter-spacing: 0.9px;
-        line-height: 0.70em;
-        outline: none;
-        animation: animateLogo 10s linear infinite;
-        position: relative;
-        width: fit-content;
-        font-weight: 900;
-    }
-
-    .custom.e-dropdown-popup {
-        margin: 5px -20px;
-    }
-
-    .e-btn {
-        line-height: 1.15em;
-        outline: none;
-        animation: animateLabel 30s linear infinite;
-        color: #000;
-        position: relative;
-        background: none;
-        border: none;
-        font-size: 18px;
-        font-weight: 900;
-        
-    }
-
-    .e-dropdown-btn, .e-dropdown-btn.e-btn {
-        color: white;
-        border: none;
-        background: linear-gradient(160deg ,#000,#000);
-        background-size: 0% 5px;
-        background-repeat: no-repeat;
-        background-position: left bottom;
-        transition: 300ms ease;
-        padding-left: .25em;
-    }
-
-        .e-dropdown-btn:hover {
-            background-size: 95% 5px;
-        }
-
-    .e-dropdown-popup {
-        border: 1px solid #000;
-        background: transparent;
+    .menu {
         background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0, 0.5);
+        background-color: rgba(0,0,0, 0.4);
         backdrop-filter: blur(10px);
-        border-radius: 10px;
-        box-shadow: inset 0 0 5px 1px #000;
-    }
-
-    .e-dropdown-popup:hover {
-        background:transparent;
-        background-color: rgb(0,0,0);
-        background-color: rgba(0,0,0, 0.5);
-        backdrop-filter: blur(10px);
-            
-        }
-
-    .e-dropdown-btn.e-active {
-        border: none;
-        color: #000;
-        background-size: 90% 5px;
-    }
-
-    .e-dropdown-popup ul .e-item .e-menu-url {
-        background: transparent;
-        font-weight: 900;
-        font-size: 16px;
+        height: auto;
+        width: auto;
         display: flex;
-        color: #000;
-        text-shadow: 0 0 2.5px #fff, 0 0 5px #fff, 0 0 7.5px #fff, 0 0 10px #fff;
+        justify-content: space-evenly;
+        margin: 1em auto;
+        border: none;
+        border-radius: 50px;
+        box-shadow:  0 0 5px #000, 0 0 7.5px #000, 0 0 10px #000, 0 0 20px #000;
     }
 
-        .e-dropdown-popup ul .e-item .e-menu-url:hover {
-            color: white;
-            text-shadow: 0 0 2.5px #000, 0 0 5px #000, 0 0 7.5px #000, 0 0 10px #000;
-            background: transparent;
+        .menu ul {
+            display: flex;
+            width: 25rem;
         }
 
-    .e-dropdown-popup ul .e-item:hover {
-        background: transparent;
+    .item {
+        position: relative;
+        width: 3.5rem;
+        height: 2.5rem;
+        z-index: 1;
+        list-style-type: none;
     }
 
-    .login-display-mini {
-        background-image: url(../images/togglebutton.png);
+        .item a {
+            text-decoration: none;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            width: 100%;
+        }
+
+    .icon {
+        position: relative;
+        text-align: center;
+        transform: translateY(0.5rem);
+        font-weight: 100;
+        color: #000;
+        transition: 0.6s;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        border: 2px solid transparent;
+        width: 35px;
+        height: 35px;
+        justify-content: center;
+        border-radius: 50%;
     }
 
-    .login-display {
-        letter-spacing: 0.9px;
-        width: fit-content;
+    .menu ul li:hover a .icon {
+        transform: translateY(-1.5rem);
+        opacity: 1;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        color: #fff;
+        border: 2px solid #000;
+        background-color: rgb(0,0,0);
+        background-color: rgba(0,0,0, 0.4);
+        box-shadow:  0 0 5px #000, 0 0 7.5px #000, 0 0 10px #000, 0 0 20px #000;
+
     }
 
-    .login-display-sign-in {
-        
-        letter-spacing: 0.9px;
-        width: fit-content;
+    .text {
+        position: absolute;
+        transition: 0.6s;
+        letter-spacing: 0.04rem;
+        color: #000;
+        opacity: 0;
+        transform: translateY(2.5rem);
+        padding: 3px;
+        text-transform: uppercase;
+        border-radius: 9px;
+        font-weight: 700;
+        font-family: roboto;
+        font-size: 10%;
+        text-shadow: 0 0 1px #fff, 0 0 2px #fff,0 0 3px #fff, 0 0 4px #fff;
+    }
+
+    .menu ul li:hover .text {
+        opacity: 1;
+        transform: translateY(.5rem);
+        font-size: 70%;
+    }
+
+    .text:active {
+        color: #fff;
+        transition: 0s;
+        text-shadow: 0 0 2.5px #000, 0 0 5px #000, 0 0 7.5px #000;
     }
 
     @@keyframes animateLabel {
 
-    0%,10%,15%,20%,25%,30%,35%,40%,45%,50% {
-        color: #000;
-            text-shadow: 0 -1px 2.5px #fff, 0 0  5px #fff, 0 0  7.5px #fff, 0  0  10px #fff;
+        0%,10%,15%,20%,25%,30%,35%,40%,45%,50% {
+            color: #000;
+                text-shadow: 0 -1px 2.5px #fff, 0 0  5px #fff, 0 0  7.5px #fff, 0  0  10px #fff;
+            }
+
+        50%,55%,60%,65%,70%,75%,80%,85%,90%,95%,100% {
+            color: #fff;
+                text-shadow: 0 -1px 2.5px #000, 0 0  5px #000, 0 0  7.5px #000, 0 0  10px #000;
         }
-
-    50%,55%,60%,65%,70%,75%,80%,85%,90%,95%,100% {
-        color: #fff;
-            text-shadow: 0 -1px 2.5px #000, 0 0  5px #000, 0 0  7.5px #000, 0 0  10px #000;
-    }
-}
-
-    @@media (max-width: 675px) {
-
-        .login-display {
-            display: none;
-        }
-
     }
 
-    @@media (min-width: 675px) {
+    @@media (max-width: 730px) {
 
-        .login-display-mini {
-            display: none;
+        .menu {
+            width: fit-content;
+        }
+    }
+
+    @@media (max-width: 525px) {
+        .menu {
+            width: auto;
         }
 
+            .menu ul {
+                padding: 0;
+            }
+
+        .list {
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        .item {
+            width: auto;
+        }
+    }
+
+    @@media (max-width: 450px) {
+
+        .menu ul li:hover a .icon {
+            transform: translateY(-1rem);
+            opacity: 1;
+            width: 35px;
+            height: 35px;
+            background-color: transparent;
+            border: 3px solid #fff;
+        }
+
+        .text {
+            position: absolute;
+            transition: 0.6s;
+            letter-spacing: 0.02rem;
+            transform: translateY(2rem);
+           text-transform: uppercase;
+            border-radius: 9px;
+            font-weight: 700;
+            font-family: roboto;
+           text-shadow: 0 0 2.5px #fff;
+        }
+
+        .menu ul li:hover .text {
+            opacity: 1;
+            transform: translateY(.75rem);
+            font-size: 60%;
+        }
     }
 
 </style>
