@@ -64,7 +64,7 @@ function drawright() {
 function adjustHeader() {
     var currentScrollPos = window.pageYOffset;
     if (prevScrollPos <= currentScrollPos) {
-        document.getElementById("header").style.top = "-150px";
+        document.getElementById("header").style.top = "-175px";
         prevScrollPos = currentScrollPos;
         return;
     }
