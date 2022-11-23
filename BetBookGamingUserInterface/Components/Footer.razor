@@ -30,8 +30,8 @@
     <div style="display:flex;justify-content:space-evenly;">
         <div class="contact-item">
             <a style="margin-bottom:1em;" href="/" class="icon-container">
-                <image class="fb-icon" src="/images/fbicon.png" />
-                <h3 class="name">Bet Book</h3>
+                <image class="fb-icon-footer" src="/images/fbicon.png" />
+                <h3 class="name-footer">Bet Book</h3>
             </a>
             <h6 class="title">@copyright</h6>
             <h6 class="title">@lisence</h6>
@@ -78,6 +78,18 @@
 
 <style>
 
+    .name-footer {
+        font-size: 2rem;
+        letter-spacing: 0.9px;
+        line-height: 0.70em;
+        outline: none;
+        animation: animateLogo 10s linear infinite;
+        position: relative;
+        width: fit-content;
+        font-weight: 900;
+        margin-top: .15em;
+    }
+
     .social-media-icon-container {
         display: flex;
         width: 90%;
@@ -108,17 +120,30 @@
 
     .trust-logo {
         margin-top: 4em;
+        width: auto;
     }
 
-    .name {
-        font-size: 25px;
-        color: white;
-        margin-top: .2em;
-    }
+    
 
-    .fb-icon {
+    .fb-icon-footer {
         height: 35px;
         margin-right: .25em;
+        
+    }
+
+    @@media (max-width: 650px) {
+
+        .fb-icon-footer {
+            display: none;
+        }
+    }
+
+    @@media (max-width: 710px) {
+
+        .name-footer {
+            font-size: 1.5em;
+
+        }
     }
 
     .footer-nav-container {
