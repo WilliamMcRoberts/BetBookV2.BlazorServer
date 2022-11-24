@@ -16,7 +16,7 @@ function fadeOutFadeIn() {
     var distanceToTopScrollBoxWeek = window.pageYOffset + scrollBoxWeek.getBoundingClientRect().top;
     var elementHeightScrollBox = scrollBox.offsetHeight;
     var elementHeightScrollBoxWeek = scrollBox.offsetHeight;
-    var scrollTop = document.documentElement.scrollTop + 50;
+    var scrollTop = document.documentElement.scrollTop + 200;
     if (scrollTop > distanceToTopScrollBox) {
         scrollBox.style.opacity = 1 - (scrollTop - distanceToTopScrollBox) / elementHeightScrollBox;
     //    scrollBoxWeek.style.opacity = 0 + (scrollTop - distanceToTopScrollBox) / elementHeightScrollBox;

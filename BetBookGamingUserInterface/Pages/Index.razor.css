@@ -35,18 +35,13 @@
     border-radius: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     opacity: 1;
+    -webkit-animation: bounce 8s infinite;
 }
 
 @media (max-width: 520px) {
     .scroll-text {
         font-size: 1.25em;
-    }
-}
-
-@media (max-width: 1000px) {
-    .scroll-box {
-        width: 50%;
     }
 }
