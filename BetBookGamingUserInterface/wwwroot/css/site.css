@@ -4,14 +4,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Russo+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Neonderthaw&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+
+
 html, body {
     font-family: 'Montserrat', sans-serif;
     background-image: url(../images/NFL-BG2.jpg);
-    /*background-image: linear-gradient(#B2BEB5, #E5E4E2);*/
-    /*background-image: url(../images/fb3.jpg);*/
     background-size: cover;
     background-attachment: fixed;
-    /*background: no-repeat;*/
+    scroll-behavior: smooth;
+
 }
 
 .content {

@@ -13,10 +13,15 @@ function fadeOutFadeIn() {
     var scrollBox = document.getElementById('scrollBox');
     var scrollBoxWeek = document.getElementById('scrollBoxWeek');
     var distanceToTopScrollBox = window.pageYOffset + scrollBox.getBoundingClientRect().top;
+    var distanceToTopScrollBoxWeek = window.pageYOffset + scrollBoxWeek.getBoundingClientRect().top;
     var elementHeightScrollBox = scrollBox.offsetHeight;
-    var scrollTop = document.documentElement.scrollTop + 150;
+    var elementHeightScrollBoxWeek = scrollBox.offsetHeight;
+    var scrollTop = document.documentElement.scrollTop + 50;
     if (scrollTop > distanceToTopScrollBox) {
         scrollBox.style.opacity = 1 - (scrollTop - distanceToTopScrollBox) / elementHeightScrollBox;
+    //    scrollBoxWeek.style.opacity = 0 + (scrollTop - distanceToTopScrollBox) / elementHeightScrollBox;
+    }
+    if (scrollTop < distanceToTopScrollBoxWeek) {
         scrollBoxWeek.style.opacity = 0 + (scrollTop - distanceToTopScrollBox) / elementHeightScrollBox;
     }
 }

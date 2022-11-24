@@ -12,6 +12,7 @@
 }
 
 .scroll-img {
+    background:transparent;
     border: none;
     box-shadow: 0 0 40px #fff;
     border-radius: 10px;
@@ -23,17 +24,19 @@
     background-color: rgb(0,0,0);
     background-color: rgba(0,0,0, 0.5);
     backdrop-filter: blur(10px);
-    border: 2px solid #fff;
-    box-shadow: 5px 5px 10px 5px rgba(0,0, 0, 0.9);
+    border: none;
+    box-shadow: 5px 5px 5px rgba(0,0, 0);
     text-align: center;
-    width: 30%;
-    margin: 2.5em auto;
-    padding: 1em;
-    color: #fff;
+    width: fit-content;
+    margin: 0 auto;
+    margin-top: 10em;
+    margin-bottom: 4em;
+    padding: .25em;
     border-radius: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    opacity: 1;
 }
 
 @media (max-width: 520px) {
