@@ -10,7 +10,6 @@
         </a>
     </div>
     
-
     <div class="login">
         <LoginDisplay />
     </div>
@@ -20,6 +19,7 @@
 <style>
 
     .logo-container {
+        position:relative;
         background-color: rgb(0,0,0);
         background-color: rgba(0,0,0, 0.4);
         backdrop-filter: blur(10px);
@@ -32,6 +32,11 @@
         border-radius: 50px;
         box-shadow: 0 0 5px #000, 0 0 7.5px #000, 0 0 10px #000, 0 0 20px #000;
     }
+
+        .logo-container:hover .icon-container {
+            -webkit-animation: bounce 1.5s ease;
+            animation: bounce 1.5s ease;
+        }
 
     .icon-container {
         margin-top: .05em;
