@@ -5,7 +5,7 @@
 
     <div class="logo-container">
         <a href="/" class="icon-container">
-            <image style="height: 45px;" class="fb-icon" src="/images/fbicon.png" />
+            <image  class="fb-icon" src="/images/fbicon.png" />
             <strong class="name-header">Bet Book</strong>
         </a>
     </div>
@@ -17,6 +17,10 @@
 </header>
 
 <style>
+
+    .fb-icon {
+        height: 45px;
+    }
 
     .logo-container {
         position:relative;
@@ -41,6 +45,9 @@
 
     .icon-container {
         margin-top: .05em;
+        display: flex;
+        text-decoration: none;
+        justify-content: center;
     }
 
     .name-header {
@@ -53,6 +60,52 @@
         width: fit-content;
         font-weight: 900;
         margin-top: .35em;
+    }
+
+    @@media (max-width: 365px) {
+
+        .name-header {
+            font-size: 1.75em;
+        }
+
+        .fb-icon {
+            height: 37.5px;
+        }
+
+        .icon-container {
+            margin-top: .15em;
+        }
+    }
+
+    @@media (max-width: 340px) {
+
+        .name-header {
+            font-size: 1.5em;
+        }
+
+        .fb-icon {
+            height: 35px;
+        }
+
+        .icon-container {
+            margin-top: .25em;
+
+        }
+    }
+
+    @@media (max-width: 315px) {
+
+        .name-header {
+            font-size: 1.25em;
+        }
+
+        .fb-icon {
+            height: 32.5px;
+        }
+
+        .icon-container {
+            margin-top: .35em;
+        }
     }
 
     .headernew {

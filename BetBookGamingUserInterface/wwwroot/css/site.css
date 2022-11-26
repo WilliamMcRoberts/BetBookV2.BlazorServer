@@ -12,7 +12,6 @@ html, body {
     background-size: cover;
     background-attachment: fixed;
     scroll-behavior: smooth;
-
 }
 
 .content {
@@ -281,10 +280,6 @@ ul {
 
     .parley-bet {
         margin: 1em .5em;
-    }
-
-    .link-support {
-        font-size: 11px;
     }
 
     .link-support-about {
