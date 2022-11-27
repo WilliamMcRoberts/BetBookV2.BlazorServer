@@ -91,7 +91,7 @@
                                 <strong style="text-align:center;">Wager Amount</strong>
                                 <div style="display:flex;justify-content:center;">
                                     <strong style="margin:.25em .25em;color: darkgreen">$</strong>
-                                    <input disabled="parleyBetCountBad" class="bet-amount-input" type="number" @bind="@BetSlip.totalWagerForParley" @bind:event="oninput"/>
+                                    <input disabled="@(parleyBetCountBad)" class="bet-amount-input" type="number" @bind="@BetSlip.totalWagerForParley" @bind:event="oninput"/>
                                 </div>
                             </div>
 

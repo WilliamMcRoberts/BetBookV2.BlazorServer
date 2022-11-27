@@ -87,10 +87,6 @@
     animation: animateWeekText 10s linear infinite;
 }
 
-
-
-
-
 #scrollBoxWeek {
     position: center;
     opacity: 0;
@@ -99,8 +95,6 @@
     text-align: center;
     width: 70%;
 }
-
-
 
 @media (max-width: 520px) {
     .scroll-text {
