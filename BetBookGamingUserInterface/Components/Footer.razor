@@ -1,4 +1,5 @@
-﻿
+﻿@inject NavigationManager navManager
+
 <div id="footer" class="footer">
     <div class="logo-copywrite-container mt-4 mb-4 ">
         <div class="trust-logo">
@@ -50,23 +51,23 @@
 
     <div style="border-top: 2px solid white;margin: 0 4em;" class="d-flex justify-content-center pb-4 pt-4">
         <ul class="wrapper">
-            <li class="icon facebook">
+            <li @onclick="@(() => navManager.NavigateTo("https://facebook.com"))" class="icon facebook">
                 <span class="tooltip">Facebook</span>
                 <span><i class="fab fa-facebook-f"></i></span>
             </li>
-            <li class="icon twitter">
+            <li @onclick="@(() => navManager.NavigateTo("https://twitter.com"))" class="icon twitter">
                 <span class="tooltip">Twitter</span>
                 <span><i class="fab fa-twitter"></i></span>
             </li>
-            <li class="icon instagram">
+            <li @onclick="@(() => navManager.NavigateTo("https://instagram.com"))" class="icon instagram">
                 <span class="tooltip">Instagram</span>
                 <span><i class="fab fa-instagram"></i></span>
             </li>
-            <li class="icon github">
+            <li @onclick="@(() => navManager.NavigateTo("https://github.com/WilliamMcRoberts/BetBookV2.BlazorServer"))" class="icon github">
                 <span class="tooltip">Github</span>
                 <span><i class="fab fa-github"></i></span>
             </li>
-            <li class="icon youtube">
+            <li @onclick="@(() => navManager.NavigateTo("https://youtube.com"))" class="icon youtube">
                 <span class="tooltip">Youtube</span>
                 <span><i class="fab fa-youtube"></i></span>
             </li>
