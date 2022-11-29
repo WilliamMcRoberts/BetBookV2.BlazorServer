@@ -29,7 +29,7 @@ public class UpdateParleyBetsTimer : BackgroundService
 
             try
             {
-                await _parleyBetData.UpdateFinishedParleyBets(week, season, _gameService);
+                await _parleyBetData.UpdateFinishedParleyBets(season, _gameService);
             }
             catch (Exception ex)
             {

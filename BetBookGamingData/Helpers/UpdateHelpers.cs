@@ -94,12 +94,12 @@ public static class UpdateHelpers
         }
     }
 
-    public static async Task UpdateFinishedParleyBets(this IMongoParleyBetSlipData parleyBetData, int week, SeasonType season, IGameService gameService)
+    public static async Task UpdateFinishedParleyBets(this IMongoParleyBetSlipData parleyBetData, SeasonType season, IGameService gameService)
     {
         List<ParleyBetSlipModel> parleyBetSlipsInProgress = 
             await parleyBetData.GetAllParleyBetSlipsInProgress();
 
-        GameDto[] games = await gameService.GetGamesByWeek(season, week);
+        GameDto[] games = await gameService.GetGamesByWeek(season, parleyBetSlipsInProgress[0].SingleBetsForParleyList[0].GameSnapshot.Week, false);
 
         List<GameDto> finishedGames = games.Where(g => g.IsOver).ToList();
 

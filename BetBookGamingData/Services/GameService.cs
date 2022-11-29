@@ -4,7 +4,7 @@ namespace BetBookGamingData.Services;
 public interface IGameService
 {
     Task<GameByScoreIdDto> GetGameByScoreId(int scoreId);
-    Task<GameDto[]> GetGamesByWeek(SeasonType currentSeason, int week);
+    Task<GameDto[]> GetGamesByWeek(SeasonType currentSeason, int week, bool getFromCache = true);
 }
 
 #nullable enable
@@ -51,11 +51,15 @@ public class GameService : IGameService
         return game!;
     }
 
-    public async Task<GameDto[]> GetGamesByWeek(SeasonType currentSeason, int week)
+    public async Task<GameDto[]> GetGamesByWeek(SeasonType currentSeason, int week, bool getFromCache = true)
     {
-        var games = _cache.Get<GameDto[]>(CacheKey);
+        var games = new GameDto[16];
 
-        if (games is not null) return games;
+        if(getFromCache)
+        {
+            games = _cache.Get<GameDto[]>(CacheKey);
+            if (games is not null) return games;
+        }
 
         try
         {
