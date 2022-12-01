@@ -1,11 +1,11 @@
 ﻿
 <CascadingValue Value="this">
-    <div class="child-content-box">
+    <div @onclick=@(showModal ? CloseModal : null ) class="child-content-box">
         @ChildContent
     </div>
     <div class="Modal" id="Modal" style="@("display:" + ( showModal ? $"block; {modalPosition}" : "none;"))">
         <div class="d-flex justify-content-end">
-            <button class="close-modal-button" @onclick="() => CloseModal()">X</button>
+            <button class="close-modal-button" @onclick="CloseModal">X</button>
         </div>
         <DynamicComponent Type="ComponentType" Parameters="ComponentParameters" />
     </div>

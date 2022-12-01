@@ -166,6 +166,7 @@ else
 
     [CascadingParameter]
     public ModalWrapper ModalWrapper { get; set; }
+
     [CascadingParameter]
     public Task<AuthenticationState> AuthenticationStateTask { get; set; }
 
@@ -231,8 +232,8 @@ else
 
         var ParameterArguments = new Dictionary<string, object>
         {
-            ["FinishedGame"] = finishedGame,
-            ["Wager"] = wager
+            {"FinishedGame" , finishedGame },
+            {"Wager" , wager }
         };
 
         ModalWrapper.ShowModal(mouseEventArgs, typeof(FinishedGameDetailsSingleBet), ParameterArguments);
