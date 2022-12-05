@@ -1,4 +1,6 @@
 ﻿
+using BetBookGamingUserInterface.Components;
+
 namespace BetBookGamingUserInterface;
 
 public static class RegisterServices

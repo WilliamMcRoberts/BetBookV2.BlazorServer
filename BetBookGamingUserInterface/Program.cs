@@ -1,4 +1,7 @@
 
+using BetBookGamingUserInterface.Components;
+
+
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddJsonFile("appsettings.Development.json")
@@ -14,7 +17,6 @@ try
     var builder = WebApplication.CreateBuilder(args);
 
     var secret = builder.Configuration["GoogleRecaptchaV3:Secret"];
-
     builder.ConfigureServices();
 
     var app = builder.Build();
