@@ -4,7 +4,7 @@
 - WebApi - Secured with API Key Middlware
 - MongoDB Driver
 - MongoDB Database
-- Location: https://betbookgaming.com
+- Location: [https://betbookgaming.com](https://betbookgamingv2.azurewebsites.net/)
 - Support: support@betbookgaming.com
 
 Version 2 of Bet Book NFL is updated with a better user experience, more betting styles, and professional wagers. A $10,000 paper account is provided upon account creation. Enjoy!
