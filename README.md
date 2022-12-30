@@ -2,8 +2,9 @@
 - .NET 6 Blazor Server
 - SportsData.IO API
 - WebApi - Secured with API Key Middlware
-- MongoDB Driver
-- MongoDB Database
+- MongoDB 
+- Serilog
+- MediatR
 - Location: https://betbookgamingv2.azurewebsites.net/
 - Support: support@betbookgaming.com
 
