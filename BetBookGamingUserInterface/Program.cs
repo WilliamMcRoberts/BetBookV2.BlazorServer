@@ -1,7 +1,4 @@
 
-using BetBookGamingUserInterface.Components;
-
-
 var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json")
     .AddJsonFile("appsettings.Development.json")
