@@ -2,34 +2,22 @@
 - .NET 6 Blazor Server
 - SportsData.IO API
 - WebApi - Secured with API Key Middlware
-- MongoDB Driver
-- MongoDB Database
-- Location: https://betbookgaming.com
+- MongoDB 
+- Serilog
+- MediatR
+- Location: https://betbookgamingv2.azurewebsites.net/
 - Support: support@betbookgaming.com
 
 Version 2 of Bet Book NFL is updated with a better user experience, more betting styles, and professional wagers. A $10,000 paper account is provided upon account creation. Enjoy!
 
-LANDING
-![landing](https://user-images.githubusercontent.com/95720340/202933071-4420ba2d-0025-478a-9162-fc12d6ae2d04.png)
 
-WAGER SELECTION
-![games](https://user-images.githubusercontent.com/95720340/202933067-b2da2d01-8439-4b54-b961-2188679e712b.png)
-
-BET SLIP CREATION
-![createwager](https://user-images.githubusercontent.com/95720340/202933060-0b9e0b8b-be73-4fd3-9570-98c3879027be.png)
-
-GAME DETAILS MODAL 
-![gamedetailsmodal](https://user-images.githubusercontent.com/95720340/201810158-008de4b4-a210-4426-b079-33141c323776.png)
-
-SINGLE BETS PROFILE
-![singlehis](https://user-images.githubusercontent.com/95720340/201810151-9d1e7997-5c9f-4e9c-8604-c58190a5e1e5.png)
-
-WAGER HISTORY POPUP MODAL
-![wagerdetailsmodal](https://user-images.githubusercontent.com/95720340/201810139-6c32df6b-a1e6-4224-866b-943a69b0119b.png)
-
-WAGER HISTORY POPUP MODAL FOR PARLEY
-![pwagerdetailsmodal](https://user-images.githubusercontent.com/95720340/201810127-5384237b-2122-4ddd-b7c6-25c614705e20.png)
-
-ABOUT PAGE
-![about](https://user-images.githubusercontent.com/95720340/201810186-4e925f98-6fce-4a7e-8879-0743ae260490.png)
-
+![Screenshot 2022-12-29 220149](https://user-images.githubusercontent.com/95720340/210030464-b643c101-189e-40f9-a273-402a8e2e26c6.png)
+![Screenshot 2022-12-29 220244](https://user-images.githubusercontent.com/95720340/210030456-c8015ca5-de70-46d4-b227-e377820cb27b.png)
+![Screenshot 2022-12-29 220244](https://user-images.githubusercontent.com/95720340/210030456-c8015ca5-de70-46d4-b227-e377820cb27b.png)
+![Screenshot 2022-12-29 220441](https://user-images.githubusercontent.com/95720340/210030447-e913b953-ad62-4386-ae15-b932e84ceff3.png)
+![Screenshot 2022-12-29 220459](https://user-images.githubusercontent.com/95720340/210030437-61285c5a-d57c-4a86-8ce7-13a6bfa3675a.png)
+![Screenshot 2022-12-29 220530](https://user-images.githubusercontent.com/95720340/210030431-943126d3-0aef-4881-806c-9400291bf7c9.png)
+![Screenshot 2022-12-29 220551](https://user-images.githubusercontent.com/95720340/210030426-9e92b35d-0a08-4960-9f00-429e7465863a.png)
+![Screenshot 2022-12-29 220609](https://user-images.githubusercontent.com/95720340/210030419-d40a6e50-8ee0-46c8-8589-1e17cb68a18a.png)
+![Screenshot 2022-12-29 220628](https://user-images.githubusercontent.com/95720340/210030413-3d2e4731-d8b8-4709-b9a1-60d3e07d0b30.png)
+![Screenshot 2022-12-29 220644](https://user-images.githubusercontent.com/95720340/210030408-b1a86f21-6dcc-4118-a89d-2871a8488650.png)
