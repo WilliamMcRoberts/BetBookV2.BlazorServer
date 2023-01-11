@@ -1,10 +1,9 @@
 # Bet Book V2
-- .NET 6 Blazor Server
+- .NET 7 Blazor Server
 - SportsData.IO API
 - WebApi - Secured with API Key Middlware
 - MongoDB 
 - Serilog
-- MediatR
 - Location: https://betbookgamingv2.azurewebsites.net/
 - Support: support@betbookgaming.com
 
