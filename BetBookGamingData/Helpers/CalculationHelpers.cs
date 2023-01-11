@@ -21,7 +21,7 @@ public static class CalculationHelpers
     public static SeasonType CalculateSeason(this DateTime dateTime)
     {
         return dateTime > new DateTime(2022, 8, 9) && dateTime < new DateTime(2022, 8, 28) ? SeasonType.PRE
-            : dateTime > new DateTime(2022, 8, 31) && dateTime < new DateTime(2023, 1, 14) ? SeasonType.REG
+            : dateTime > new DateTime(2022, 8, 31) && dateTime < new DateTime(2023, 1, 10) ? SeasonType.REG
             : SeasonType.POST;
     }
 

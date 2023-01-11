@@ -1,4 +1,5 @@
-﻿@inject IGameService gameService 
+﻿@using System.ComponentModel.DataAnnotations;
+@inject IGameService gameService 
 @inject IMongoParleyBetSlipData parleyBetSlipData
 @inject IMongoSingleBetData singleBetData
 
@@ -76,72 +77,99 @@
         return false;
     }
 
-    public async Task<bool> OnSubmitBetsFromSinglesBetSlip(UserModel loggedInUser)
+    public async Task<bool> OnSubmitSingleBet(CreateBetModel createBet, UserModel loggedInUser)
     {
-        if (isSubmitting || PreBets.Count < 1)
-            return false;
+        GameByScoreIdDto game = await gameService.GetGameByScoreId(createBet.Game.ScoreID);
 
-        isSubmitting = true;
-
-        bool isSuccessful = await SubmitSingleBetsInBetsList(PreBets, loggedInUser);
-
-        isSubmitting = false;
-        gameHasStarted = false;
-
-        return isSuccessful;
-    }
-
-    private async Task<bool> SubmitSingleBetsInBetsList(
-       List<CreateBetModel> singleBetsList, UserModel loggedInUser)
-    {
-        gameHasStarted = false;
-        betAmountForSinglesBad = false;
-        season = DateTime.Now.CalculateSeason();
-        week = season.CalculateWeek(DateTime.Now);
-
-        GameDto[] gameCheckArray =
-            await gameService.GetGamesByWeek(season, week);
-
-        foreach (CreateBetModel createBetModel in singleBetsList)
+        if (game.Score.HasStarted)
         {
-            if (createBetModel.BetAmount <= 0)
-            {
-                betAmountForSinglesBad = true;
-                return false;
-            }
+            gameHasStarted = true;
+            startedGameDescription = $"{game.Score.AwayTeam} at {game.Score.HomeTeam}";
+            return false;
+        }
 
-            GameDto game = gameCheckArray.Where(g => g.ScoreID == createBetModel.Game.ScoreID)
-                .FirstOrDefault()!;
-
-            if (game.HasStarted)
+        var singleBet = new SingleBetModel
             {
-                gameHasStarted = true;
-                startedGameDescription = $"{game.AwayTeam} at {game.HomeTeam}";
-                return false;
-            }
-
-            var singleBet = new SingleBetModel
-            {
-                WinnerChosen = createBetModel.BetType == BetType.OVERUNDER ?
-                                (createBetModel.Winner[0] == 'O' ? "Over" : "Under")
-                                : createBetModel.Winner,
+                WinnerChosen = createBet.BetType == BetType.OVERUNDER ?
+                                    (createBet.Winner[0] == 'O' ? "Over" : "Under")
+                                    : createBet.Winner,
 
                 BetPayout =
-                        Math.Round(createBetModel.BetAmount.CalculateSingleBetPayout(createBetModel.MoneylinePayout), 2),
+                                Math.Round(createBet.BetAmount.CalculateSingleBetPayout(createBet.MoneylinePayout), 2),
 
                 BettorId = loggedInUser.UserId,
-                BetType = createBetModel.BetType,
-                BetAmount = createBetModel.BetAmount,
+                BetType = createBet.BetType,
+                BetAmount = createBet.BetAmount,
                 SingleBetStatus = SingleBetStatus.IN_PROGRESS,
                 SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
-                GameSnapshot = CreateGameSnapshot(createBetModel.Game),
-                PointsAfterSpread = createBetModel.Game.CalculatePointsAfterSpread(createBetModel.Winner)
+                GameSnapshot = CreateGameSnapshot(createBet.Game),
+                PointsAfterSpread = createBet.Game.CalculatePointsAfterSpread(createBet.Winner)
             };
 
-            await singleBetData.CreateSingleBet(singleBet);
-        }
-        return true;
+        return await singleBetData.CreateSingleBet(singleBet);
     }
+
+    //public async Task<bool> OnSubmitBetsFromSinglesBetSlip(UserModel loggedInUser)
+    //{
+    //    if (isSubmitting || PreBets.Count < 1)
+    //        return false;
+
+    //    isSubmitting = true;
+
+    //    bool isSuccessful = await SubmitSingleBetsInBetsList(PreBets, loggedInUser);
+
+    //    isSubmitting = false;
+    //    gameHasStarted = false;
+
+    //    return isSuccessful;
+    //}
+
+    //private async Task<bool> SubmitSingleBetsInBetsList(
+    //   List<CreateBetModel> singleBetsList, UserModel loggedInUser)
+    //{
+    //    gameHasStarted = false;
+    //    betAmountForSinglesBad = false;
+    //    season = DateTime.Now.CalculateSeason();
+    //    week = season.CalculateWeek(DateTime.Now);
+
+    //    GameDto[] gameCheckArray =
+    //        await gameService.GetGamesByWeek(season, week);
+
+    //    foreach (CreateBetModel createBetModel in singleBetsList)
+    //    {
+
+    //        GameDto game = gameCheckArray.Where(g => g.ScoreID == createBetModel.Game.ScoreID)
+    //            .FirstOrDefault()!;
+
+    //        if (game.HasStarted)
+    //        {
+    //            gameHasStarted = true;
+    //            startedGameDescription = $"{game.AwayTeam} at {game.HomeTeam}";
+    //            return false;
+    //        }
+
+    //        var singleBet = new SingleBetModel
+    //        {
+    //            WinnerChosen = createBetModel.BetType == BetType.OVERUNDER ?
+    //                            (createBetModel.Winner[0] == 'O' ? "Over" : "Under")
+    //                            : createBetModel.Winner,
+
+    //            BetPayout =
+    //                    Math.Round(createBetModel.BetAmount.CalculateSingleBetPayout(createBetModel.MoneylinePayout), 2),
+
+    //            BettorId = loggedInUser.UserId,
+    //            BetType = createBetModel.BetType,
+    //            BetAmount = createBetModel.BetAmount,
+    //            SingleBetStatus = SingleBetStatus.IN_PROGRESS,
+    //            SingleBetPayoutStatus = SingleBetPayoutStatus.UNPAID,
+    //            GameSnapshot = CreateGameSnapshot(createBetModel.Game),
+    //            PointsAfterSpread = createBetModel.Game.CalculatePointsAfterSpread(createBetModel.Winner)
+    //        };
+
+    //        await singleBetData.CreateSingleBet(singleBet);
+    //    }
+    //    return true;
+    //}
 
     public GameSnapshotModel CreateGameSnapshot(GameDto gameDto) =>
        new GameSnapshotModel

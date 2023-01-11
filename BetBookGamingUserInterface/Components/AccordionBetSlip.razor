@@ -17,30 +17,40 @@
 
                         @foreach (CreateBetModel createBetModel in BetSlip.PreBets)
                         {
-                            <div class="create-bet-model-container">
-                                <button @onclick="(async () => await RemoveBet(createBetModel))" class="btn btn-close btn-sm close-button"></button>
-                                <div class="bet-info-container">
-                                    <div class="game-bet-type-slip">
-                                        <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
-                                        <strong>@createBetModel.BetType</strong>
-                                    </div>
-                                    <div class="winner-moneyline-container">
-                                        <strong class="winner-moneyline-slip">@createBetModel.GetWinnerSummary()</strong>
-                                        <strong class="winner-moneyline-slip">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
-                                    </div>
-                                    <div class="bet-amount-input-container">
-                                        <strong style="margin:.25em .25em;color:darkgreen">$</strong>
-                                        <input class="bet-amount-input" type="number" @bind="@createBetModel.BetAmount" @bind:event="oninput" />
+                            <EditForm Model="createBetModel" OnValidSubmit="(() => SubmitSingleBet(createBetModel))" >
+                                <DataAnnotationsValidator />
+                                <div class="create-bet-model-container">
+                                    <button type="button" @onclick="(async () => await RemoveBet(createBetModel))" class="btn btn-close btn-sm close-button"></button>
+                                    <div class="bet-info-container">
+                                        <div class="game-bet-type-slip">
+                                            <strong>@createBetModel.Game.AwayTeam @@ @createBetModel.Game.HomeTeam</strong>
+                                            <strong>@createBetModel.BetType</strong>
+                                        </div>
+                                        <div class="winner-moneyline-container">
+                                            <strong class="winner-moneyline-slip">@createBetModel.GetWinnerSummary()</strong>
+                                            <strong class="winner-moneyline-slip">@createBetModel.Winner.GetMoneylinePayoutForBet(createBetModel.Game, createBetModel.BetType).ToString("+#;-#;")</strong>
+                                        </div>
+                                        <div class="bet-amount-input-container">
+                                            <strong style="margin:.25em .25em;color:darkgreen">$</strong>
+                                            <InputNumber class="bet-amount-input" @bind-Value="@createBetModel.BetAmount" @oninput="@(e => {createBetModel.BetAmount = string.IsNullOrWhiteSpace(e.Value.ToString()) == false ? Convert.ToDecimal(e.Value) : 0;})" />
+                                            <ValidationMessage For="@(() => createBetModel.BetAmount)" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="m-2">
+                                    <button type="submit" class="custom-btn btn-submit-wager"><span>Submit Wager</span></button>
+                                </div>
+                            </EditForm>
                         }
 
                         <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
                             <strong>Total Singles Payout</strong>
                             <strong><span style="color:darkgreen">$</span>@GetPayoutForTotalBetsSingles()</strong>
                         </div>
-
+                        @if (BetSlip.betAmountForSinglesBad)
+                        {
+                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
+                        }
                         @if (BetSlip.gameHasStarted)
                         {
                             <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @BetSlip.startedGameDescription has already started *</h6>
@@ -49,14 +59,6 @@
                         {
                             <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
                         }
-                        @if (BetSlip.betAmountForSinglesBad)
-                        {
-                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* All Wagers Must Have A Bet Amount *</h6>
-                        }
-
-                        <div class="frame">
-                            <button @onclick="SubmitSinglesBetSlip" class="custom-btn btn-submit-wager"><span>Submit Wager</span></button>
-                        </div>
 
                     </div>
                 </ContentTemplate>
@@ -295,7 +297,7 @@
         ExpandParleyBetSlip = false;
     }
 
-    private async Task SubmitSinglesBetSlip()
+    private async Task SubmitSingleBet(CreateBetModel createBet)
     {
         if (LoggedInUser.AccountBalance == 0)
         {
@@ -303,13 +305,14 @@
             return;
         }
 
-        showToastSingle = await BetSlip.OnSubmitBetsFromSinglesBetSlip(LoggedInUser);
+        showToastSingle = await BetSlip.OnSubmitSingleBet(createBet, LoggedInUser);
 
         if (showToastSingle)
         {
-            BetSlip.PreBets.Clear();
+            BetSlip.PreBets.Remove(createBet);
             await OnValidSubmit.InvokeAsync();
             await localStorage.DeleteAsync("CurrentBetSlip");
+            await localStorage.SetAsync("CurrentBetSlip", BetSlip.PreBets);
             LoggedInUser = await AuthenticationStateTask.GetUserFromAuth(userData);
         }
     }
