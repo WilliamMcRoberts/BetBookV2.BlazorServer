@@ -10,7 +10,7 @@ public static class CalculationHelpers
     {
         int week = season == SeasonType.PRE ? (dateTime - new DateTime(2022, 8, 9)).Days / 7
                    : season == SeasonType.REG ? (dateTime - new DateTime(2022, 9, 6)).Days / 7
-                   : (dateTime - new DateTime(2023, 1, 14)).Days / 7;
+                   : (dateTime - new DateTime(2023, 1, 10)).Days / 7;
 
         if (week < 0)
             return 0;
