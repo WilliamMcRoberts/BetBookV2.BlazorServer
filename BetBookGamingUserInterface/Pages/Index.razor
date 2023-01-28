@@ -4,6 +4,8 @@
 @inject IMongoSingleBetData sb
 @inject IGameService gameService
 @inject IMongoParleyBetSlipData parleyBetData
+@inject PersistentComponentState ApplicationState
+@implements IDisposable
 
 <PageTitle>Home</PageTitle>
 
@@ -88,6 +90,9 @@ else
     [CascadingParameter]
     public CascadingBetSlipState BetSlip { get; set; }
 
+    private PersistingComponentStateSubscription _userSubscription;
+    private PersistingComponentStateSubscription _gameSubscription;
+
     #region Toast
 
     public SfToast ToastObj;
@@ -118,11 +123,38 @@ else
     protected override async Task OnInitializedAsync()
     {
         isBusy = true;
+
         season = DateTime.Now.CalculateSeason();
         week = season.CalculateWeek(DateTime.Now);
-        games = await gameService.GetGamesByWeek(season, week);
+
+        _gameSubscription = ApplicationState.RegisterOnPersisting(PersistGames);
+        _userSubscription = ApplicationState.RegisterOnPersisting(PersistUser);
+
+        games = ApplicationState.TryTakeFromJson<GameDto[]>("gameData", out var gamesStored) 
+            ? gamesStored : await gameService.GetGamesByWeek(season, week);
+
         isBusy = false;
-        await LoadAndVerifyUser();
+
+        loggedInUser = ApplicationState.TryTakeFromJson<UserModel>("userData", out var userStored) 
+            ? userStored : await LoadAndVerifyUser();
+    }
+
+    private Task PersistUser()
+    {
+        ApplicationState.PersistAsJson("userData", loggedInUser);
+        return Task.CompletedTask;
+    }
+
+    private Task PersistGames()
+    {
+        ApplicationState.PersistAsJson("gameData", games);
+        return Task.CompletedTask;
+    }
+
+    public void Dispose()
+    {
+        _userSubscription.Dispose();
+        _gameSubscription.Dispose();
     }
 
     #endregion
@@ -134,13 +166,13 @@ else
         await ToastObj.ShowAsync();
     }
 
-    private async Task LoadAndVerifyUser()
+    private async Task<UserModel> LoadAndVerifyUser()
     {
         var authState = await AuthenticationStateTask;
         string objectId = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("objectidentifier"))?.Value;
         loggedInUser = await userData.GetCurrentUserFromAuthentication(objectId) ?? new();
 
-        if (string.IsNullOrWhiteSpace(objectId)) return;
+        if (string.IsNullOrWhiteSpace(objectId)) return loggedInUser;
 
         string firstName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("givenname"))?.Value;
         string lastName = authState.User.Claims.FirstOrDefault(c => c.Type.Contains("surname"))?.Value;
@@ -186,11 +218,13 @@ else
                 loggedInUser.AccountBalance = 10000;
 
                 await userData.CreateUser(loggedInUser);
-                return;
+                return loggedInUser;
             }
 
             await userData.UpdateUser(loggedInUser);
         }
+
+        return loggedInUser;
     }
 
     #endregion

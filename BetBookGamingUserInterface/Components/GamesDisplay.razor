@@ -630,9 +630,10 @@
 	[Parameter]
 	public GameDto[] Games { get; set; }
 
-	protected override async Task OnInitializedAsync()
+	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		await CheckForSavedBetSlip();
+		if(firstRender)
+			await CheckForSavedBetSlip();
 	}
 
 	private void ShowGameDetailsModal(MouseEventArgs mouseEventArgs, GameDto game)
