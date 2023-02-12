@@ -2,7 +2,7 @@
 var prevScrollPos = window.pageYOffset;
 
 window.onscroll = () => {
-   checkBoxes()
+    checkBoxes()
     adjustHeader()
     drawleft()
     drawright()

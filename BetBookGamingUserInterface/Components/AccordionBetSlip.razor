@@ -87,50 +87,53 @@
                             </div>
                         }
 
-                        <div style="display:flex;flex-direction:column;">
+                        <EditForm Model="@BetSlip" OnValidSubmit="SubmitParleyBetSlip">
+                            <div style="display:flex;flex-direction:column;">
 
-                            <div style="display:flex;flex-direction:column;width:35%;margin:.5em auto;text-align:center;">
-                                <strong style="text-align:center;">Wager Amount</strong>
-                                <div style="display:flex;justify-content:center;">
-                                    <strong style="margin:.25em .25em;color: darkgreen">$</strong>
-                                    <input disabled="@(parleyBetCountBad)" class="bet-amount-input" type="number" @bind="@BetSlip.totalWagerForParley" @bind:event="oninput"/>
+                                <div style="display:flex;flex-direction:column;width:35%;margin:.5em auto;text-align:center;">
+                                    <strong style="text-align:center;">Wager Amount</strong>
+                                    <div style="display:flex;justify-content:center;">
+                                        <strong style="margin:.25em .25em;color: darkgreen">$</strong>
+                                        <input type="number" disabled="@(parleyBetCountBad)" class="bet-amount-input" @bind="@BetSlip.totalWagerForParley" @bind:event="oninput" @bind:after="(() => GetPayoutForTotalBetsParley(BetSlip.totalWagerForParley))" />
+                                    </div>
                                 </div>
+
+                                <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
+                                    <strong>Total Parley Payout</strong>
+                                    <strong>
+                                        <span style="color:darkgreen">$</span>@BetSlip.totalPayoutForParley
+                                    </strong>
+
+                                </div>
+
                             </div>
-
-                            <div style="text-align:center;margin:.5em 1em;display:flex;flex-direction:column;">
-                                <strong>Total Parley Payout</strong>
-                                <strong>
-                                    <span style="color:darkgreen">$</span>@GetPayoutForTotalBetsParley(BetSlip.totalWagerForParley)
-                                </strong>
-
+                             @if (parleyBetCountBad)
+                            {
+                                <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Slip Must Have At Least 2 Wagers *</h6>
+                            }
+                            @if (userStatusBad)
+                            {
+                                <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
+                            }
+                            @if (BetSlip.betAmountForParleyBad && BetSlip.totalWagerForParley <= 0)
+                            {
+                                <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Must Have A Wager Amount *</h6>
+                            }
+                            @if (BetSlip.conflictingBetsForParley)
+                            {
+                                <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
+                            }
+                            @if (BetSlip.gameHasStarted)
+                            {
+                                <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @BetSlip.startedGameDescription has already started *</h6>
+                            }
+                            <div class="frame">
+                                <button type="submit" class="custom-btn btn-submit-wager"><span>Submit Wager</span></button>
                             </div>
+                        </EditForm>
+                       
 
-                        </div>
-
-                        @if (parleyBetCountBad)
-                        {
-                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Slip Must Have At Least 2 Wagers *</h6>
-                        }
-                        @if (userStatusBad)
-                        {
-                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Must Bet Logged In To Submit Wager *</h6>
-                        }
-                        @if (BetSlip.betAmountForParleyBad && BetSlip.totalWagerForParley <= 0)
-                        {
-                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Parley Bet Must Have A Wager Amount *</h6>
-                        }
-                        @if (BetSlip.conflictingBetsForParley)
-                        {
-                            <h6 style="color:red;text-align:center;font-size:15px;font-weight:700;margin:.5em auto;">* Conflicting Bets In Parley *</h6>
-                        }
-                        @if (BetSlip.gameHasStarted)
-                        {
-                            <h6 style="color:red;text-align:center;margin-top:1.5em;font-size:20px;font-weight:700;margin:.5em auto;">* @BetSlip.startedGameDescription has already started *</h6>
-                        }
-
-                        <div class="frame">
-                            <button @onclick="SubmitParleyBetSlip" class="custom-btn btn-submit-wager"><span>Submit Wager</span></button>
-                        </div>
+                        
 
                     </div>
                 </ContentTemplate>

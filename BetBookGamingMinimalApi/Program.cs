@@ -35,7 +35,7 @@ try
     app.ConfigureSingleBetsApi();
     app.ConfigureParleyBetSlipsApi();
 
-    app.UseMiddleware<ApiKeyMiddleWare>();
+    //app.UseMiddleware<ApiKeyMiddleWare>();
 
     app.Run();
 }

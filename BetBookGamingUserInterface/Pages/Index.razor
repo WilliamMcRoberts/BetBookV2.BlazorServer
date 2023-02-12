@@ -131,7 +131,7 @@ else
         _userSubscription = ApplicationState.RegisterOnPersisting(PersistUser);
 
         games = ApplicationState.TryTakeFromJson<GameDto[]>("gameData", out var gamesStored) 
-            ? gamesStored : await gameService.GetGamesByWeek(season, week);
+            ? gamesStored : await gameService.GetGamesByWeek(season, 4);
 
         isBusy = false;
 
