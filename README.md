@@ -10,7 +10,6 @@
 Version 2 of Bet Book NFL is updated with a better user experience, more betting styles, and professional wagers. A $10,000 paper account is provided upon account creation. Enjoy!
 
 
-![Screenshot 2022-12-29 220149](https://user-images.githubusercontent.com/95720340/210030464-b643c101-189e-40f9-a273-402a8e2e26c6.png)
 ![Screenshot 2022-12-29 220244](https://user-images.githubusercontent.com/95720340/210030456-c8015ca5-de70-46d4-b227-e377820cb27b.png)
 ![Screenshot 2022-12-29 220244](https://user-images.githubusercontent.com/95720340/210030456-c8015ca5-de70-46d4-b227-e377820cb27b.png)
 ![Screenshot 2022-12-29 220441](https://user-images.githubusercontent.com/95720340/210030447-e913b953-ad62-4386-ae15-b932e84ceff3.png)
